@@ -74,7 +74,7 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @retval PINHOLE_CAMERA_RADIA_K1
         */
-        [[nodiscard]] EINTRINSIC getType() const override;
+        [[nodiscard]] Eintrinsic getType() const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
@@ -205,7 +205,7 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @retval PINHOLE_CAMERA_RADIA_K3
         */
-        [[nodiscard]] EINTRINSIC getType() const override;
+        [[nodiscard]] Eintrinsic getType() const override;
 
         /**
         * @brief Does the camera model handle a distortion field?

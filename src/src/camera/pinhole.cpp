@@ -17,7 +17,7 @@ namespace ns_veta {
         Kinv_ = K_.inverse();
     }
 
-    EINTRINSIC PinholeIntrinsic::getType() const {
+    Eintrinsic PinholeIntrinsic::getType() const {
         return PINHOLE_CAMERA;
     }
 

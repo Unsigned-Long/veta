@@ -31,7 +31,7 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @retval CAMERA_SPHERICAL
         */
-        [[nodiscard]] EINTRINSIC getType() const override;
+        [[nodiscard]] Eintrinsic getType() const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)

@@ -10,7 +10,7 @@ namespace ns_veta {
                                                      double k2, double k3, double k4)
             : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3, k4}) {}
 
-    EINTRINSIC PinholeIntrinsicFisheye::getType() const {
+    Eintrinsic PinholeIntrinsicFisheye::getType() const {
         return PINHOLE_CAMERA_FISHEYE;
     }
 

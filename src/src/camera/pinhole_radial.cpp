@@ -10,7 +10,7 @@ namespace ns_veta {
     // PinholeIntrinsicRadialK1
     // ---------------------------
 
-    EINTRINSIC PinholeIntrinsicRadialK1::getType() const {
+    Eintrinsic PinholeIntrinsicRadialK1::getType() const {
         return PINHOLE_CAMERA_RADIA_K1;
     }
 
@@ -93,7 +93,7 @@ namespace ns_veta {
     // PinholeIntrinsicRadialK3
     // ---------------------------
 
-    EINTRINSIC PinholeIntrinsicRadialK3::getType() const {
+    Eintrinsic PinholeIntrinsicRadialK3::getType() const {
         return PINHOLE_CAMERA_RADIA_K3;
     }
 

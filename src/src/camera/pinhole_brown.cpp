@@ -10,7 +10,7 @@ namespace ns_veta {
                                                      double k1, double k2, double k3, double t1, double t2)
             : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3, t1, t2}) {}
 
-    EINTRINSIC PinholeIntrinsicBrownT2::getType() const {
+    Eintrinsic PinholeIntrinsicBrownT2::getType() const {
         return PINHOLE_CAMERA_BROWN_T2;
     }
 

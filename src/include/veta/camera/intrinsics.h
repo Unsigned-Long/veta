@@ -20,7 +20,7 @@ namespace ns_veta {
     };
 
     /**
-    * @enum EINTRINSIC List of usable camera Intrinsics
+    * @enum Eintrinsic List of usable camera Intrinsics
     * @var PINHOLE_CAMERA
     *   Pinhole camera is an ideal pinhole camera with 3x3 intrinsics matrix : \n
     *      \f$ K=\begin{pmatrix} f & 0 & u_0 \\ 0 & f & v_0 \\ 0 & 0 & 1 \end{pmatrix} \f$
@@ -39,13 +39,13 @@ namespace ns_veta {
     * @var PINHOLE_CAMERA_FISHEYE
     *   Simple fisheye camera with 4 distortion coefficients
     */
-    enum EINTRINSIC {
+    enum Eintrinsic {
         PINHOLE_CAMERA_START = 0,
-        PINHOLE_CAMERA,         // No distortion
-        PINHOLE_CAMERA_RADIA_K1, // radial distortion K1
-        PINHOLE_CAMERA_RADIA_K3, // radial distortion K1,K2,K3
-        PINHOLE_CAMERA_BROWN_T2, // radial distortion K1,K2,K3, tangential distortion T1,T2
-        PINHOLE_CAMERA_FISHEYE, // a simple Fish-eye distortion model with 4 distortion coefficients
+        PINHOLE_CAMERA,           // No distortion
+        PINHOLE_CAMERA_RADIA_K1,  // radial distortion K1
+        PINHOLE_CAMERA_RADIA_K3,  // radial distortion K1,K2,K3
+        PINHOLE_CAMERA_BROWN_T2,  // radial distortion K1,K2,K3, tangential distortion T1,T2
+        PINHOLE_CAMERA_FISHEYE,   // a simple Fish-eye distortion model with 4 distortion coefficients
         PINHOLE_CAMERA_END,
         CAMERA_SPHERICAL = PINHOLE_CAMERA_END + 1
     };
@@ -56,11 +56,11 @@ namespace ns_veta {
     * @retval true if parameter is a pinhole
     * @retval false if parameter is not a pinhole
     */
-    static inline bool isPinhole(EINTRINSIC eintrinsic) {
+    static inline bool isPinhole(Eintrinsic eintrinsic) {
         return eintrinsic > PINHOLE_CAMERA_START && eintrinsic < PINHOLE_CAMERA_END;
     }
 
-    static inline bool isSpherical(EINTRINSIC eintrinsic) {
+    static inline bool isSpherical(Eintrinsic eintrinsic) {
         return eintrinsic == CAMERA_SPHERICAL;
     }
 
@@ -70,7 +70,7 @@ namespace ns_veta {
     * @retval true if parameter is valid
     * @retval false if parameter is invalid
     */
-    static inline bool isValid(EINTRINSIC eintrinsic) {
+    static inline bool isValid(Eintrinsic eintrinsic) {
         return isPinhole(eintrinsic) || isSpherical(eintrinsic);
     }
 
@@ -169,7 +169,7 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @return Corresponding intrinsic
         */
-        [[nodiscard]] virtual EINTRINSIC getType() const = 0;
+        [[nodiscard]] virtual Eintrinsic getType() const = 0;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)

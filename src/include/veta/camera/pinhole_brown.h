@@ -45,7 +45,7 @@ namespace ns_veta {
         * @brief Get type of the intrinsic
         * @retval PINHOLE_CAMERA_BROWN_T2
         */
-        [[nodiscard]] EINTRINSIC getType() const override;
+        [[nodiscard]] Eintrinsic getType() const override;
 
         /**
         * @brief Does the camera model handle a distortion field?

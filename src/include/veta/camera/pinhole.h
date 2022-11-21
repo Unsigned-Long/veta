@@ -58,7 +58,7 @@ namespace ns_veta {
         * @brief Get type of the intrinsic
         * @retval PINHOLE_CAMERA
         */
-        [[nodiscard]] EINTRINSIC getType() const override;
+        [[nodiscard]] Eintrinsic getType() const override;
 
         /**
         * @brief Get the intrinsic matrix

@@ -6,7 +6,7 @@
 
 namespace ns_veta {
 
-    EINTRINSIC IntrinsicSpherical::getType() const {
+    Eintrinsic IntrinsicSpherical::getType() const {
         return CAMERA_SPHERICAL;
     }
 
