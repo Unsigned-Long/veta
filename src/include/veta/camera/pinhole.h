@@ -17,8 +17,8 @@ namespace ns_veta {
     * @note This is an ideal Pinhole camera because it doesn't handle skew and distortion
     * @note The camera does only handle one focal length (ie: \f$ f_x = f_y = f \f$ )
     */
-    class Pinhole_Intrinsic : public IntrinsicBase {
-        using class_type = Pinhole_Intrinsic;
+    class PinholeIntrinsic : public IntrinsicBase {
+        using class_type = PinholeIntrinsic;
 
     protected:
 
@@ -38,8 +38,8 @@ namespace ns_veta {
         * @param ppx Principal point on x-axis
         * @param ppy Principal point on y-axis
         */
-        explicit Pinhole_Intrinsic(unsigned int w = 0, unsigned int h = 0, double focal_length_pix = 0.0,
-                                   double ppx = 0.0, double ppy = 0.0);
+        explicit PinholeIntrinsic(unsigned int w = 0, unsigned int h = 0, double focal_length_pix = 0.0,
+                                  double ppx = 0.0, double ppy = 0.0);
 
         /**
         * @brief Constructor
@@ -47,12 +47,12 @@ namespace ns_veta {
         * @param h Height of the image plane
         * @param K Intrinsic Matrix (3x3) {f,0,ppx; 0,f,ppy; 0,0,1}
         */
-        Pinhole_Intrinsic(unsigned int w, unsigned int h, const Mat3 &K);
+        PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3 &K);
 
         /**
         * @brief Destructor
         */
-        ~Pinhole_Intrinsic() override = default;
+        ~PinholeIntrinsic() override = default;
 
         /**
         * @brief Get type of the intrinsic
@@ -160,7 +160,7 @@ namespace ns_veta {
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const Intrinsic_Parameter_Type &parametrization) const override;
+        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
@@ -200,7 +200,7 @@ namespace ns_veta {
             ar(cereal::make_nvp("focal_length", focal_length));
             std::vector<double> pp(2);
             ar(cereal::make_nvp("principal_point", pp));
-            *this = Pinhole_Intrinsic(w_, h_, focal_length, pp[0], pp[1]);
+            *this = PinholeIntrinsic(w_, h_, focal_length, pp[0], pp[1]);
         }
 
         /**
@@ -212,9 +212,8 @@ namespace ns_veta {
 
 }
 
-
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::Pinhole_Intrinsic, "pinhole")
-CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::Pinhole_Intrinsic)
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsic, "pinhole")
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsic)
 
 
 #endif //VETA_PINHOLE_H

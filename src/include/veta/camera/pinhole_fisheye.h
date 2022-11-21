@@ -11,8 +11,8 @@ namespace ns_veta {
     /**
     * @brief Implement a simple Fish-eye camera model
     */
-    class Pinhole_Intrinsic_Fisheye : public Pinhole_Intrinsic {
-        using class_type = Pinhole_Intrinsic_Fisheye;
+    class PinholeIntrinsicFisheye : public PinholeIntrinsic {
+        using class_type = PinholeIntrinsicFisheye;
 
     protected:
 
@@ -34,11 +34,11 @@ namespace ns_veta {
         * @param k3 Distortion coefficient
         * @param k4 Distortion coefficient
         */
-        explicit Pinhole_Intrinsic_Fisheye(int w = 0, int h = 0,
-                                           double focal = 0.0, double ppx = 0, double ppy = 0,
-                                           double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double k4 = 0.0);
+        explicit PinholeIntrinsicFisheye(int w = 0, int h = 0,
+                                         double focal = 0.0, double ppx = 0, double ppy = 0,
+                                         double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double k4 = 0.0);
 
-        ~Pinhole_Intrinsic_Fisheye() override = default;
+        ~PinholeIntrinsicFisheye() override = default;
 
         /**
         * @brief Tell from which type the embed camera is
@@ -85,7 +85,7 @@ namespace ns_veta {
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const Intrinsic_Parameter_Type &parametrization) const override;
+        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
@@ -107,7 +107,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void save(Archive &ar) const {
-            Pinhole_Intrinsic::save(ar);
+            PinholeIntrinsic::save(ar);
             ar(cereal::make_nvp("fisheye", params_));
         }
 
@@ -117,7 +117,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void load(Archive &ar) {
-            Pinhole_Intrinsic::load(ar);
+            PinholeIntrinsic::load(ar);
             ar(cereal::make_nvp("fisheye", params_));
         }
 
@@ -127,11 +127,10 @@ namespace ns_veta {
         */
         [[nodiscard]] IntrinsicBase *clone() const override;
     };
-
-
 }
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::Pinhole_Intrinsic_Fisheye, "fisheye")
-CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::Pinhole_Intrinsic_Fisheye)
+
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicFisheye, "fisheye")
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicFisheye)
 
 
 #endif //VETA_PINHOLE_FISHEYE_H

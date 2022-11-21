@@ -13,8 +13,8 @@ namespace ns_veta {
     * \f$ x_d = x_u (1 + K_1 r^2 + K_2 r^4 + K_3 r^6) + (T_2 (r^2 + 2 x_u^2) + 2 T_1 x_u y_u) \f$
     * \f$ y_d = y_u (1 + K_1 r^2 + K_2 r^4 + K_3 r^6) + (T_1 (r^2 + 2 y_u^2) + 2 T_2 x_u y_u) \f$
     */
-    class Pinhole_Intrinsic_Brown_T2 : public Pinhole_Intrinsic {
-        using class_type = Pinhole_Intrinsic_Brown_T2;
+    class PinholeIntrinsicBrownT2 : public PinholeIntrinsic {
+        using class_type = PinholeIntrinsicBrownT2;
 
     protected:
 
@@ -36,14 +36,14 @@ namespace ns_veta {
         * @param t1 First tangential distortion coefficient
         * @param t2 Second tangential distortion coefficient
         */
-        explicit Pinhole_Intrinsic_Brown_T2(int w = 0, int h = 0,
-                                            double focal = 0.0, double ppx = 0, double ppy = 0,
-                                            double k1 = 0.0, double k2 = 0.0, double k3 = 0.0,
-                                            double t1 = 0.0, double t2 = 0.0);
+        explicit PinholeIntrinsicBrownT2(int w = 0, int h = 0,
+                                         double focal = 0.0, double ppx = 0, double ppy = 0,
+                                         double k1 = 0.0, double k2 = 0.0, double k3 = 0.0,
+                                         double t1 = 0.0, double t2 = 0.0);
 
         /**
         * @brief Get type of the intrinsic
-        * @retval PINHOLE_CAMERA_BROWN
+        * @retval PINHOLE_CAMERA_BROWN_T2
         */
         [[nodiscard]] EINTRINSIC getType() const override;
 
@@ -89,7 +89,7 @@ namespace ns_veta {
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const Intrinsic_Parameter_Type &parametrization) const override;
+        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
@@ -111,7 +111,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void save(Archive &ar) const {
-            Pinhole_Intrinsic::save(ar);
+            PinholeIntrinsic::save(ar);
             ar(cereal::make_nvp("disto_t2", params_));
         }
 
@@ -121,7 +121,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void load(Archive &ar) {
-            Pinhole_Intrinsic::load(ar);
+            PinholeIntrinsic::load(ar);
             ar(cereal::make_nvp("disto_t2", params_));
         }
 
@@ -145,8 +145,8 @@ namespace ns_veta {
 
 }
 
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::Pinhole_Intrinsic_Brown_T2, "pinhole_brown_t2")
-CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::Pinhole_Intrinsic_Brown_T2)
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicBrownT2, "pinhole_brown_t2")
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicBrownT2)
 
 
 #endif //VETA_PINHOLE_BROWN_H

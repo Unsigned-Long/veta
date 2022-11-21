@@ -2,8 +2,8 @@
 // Created by csl on 11/21/22.
 //
 
-#ifndef VETA_PINHOLE_EADIAL_H
-#define VETA_PINHOLE_EADIAL_H
+#ifndef VETA_PINHOLE_RADIAL_H
+#define VETA_PINHOLE_RADIAL_H
 
 #include "veta/camera/pinhole.h"
 
@@ -46,8 +46,8 @@ namespace ns_veta {
      * @brief Implement a Pinhole camera with a 1 radial distortion coefficient.
      * \f$ x_d = x_u (1 + K_1 r^2 ) \f$
      */
-    class Pinhole_Intrinsic_Radial_K1 : public Pinhole_Intrinsic {
-        using class_type = Pinhole_Intrinsic_Radial_K1;
+    class PinholeIntrinsicRadialK1 : public PinholeIntrinsic {
+        using class_type = PinholeIntrinsicRadialK1;
 
     protected:
         /// center of distortion is applied by the Intrinsics class
@@ -64,15 +64,15 @@ namespace ns_veta {
         * @param ppy Principal point on Y-Axis
         * @param k1 Distortion coefficient
         */
-        explicit Pinhole_Intrinsic_Radial_K1(int w = 0, int h = 0, double focal = 0.0,
-                                             double ppx = 0, double ppy = 0, double k1 = 0.0)
-                : Pinhole_Intrinsic(w, h, focal, ppx, ppy), params_({k1}) {}
+        explicit PinholeIntrinsicRadialK1(int w = 0, int h = 0, double focal = 0.0,
+                                          double ppx = 0, double ppy = 0, double k1 = 0.0)
+                : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1}) {}
 
-        ~Pinhole_Intrinsic_Radial_K1() override = default;
+        ~PinholeIntrinsicRadialK1() override = default;
 
         /**
         * @brief Tell from which type the embed camera is
-        * @retval PINHOLE_CAMERA_RADIAL1
+        * @retval PINHOLE_CAMERA_RADIA_K1
         */
         [[nodiscard]] EINTRINSIC getType() const override;
 
@@ -116,7 +116,7 @@ namespace ns_veta {
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const Intrinsic_Parameter_Type &parametrization) const override;
+        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
@@ -138,7 +138,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void save(Archive &ar) const {
-            Pinhole_Intrinsic::save(ar);
+            PinholeIntrinsic::save(ar);
             ar(cereal::make_nvp("disto_k1", params_));
         }
 
@@ -148,7 +148,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void load(Archive &ar) {
-            Pinhole_Intrinsic::load(ar);
+            PinholeIntrinsic::load(ar);
             ar(cereal::make_nvp("disto_k1", params_));
         }
 
@@ -159,7 +159,6 @@ namespace ns_veta {
         [[nodiscard]] IntrinsicBase *clone() const override;
 
     private:
-
 
         /**
         * @brief Functor to solve Square(disto(radius(p'))) = r^2
@@ -174,8 +173,8 @@ namespace ns_veta {
     * @brief Implement a Pinhole camera with a 3 radial distortion coefficients.
     * \f$ x_d = x_u (1 + K_1 r^2 + K_2 r^4 + K_3 r^6) \f$
     */
-    class Pinhole_Intrinsic_Radial_K3 : public Pinhole_Intrinsic {
-        using class_type = Pinhole_Intrinsic_Radial_K3;
+    class PinholeIntrinsicRadialK3 : public PinholeIntrinsic {
+        using class_type = PinholeIntrinsicRadialK3;
 
     protected:
         // center of distortion is applied by the Intrinsics class
@@ -195,16 +194,16 @@ namespace ns_veta {
         * @param k2 Second radial distortion coefficient
         * @param k3 Third radial distortion coefficient
         */
-        explicit Pinhole_Intrinsic_Radial_K3(int w = 0, int h = 0,
-                                             double focal = 0.0, double ppx = 0, double ppy = 0,
-                                             double k1 = 0.0, double k2 = 0.0, double k3 = 0.0)
-                : Pinhole_Intrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3}) {}
+        explicit PinholeIntrinsicRadialK3(int w = 0, int h = 0,
+                                          double focal = 0.0, double ppx = 0, double ppy = 0,
+                                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0)
+                : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3}) {}
 
-        ~Pinhole_Intrinsic_Radial_K3() override = default;
+        ~PinholeIntrinsicRadialK3() override = default;
 
         /**
         * @brief Tell from which type the embed camera is
-        * @retval PINHOLE_CAMERA_RADIAL3
+        * @retval PINHOLE_CAMERA_RADIA_K3
         */
         [[nodiscard]] EINTRINSIC getType() const override;
 
@@ -247,7 +246,7 @@ namespace ns_veta {
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const Intrinsic_Parameter_Type &parametrization) const override;
+        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
@@ -269,7 +268,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void save(Archive &ar) const {
-            Pinhole_Intrinsic::save(ar);
+            PinholeIntrinsic::save(ar);
             ar(cereal::make_nvp("disto_k3", params_));
         }
 
@@ -279,7 +278,7 @@ namespace ns_veta {
         */
         template<class Archive>
         inline void load(Archive &ar) {
-            Pinhole_Intrinsic::load(ar);
+            PinholeIntrinsic::load(ar);
             ar(cereal::make_nvp("disto_k3", params_));
         }
 
@@ -303,10 +302,10 @@ namespace ns_veta {
 
 }
 
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::Pinhole_Intrinsic_Radial_K1, "pinhole_radial_k1")
-CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::Pinhole_Intrinsic_Radial_K1)
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::Pinhole_Intrinsic_Radial_K3, "pinhole_radial_k3")
-CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::Pinhole_Intrinsic_Radial_K3)
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicRadialK1, "pinhole_radial_k1")
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicRadialK1)
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicRadialK3, "pinhole_radial_k3")
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicRadialK3)
 
 
-#endif //VETA_PINHOLE_EADIAL_H
+#endif //VETA_PINHOLE_RADIAL_H

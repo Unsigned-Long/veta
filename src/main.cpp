@@ -3,7 +3,7 @@
 //
 #include "iostream"
 #include "veta/veta.h"
-#include "veta/camera/pinhole_eadial.h"
+#include "veta/camera/pinhole_radial.h"
 
 int main(int argc, char **argv) {
     ns_veta::Veta veta;

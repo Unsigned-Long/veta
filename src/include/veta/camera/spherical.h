@@ -11,9 +11,9 @@ namespace ns_veta {
 /**
  * @brief Implement a Spherical camera model
  */
-    class Intrinsic_Spherical : public IntrinsicBase {
+    class IntrinsicSpherical : public IntrinsicBase {
 
-        using class_type = Intrinsic_Spherical;
+        using class_type = IntrinsicSpherical;
 
     public:
 
@@ -22,10 +22,10 @@ namespace ns_veta {
         * @param w Width of the image plane
         * @param h Height of the image plane
         */
-        explicit Intrinsic_Spherical(unsigned int w = 0, unsigned int h = 0)
+        explicit IntrinsicSpherical(unsigned int w = 0, unsigned int h = 0)
                 : IntrinsicBase(w, h) {}
 
-        ~Intrinsic_Spherical() override = default;
+        ~IntrinsicSpherical() override = default;
 
         /**
         * @brief Tell from which type the embed camera is
@@ -52,7 +52,7 @@ namespace ns_veta {
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const Intrinsic_Parameter_Type &parametrization) const override;
+        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
 
         /**
         * @brief Transform a point from the camera plane to the image plane
@@ -158,16 +158,16 @@ namespace ns_veta {
 
 }
 
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::Intrinsic_Spherical, "spherical")
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::IntrinsicSpherical, "spherical")
 
 namespace cereal {
     // This struct specialization will tell cereal which is the right way to serialize the ambiguity
     template<class Archive>
-    struct specialize<Archive, ns_veta::Intrinsic_Spherical, cereal::specialization::member_load_save> {
+    struct specialize<Archive, ns_veta::IntrinsicSpherical, cereal::specialization::member_load_save> {
     };
 }
 
-CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::Intrinsic_Spherical)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::IntrinsicSpherical)
 
 
 #endif //VETA_SPHERICAL_H
