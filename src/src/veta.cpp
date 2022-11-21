@@ -8,14 +8,14 @@ namespace ns_veta {
 
     bool Veta::IsPoseAndIntrinsicDefined(const View *view) const {
         if (!view) return false;
-        return (view->id_intrinsic != UndefinedIndexT &&
-                view->id_pose != UndefinedIndexT &&
-                intrinsics.find(view->id_intrinsic) != intrinsics.end() &&
-                poses.find(view->id_pose) != poses.end());
+        return (view->intrinsicId != UndefinedIndexT &&
+                view->poseId != UndefinedIndexT &&
+                intrinsics.find(view->intrinsicId) != intrinsics.end() &&
+                poses.find(view->poseId) != poses.end());
     }
 
     Pose Veta::GetPoseOrDie(const View *view) const {
-        return poses.at(view->id_pose);
+        return poses.at(view->poseId);
     }
 
     const Views &Veta::GetViews() const { return views; }
@@ -36,14 +36,14 @@ namespace ns_veta {
         transform(veta.GetPoses().cbegin(), veta.GetPoses().cend(),
                   std::inserter(set_id_extrinsics, set_id_extrinsics.begin()), RetrieveKey());
 
-        // Collect existing id_intrinsic && id_extrinsic from views
+        // Collect existing intrinsicId && id_extrinsic from views
         std::set<IndexT> reallyDefined_id_intrinsics;
         std::set<IndexT> reallyDefined_id_extrinsics;
         for (const auto &view_it: veta.GetViews()) {
             // If a pose is defined, at least the intrinsic must be valid,
             // In order to generate a valid camera.
-            const IndexT id_pose = view_it.second->id_pose;
-            const IndexT id_intrinsic = view_it.second->id_intrinsic;
+            const IndexT id_pose = view_it.second->poseId;
+            const IndexT id_intrinsic = view_it.second->intrinsicId;
 
             if (set_id_extrinsics.count(id_pose))
                 reallyDefined_id_extrinsics.insert(id_pose); //at least it exists

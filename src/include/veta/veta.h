@@ -13,13 +13,13 @@
 
 namespace ns_veta {
 
-    // Define a collection of IntrinsicParameter (indexed by View::id_intrinsic)
+    // Define a collection of IntrinsicParameter (indexed by View::intrinsicId)
     using Intrinsics = HashMap<IndexT, std::shared_ptr<IntrinsicBase>>;
 
-    // Define a collection of Pose (indexed by View::id_pose)
+    // Define a collection of Pose (indexed by View::poseId)
     using Poses = HashMap<IndexT, Pose>;
 
-    // Define a collection of View (indexed by View::id_view)
+    // Define a collection of View (indexed by View::viewId)
     using Views = HashMap<IndexT, std::shared_ptr<View>>;
 
     // Define a collection of landmarks are indexed by their TrackId
@@ -85,9 +85,9 @@ namespace ns_veta {
 
         /// Considered views
         Views views;
-        /// Considered poses (indexed by view.id_pose)
+        /// Considered poses (indexed by view.poseId)
         Poses poses;
-        /// Considered camera intrinsics (indexed by view.id_intrinsic)
+        /// Considered camera intrinsics (indexed by view.intrinsicId)
         Intrinsics intrinsics;
         /// Structure (3D points with their 2D observations)
         Landmarks structure;

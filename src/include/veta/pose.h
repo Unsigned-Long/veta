@@ -18,10 +18,10 @@ namespace ns_veta {
     protected:
 
         /// Orientation matrix
-        Mat3d rotation_;
+        Mat3d rotation;
 
         /// Center of Rotation
-        Vec3d center_;
+        Vec3d center;
 
     public:
 
@@ -32,7 +32,7 @@ namespace ns_veta {
         * @note Default (without args) defines an Identity pose.
         */
         explicit Pose(Mat3d r = Mat3d::Identity(), Vec3d c = Vec3d::Zero())
-                : rotation_(std::move(r)), center_(std::move(c)) {}
+                : rotation(std::move(r)), center(std::move(c)) {}
 
         /**
         * @brief Get Rotation matrix
@@ -73,7 +73,7 @@ namespace ns_veta {
         */
         template<typename T>
         typename T::PlainObject operator()(const T &p) const {
-            return rotation_ * (p.colwise() - center_);
+            return rotation * (p.colwise() - center);
         }
 
         // Specialization for Vec3d
@@ -107,14 +107,14 @@ namespace ns_veta {
         template<class Archive>
         void save(Archive &ar) const {
             const std::vector<std::vector<double>> mat = {
-                    {rotation_(0, 0), rotation_(0, 1), rotation_(0, 2)},
-                    {rotation_(1, 0), rotation_(1, 1), rotation_(1, 2)},
-                    {rotation_(2, 0), rotation_(2, 1), rotation_(2, 2)}
+                    {rotation(0, 0), rotation(0, 1), rotation(0, 2)},
+                    {rotation(1, 0), rotation(1, 1), rotation(1, 2)},
+                    {rotation(2, 0), rotation(2, 1), rotation(2, 2)}
             };
 
             ar(cereal::make_nvp("Rotation", mat));
 
-            const std::vector<double> vec = {center_(0), center_(1), center_(2)};
+            const std::vector<double> vec = {center(0), center(1), center(2)};
             ar(cereal::make_nvp("Center", vec));
         }
 
@@ -127,13 +127,13 @@ namespace ns_veta {
             std::vector<std::vector<double>> mat(3, std::vector<double>(3));
             ar(cereal::make_nvp("Rotation", mat));
             // copy back to the Rotation
-            rotation_.row(0) = Eigen::Map<const Vec3d>(&(mat[0][0]));
-            rotation_.row(1) = Eigen::Map<const Vec3d>(&(mat[1][0]));
-            rotation_.row(2) = Eigen::Map<const Vec3d>(&(mat[2][0]));
+            rotation.row(0) = Eigen::Map<const Vec3d>(&(mat[0][0]));
+            rotation.row(1) = Eigen::Map<const Vec3d>(&(mat[1][0]));
+            rotation.row(2) = Eigen::Map<const Vec3d>(&(mat[2][0]));
 
             std::vector<double> vec(3);
             ar(cereal::make_nvp("Center", vec));
-            center_ = Eigen::Map<const Vec3d>(&vec[0]);
+            center = Eigen::Map<const Vec3d>(&vec[0]);
         }
     };
 }

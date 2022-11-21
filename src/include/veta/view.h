@@ -13,18 +13,18 @@ namespace ns_veta {
     struct View {
 
         // id of the view
-        IndexT id_view;
+        IndexT viewId;
 
         // Index of intrinsics and the pose
-        IndexT id_intrinsic, id_pose;
+        IndexT intrinsicId, poseId;
 
         // image size
-        IndexT ui_width, ui_height;
+        IndexT imgWidth, imgHeight;
 
-        // Constructor (use unique index for the view_id)
-        explicit View(IndexT view_id = UndefinedIndexT, IndexT intrinsic_id = UndefinedIndexT,
-                      IndexT pose_id = UndefinedIndexT, IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT)
-                : id_view(view_id), id_intrinsic(intrinsic_id), id_pose(pose_id), ui_width(width), ui_height(height) {}
+        // Constructor (use unique index for the viewId)
+        explicit View(IndexT viewId = UndefinedIndexT, IndexT intrinsicId = UndefinedIndexT,
+                      IndexT poseId = UndefinedIndexT, IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT)
+                : viewId(viewId), intrinsicId(intrinsicId), poseId(poseId), imgWidth(width), imgHeight(height) {}
 
         virtual ~View() = default;
 
@@ -34,11 +34,11 @@ namespace ns_veta {
         */
         template<class Archive>
         void save(Archive &ar) const {
-            ar(cereal::make_nvp("width", ui_width),
-               cereal::make_nvp("height", ui_height),
-               cereal::make_nvp("id_view", id_view),
-               cereal::make_nvp("id_intrinsic", id_intrinsic),
-               cereal::make_nvp("id_pose", id_pose));
+            ar(cereal::make_nvp("width", imgWidth),
+               cereal::make_nvp("height", imgHeight),
+               cereal::make_nvp("viewId", viewId),
+               cereal::make_nvp("intrinsicId", intrinsicId),
+               cereal::make_nvp("poseId", poseId));
         }
 
         /**
@@ -47,11 +47,11 @@ namespace ns_veta {
         */
         template<class Archive>
         void load(Archive &ar) {
-            ar(cereal::make_nvp("width", ui_width),
-               cereal::make_nvp("height", ui_height),
-               cereal::make_nvp("id_view", id_view),
-               cereal::make_nvp("id_intrinsic", id_intrinsic),
-               cereal::make_nvp("id_pose", id_pose));
+            ar(cereal::make_nvp("width", imgWidth),
+               cereal::make_nvp("height", imgHeight),
+               cereal::make_nvp("viewId", viewId),
+               cereal::make_nvp("intrinsicId", intrinsicId),
+               cereal::make_nvp("poseId", poseId));
         }
     };
 }

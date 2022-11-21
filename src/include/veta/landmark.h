@@ -10,17 +10,17 @@
 namespace ns_veta {
     // Define 3D-2D tracking data: 3D landmark with its 2D observations
     struct Observation {
-        Observation() : id_feat(UndefinedIndexT) {}
+        Observation() : featId(UndefinedIndexT) {}
 
-        Observation(Vec2d p, IndexT idFeat) : x(std::move(p)), id_feat(idFeat) {}
+        Observation(Vec2d p, IndexT idFeat) : x(std::move(p)), featId(idFeat) {}
 
         Vec2d x;
-        IndexT id_feat;
+        IndexT featId;
 
         // Serialization
         template<class Archive>
         void save(Archive &ar) const {
-            ar(cereal::make_nvp("id_feat", id_feat));
+            ar(cereal::make_nvp("featId", featId));
             const std::vector<double> pp{x(0), x(1)};
             ar(cereal::make_nvp("x", pp));
         }
@@ -28,7 +28,7 @@ namespace ns_veta {
         // Serialization
         template<class Archive>
         void load(Archive &ar) {
-            ar(cereal::make_nvp("id_feat", id_feat));
+            ar(cereal::make_nvp("featId", featId));
             std::vector<double> p(2);
             ar(cereal::make_nvp("x", p));
             x = Eigen::Map<const Vec2d>(&p[0]);
