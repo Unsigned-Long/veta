@@ -38,6 +38,17 @@ namespace ns_veta {
         /// Structure (3D points with their 2D observations)
         Landmarks structure;
 
+        // ---------
+        // Accessors
+        // ---------
+        [[nodiscard]] const Views &GetViews() const;
+
+        [[nodiscard]] const Poses &GetPoses() const;
+
+        [[nodiscard]] const Intrinsics &GetIntrinsics() const;
+
+        [[nodiscard]] const Landmarks &GetLandmarks() const;
+
         // Check if the View have defined intrinsic and pose
         bool IsPoseAndIntrinsicDefined(const View *view) const;
 
@@ -169,7 +180,6 @@ namespace ns_veta {
         return true;
     }
 
-
     template bool
     Load_Cereal<cereal::BinaryInputArchive>(Veta &data, const std::string &filename, EVeta flags_part);
 
@@ -193,6 +203,15 @@ namespace ns_veta {
 
     template bool
     Save_Cereal<cereal::XMLOutputArchive>(const Veta &data, const std::string &filename, EVeta flags_part);
+
+    ///Check that each pose have a valid intrinsic and pose id in the existing View ids
+    static bool ValidIds(const Veta &sfm_data, EVeta flags_part);
+
+    /// Load SfM_Data SfM scene from a file
+    static bool Load(Veta &sfm_data, const std::string &filename, EVeta flags_part);
+
+    // Save SfM_Data SfM scene to a file
+    static bool Save(const Veta &sfm_data, const std::string &filename, EVeta flags_part);
 
 
 }

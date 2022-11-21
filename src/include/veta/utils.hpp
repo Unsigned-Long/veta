@@ -104,6 +104,14 @@ namespace ns_veta {
         return fname;
     }
 
+    /// Allow to select the Keys of a map.
+    struct RetrieveKey {
+        template<typename T>
+        typename T::first_type operator()(const T &keyValuePair) const {
+            return keyValuePair.first;
+        }
+    };
+
 }
 
 #endif //VETA_UTILS_HPP
