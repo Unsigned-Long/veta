@@ -15,7 +15,7 @@ namespace ns_veta {
     * Intrinsic camera matrix is \f$ K = \begin{pmatrix} f & 0 & u_0 \\ 0 & f & v_0 \\ 0 & 0 & 1 \end{pmatrix} \f$
     *
     * @note This is an ideal Pinhole camera because it doesn't handle skew and distortion
-    * @note The camera does only handle one focal length (ie: \f$ f_x = f_y = f \f$ )
+    * @note The camera does only handle one Focal length (ie: \f$ f_x = f_y = f \f$ )
     */
     class PinholeIntrinsic : public IntrinsicBase {
         using class_type = PinholeIntrinsic;
@@ -26,7 +26,7 @@ namespace ns_veta {
         Mat3 K_;
 
         /// Inverse of intrinsic matrix
-        Mat3 Kinv_;
+        Mat3 KInv_;
 
     public:
 
@@ -58,7 +58,7 @@ namespace ns_veta {
         * @brief Get type of the intrinsic
         * @retval PINHOLE_CAMERA
         */
-        [[nodiscard]] Eintrinsic getType() const override;
+        [[nodiscard]] Eintrinsic GetType() const override;
 
         /**
         * @brief Get the intrinsic matrix
@@ -70,20 +70,20 @@ namespace ns_veta {
         * @brief Get the inverse of the intrinsic matrix
         * @return Inverse of intrinsic matrix
         */
-        [[nodiscard]] const Mat3 &Kinv() const;
+        [[nodiscard]] const Mat3 &KInv() const;
 
 
         /**
-        * @brief Return the value of the focal in pixels
+        * @brief Return the value of the Focal in pixels
         * @return Focal of the camera (in pixel)
         */
-        [[nodiscard]] inline double focal() const;
+        [[nodiscard]] inline double Focal() const;
 
         /**
         * @brief Get principal point of the camera
         * @return Principal point of the camera
         */
-        [[nodiscard]] inline Vec2 principal_point() const;
+        [[nodiscard]] inline Vec2 PrincipalPoint() const;
 
         /**
         * @brief Get bearing vectors from image coordinates
@@ -96,55 +96,55 @@ namespace ns_veta {
         * @param p Camera plane point
         * @return Point on image plane
         */
-        [[nodiscard]] Vec2 cam2ima(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 CamToImg(const Vec2 &p) const override;
 
         /**
         * @brief Transform a point from the image plane to the camera plane
         * @param p Image plane point
         * @return camera plane point
         */
-        [[nodiscard]] Vec2 ima2cam(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 ImgToCam(const Vec2 &p) const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
         * @retval false if intrinsic does not hold distortion
         */
-        [[nodiscard]] bool have_disto() const override;
+        [[nodiscard]] bool HaveDisto() const override;
 
         /**
         * @brief Add the distortion field to a point (that is in normalized camera frame)
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 add_disto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 remove_disto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
 
         /**
         * @brief Normalize a given unit pixel error to the camera plane
         * @param value Error in image plane
         * @return error of passing from the image plane to the camera plane
         */
-        [[nodiscard]] double imagePlane_toCameraPlaneError(double value) const override;
+        [[nodiscard]] double ImagePlaneToCameraPlaneError(double value) const override;
 
         /**
         * @brief Return the projection matrix (interior & exterior) as a simplified projective projection
         * @param pose Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] Mat34 get_projective_equivalent(const Pose &pose) const override;
+        [[nodiscard]] Mat34 GetProjectiveEquivalent(const Pose &pose) const override;
 
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
         * @return vector of parameter of this intrinsic
         */
-        [[nodiscard]] std::vector<double> getParams() const override;
+        [[nodiscard]] std::vector<double> GetParams() const override;
 
 
         /**
@@ -153,28 +153,28 @@ namespace ns_veta {
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool updateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &params) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
+        SubsetParameterization(const IntrinsicParamType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 get_ud_pixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 get_d_pixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
 
         /**
         * @brief Serialization out
@@ -185,7 +185,7 @@ namespace ns_veta {
             IntrinsicBase::save(ar);
             ar(cereal::make_nvp("focal_length", K_(0, 0)));
             const std::vector<double> pp{K_(0, 2), K_(1, 2)};
-            ar(cereal::make_nvp("principal_point", pp));
+            ar(cereal::make_nvp("PrincipalPoint", pp));
         }
 
 
@@ -199,15 +199,15 @@ namespace ns_veta {
             double focal_length;
             ar(cereal::make_nvp("focal_length", focal_length));
             std::vector<double> pp(2);
-            ar(cereal::make_nvp("principal_point", pp));
+            ar(cereal::make_nvp("PrincipalPoint", pp));
             *this = PinholeIntrinsic(w_, h_, focal_length, pp[0], pp[1]);
         }
 
         /**
         * @brief Clone the object
-        * @return A clone (copy of the stored object)
+        * @return A Clone (copy of the stored object)
         */
-        [[nodiscard]] IntrinsicBase *clone() const override;
+        [[nodiscard]] IntrinsicBase *Clone() const override;
     };
 
 }

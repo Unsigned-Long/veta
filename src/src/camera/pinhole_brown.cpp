@@ -10,39 +10,39 @@ namespace ns_veta {
                                                      double k1, double k2, double k3, double t1, double t2)
             : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3, t1, t2}) {}
 
-    Eintrinsic PinholeIntrinsicBrownT2::getType() const {
+    Eintrinsic PinholeIntrinsicBrownT2::GetType() const {
         return PINHOLE_CAMERA_BROWN_T2;
     }
 
-    bool PinholeIntrinsicBrownT2::have_disto() const {
+    bool PinholeIntrinsicBrownT2::HaveDisto() const {
         return true;
     }
 
-    Vec2 PinholeIntrinsicBrownT2::add_disto(const Vec2 &p) const {
-        return (p + distoFunction(params_, p));
+    Vec2 PinholeIntrinsicBrownT2::AddDisto(const Vec2 &p) const {
+        return (p + DistoFunction(params_, p));
     }
 
-    Vec2 PinholeIntrinsicBrownT2::remove_disto(const Vec2 &p) const {
+    Vec2 PinholeIntrinsicBrownT2::RemoveDisto(const Vec2 &p) const {
         const double epsilon = 1e-10; //criteria to stop the iteration
         Vec2 p_u = p;
 
-        Vec2 d = distoFunction(params_, p_u);
+        Vec2 d = DistoFunction(params_, p_u);
         while ((p_u + d - p).lpNorm<1>() > epsilon) //manhattan distance between the two points
         {
             p_u = p - d;
-            d = distoFunction(params_, p_u);
+            d = DistoFunction(params_, p_u);
         }
 
         return p_u;
     }
 
-    std::vector<double> PinholeIntrinsicBrownT2::getParams() const {
-        std::vector<double> params = PinholeIntrinsic::getParams();
+    std::vector<double> PinholeIntrinsicBrownT2::GetParams() const {
+        std::vector<double> params = PinholeIntrinsic::GetParams();
         params.insert(params.end(), std::begin(params_), std::end(params_));
         return params;
     }
 
-    bool PinholeIntrinsicBrownT2::updateFromParams(const std::vector<double> &params) {
+    bool PinholeIntrinsicBrownT2::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 8) {
             *this = PinholeIntrinsicBrownT2(
                     static_cast<int>(w_), static_cast<int>(h_),
@@ -57,37 +57,37 @@ namespace ns_veta {
     }
 
     std::vector<int>
-    PinholeIntrinsicBrownT2::subsetParameterization(const IntrinsicParameterType &parametrization) const {
+    PinholeIntrinsicBrownT2::SubsetParameterization(const IntrinsicParamType &parametrization) const {
         std::vector<int> constant_index;
         const int param = static_cast<int>(parametrization);
-        if (!(param & (int) IntrinsicParameterType::ADJUST_FOCAL_LENGTH)
-            || param & (int) IntrinsicParameterType::NONE) {
+        if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
+            || param & (int) IntrinsicParamType::NONE) {
             constant_index.insert(constant_index.end(), 0);
         }
-        if (!(param & (int) IntrinsicParameterType::ADJUST_PRINCIPAL_POINT)
-            || param & (int) IntrinsicParameterType::NONE) {
+        if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
+            || param & (int) IntrinsicParamType::NONE) {
             constant_index.insert(constant_index.end(), {1, 2});
         }
-        if (!(param & (int) IntrinsicParameterType::ADJUST_DISTORTION)
-            || param & (int) IntrinsicParameterType::NONE) {
+        if (!(param & (int) IntrinsicParamType::ADJUST_DISTORTION)
+            || param & (int) IntrinsicParamType::NONE) {
             constant_index.insert(constant_index.end(), {3, 4, 5, 6, 7});
         }
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsicBrownT2::get_ud_pixel(const Vec2 &p) const {
-        return cam2ima(remove_disto(ima2cam(p)));
+    Vec2 PinholeIntrinsicBrownT2::GetUndistoPixel(const Vec2 &p) const {
+        return CamToImg(RemoveDisto(ImgToCam(p)));
     }
 
-    Vec2 PinholeIntrinsicBrownT2::get_d_pixel(const Vec2 &p) const {
-        return cam2ima(add_disto(ima2cam(p)));
+    Vec2 PinholeIntrinsicBrownT2::GetDistoPixel(const Vec2 &p) const {
+        return CamToImg(AddDisto(ImgToCam(p)));
     }
 
-    IntrinsicBase *PinholeIntrinsicBrownT2::clone() const {
+    IntrinsicBase *PinholeIntrinsicBrownT2::Clone() const {
         return new class_type(*this);
     }
 
-    Vec2 PinholeIntrinsicBrownT2::distoFunction(const std::vector<double> &params, const Vec2 &p) {
+    Vec2 PinholeIntrinsicBrownT2::DistoFunction(const std::vector<double> &params, const Vec2 &p) {
         const double k1 = params[0], k2 = params[1], k3 = params[2], t1 = params[3], t2 = params[4];
         const double r2 = p(0) * p(0) + p(1) * p(1);
         const double r4 = r2 * r2;

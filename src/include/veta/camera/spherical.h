@@ -31,13 +31,13 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @retval CAMERA_SPHERICAL
         */
-        [[nodiscard]] Eintrinsic getType() const override;
+        [[nodiscard]] Eintrinsic GetType() const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
         * @return an empty vector of parameter since a spherical camera does not have any intrinsic parameter
         */
-        [[nodiscard]] std::vector<double> getParams() const override;
+        [[nodiscard]] std::vector<double> GetParams() const override;
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
@@ -45,28 +45,28 @@ namespace ns_veta {
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool updateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &params) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
+        SubsetParameterization(const IntrinsicParamType &parametrization) const override;
 
         /**
         * @brief Transform a point from the camera plane to the image plane
         * @param p Camera plane point
         * @return Point on image plane
         */
-        [[nodiscard]] Vec2 cam2ima(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 CamToImg(const Vec2 &p) const override;
 
         /**
         * @brief Transform a point from the image plane to the camera plane
         * @param p Image plane point
         * @return camera plane point
         */
-        [[nodiscard]] Vec2 ima2cam(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 ImgToCam(const Vec2 &p) const override;
 
         /**
         * @brief Get bearing vectors from image coordinates
@@ -77,58 +77,58 @@ namespace ns_veta {
         /**
         * @brief Compute projection of a 3D point into the image plane
         * (Apply disto (if any) and Intrinsics)
-        * @param pt3D 3D-point to project on image plane
+        * @param pt3D 3D-point to Project on image plane
         * @return Projected (2D) point on image plane
         */
-        [[nodiscard]] Vec2 project(const Vec3 &X, bool ignore_distortion) const override;
+        [[nodiscard]] Vec2 Project(const Vec3 &X, bool ignore_distortion) const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
         * @retval false
         */
-        [[nodiscard]] bool have_disto() const override;
+        [[nodiscard]] bool HaveDisto() const override;
 
         /**
         * @brief Add the distortion field to a point (that is in normalized camera frame)
         * @param p Point before distortion computation (in normalized camera frame)
         * @return the initial point p (spherical camera does not have distortion field)
         */
-        [[nodiscard]] Vec2 add_disto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return the initial point p (spherical camera does not have distortion field)
         */
-        [[nodiscard]] Vec2 remove_disto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 get_ud_pixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 get_d_pixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
 
         /**
         * @brief Normalize a given unit pixel error to the camera plane
         * @param value Error in image plane
         * @return error of passing from the image plane to the camera plane
         */
-        [[nodiscard]] double imagePlane_toCameraPlaneError(double value) const override;
+        [[nodiscard]] double ImagePlaneToCameraPlaneError(double value) const override;
 
         /**
         * @brief Return the projection matrix (interior & exterior) as a simplified projective projection
         * @param pose Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] Mat34 get_projective_equivalent(const Pose &pose) const override;
+        [[nodiscard]] Mat34 GetProjectiveEquivalent(const Pose &pose) const override;
 
         /**
         * @brief Serialization out
@@ -150,9 +150,9 @@ namespace ns_veta {
 
         /**
         * @brief Clone the object
-        * @return A clone (copy of the stored object)
+        * @return A Clone (copy of the stored object)
         */
-        [[nodiscard]] IntrinsicBase *clone() const override;
+        [[nodiscard]] IntrinsicBase *Clone() const override;
 
     };
 

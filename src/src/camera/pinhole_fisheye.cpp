@@ -10,15 +10,15 @@ namespace ns_veta {
                                                      double k2, double k3, double k4)
             : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3, k4}) {}
 
-    Eintrinsic PinholeIntrinsicFisheye::getType() const {
+    Eintrinsic PinholeIntrinsicFisheye::GetType() const {
         return PINHOLE_CAMERA_FISHEYE;
     }
 
-    bool PinholeIntrinsicFisheye::have_disto() const {
+    bool PinholeIntrinsicFisheye::HaveDisto() const {
         return true;
     }
 
-    Vec2 PinholeIntrinsicFisheye::add_disto(const Vec2 &p) const {
+    Vec2 PinholeIntrinsicFisheye::AddDisto(const Vec2 &p) const {
         const double eps = 1e-8;
         const double k1 = params_[0], k2 = params_[1], k3 = params_[2], k4 = params_[3];
         const double r = std::hypot(p(0), p(1));
@@ -38,7 +38,7 @@ namespace ns_veta {
         return p * cdist;
     }
 
-    Vec2 PinholeIntrinsicFisheye::remove_disto(const Vec2 &p) const {
+    Vec2 PinholeIntrinsicFisheye::RemoveDisto(const Vec2 &p) const {
         const double eps = 1e-8;
         double scale = 1.0;
         const double theta_dist = std::hypot(p(0), p(1));
@@ -57,17 +57,17 @@ namespace ns_veta {
         return p * scale;
     }
 
-    std::vector<double> PinholeIntrinsicFisheye::getParams() const {
-        std::vector<double> params = PinholeIntrinsic::getParams();
+    std::vector<double> PinholeIntrinsicFisheye::GetParams() const {
+        std::vector<double> params = PinholeIntrinsic::GetParams();
         params.insert(params.end(), std::begin(params_), std::end(params_));
         return params;
     }
 
-    bool PinholeIntrinsicFisheye::updateFromParams(const std::vector<double> &params) {
+    bool PinholeIntrinsicFisheye::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 7) {
             *this = PinholeIntrinsicFisheye(
                     static_cast<int>(w_), static_cast<int>(h_),
-                    params[0], params[1], params[2], // focal, ppx, ppy
+                    params[0], params[1], params[2], // Focal, ppx, ppy
                     params[3], params[4], params[5], params[6] // k1, k2, k3, k4
             );
             return true;
@@ -77,33 +77,33 @@ namespace ns_veta {
     }
 
     std::vector<int>
-    PinholeIntrinsicFisheye::subsetParameterization(const IntrinsicParameterType &parametrization) const {
+    PinholeIntrinsicFisheye::SubsetParameterization(const IntrinsicParamType &parametrization) const {
         std::vector<int> constant_index;
         const int param = static_cast<int>(parametrization);
-        if (!(param & (int) IntrinsicParameterType::ADJUST_FOCAL_LENGTH)
-            || param & (int) IntrinsicParameterType::NONE) {
+        if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
+            || param & (int) IntrinsicParamType::NONE) {
             constant_index.insert(constant_index.end(), 0);
         }
-        if (!(param & (int) IntrinsicParameterType::ADJUST_PRINCIPAL_POINT)
-            || param & (int) IntrinsicParameterType::NONE) {
+        if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
+            || param & (int) IntrinsicParamType::NONE) {
             constant_index.insert(constant_index.end(), {1, 2});
         }
-        if (!(param & (int) IntrinsicParameterType::ADJUST_DISTORTION)
-            || param & (int) IntrinsicParameterType::NONE) {
+        if (!(param & (int) IntrinsicParamType::ADJUST_DISTORTION)
+            || param & (int) IntrinsicParamType::NONE) {
             constant_index.insert(constant_index.end(), {3, 4, 5, 6});
         }
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsicFisheye::get_ud_pixel(const Vec2 &p) const {
-        return cam2ima(remove_disto(ima2cam(p)));
+    Vec2 PinholeIntrinsicFisheye::GetUndistoPixel(const Vec2 &p) const {
+        return CamToImg(RemoveDisto(ImgToCam(p)));
     }
 
-    Vec2 PinholeIntrinsicFisheye::get_d_pixel(const Vec2 &p) const {
-        return cam2ima(add_disto(ima2cam(p)));
+    Vec2 PinholeIntrinsicFisheye::GetDistoPixel(const Vec2 &p) const {
+        return CamToImg(AddDisto(ImgToCam(p)));
     }
 
-    IntrinsicBase *PinholeIntrinsicFisheye::clone() const {
+    IntrinsicBase *PinholeIntrinsicFisheye::Clone() const {
         return new class_type(*this);
     }
 }

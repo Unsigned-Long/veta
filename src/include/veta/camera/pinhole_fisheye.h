@@ -44,33 +44,33 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @retval PINHOLE_CAMERA_FISHEYE
         */
-        [[nodiscard]] Eintrinsic getType() const override;
+        [[nodiscard]] Eintrinsic GetType() const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
         * @retval true
         */
-        [[nodiscard]] bool have_disto() const override;
+        [[nodiscard]] bool HaveDisto() const override;
 
         /**
         * @brief Add the distortion field to a point (that is in normalized camera frame)
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 add_disto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 remove_disto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
         * @return vector of parameter of this intrinsic
         */
-        [[nodiscard]] std::vector<double> getParams() const override;
+        [[nodiscard]] std::vector<double> GetParams() const override;
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
@@ -78,28 +78,28 @@ namespace ns_veta {
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool updateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &params) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant
         * @param parametrization The given parametrization
         */
         [[nodiscard]] std::vector<int>
-        subsetParameterization(const IntrinsicParameterType &parametrization) const override;
+        SubsetParameterization(const IntrinsicParamType &parametrization) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 get_ud_pixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 get_d_pixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
 
         /**
         * @brief Serialization out
@@ -123,9 +123,9 @@ namespace ns_veta {
 
         /**
         * @brief Clone the object
-        * @return A clone (copy of the stored object)
+        * @return A Clone (copy of the stored object)
         */
-        [[nodiscard]] IntrinsicBase *clone() const override;
+        [[nodiscard]] IntrinsicBase *Clone() const override;
     };
 }
 

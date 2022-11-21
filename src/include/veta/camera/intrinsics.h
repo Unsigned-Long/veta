@@ -14,7 +14,7 @@ namespace ns_veta {
     */
     template<typename T>
     struct Clonable {
-        [[nodiscard]] virtual T *clone() const = 0;
+        [[nodiscard]] virtual T *Clone() const = 0;
 
         virtual ~Clonable() = default;
     };
@@ -56,11 +56,11 @@ namespace ns_veta {
     * @retval true if parameter is a pinhole
     * @retval false if parameter is not a pinhole
     */
-    static inline bool isPinhole(Eintrinsic eintrinsic) {
+    static inline bool IsPinhole(Eintrinsic eintrinsic) {
         return eintrinsic > PINHOLE_CAMERA_START && eintrinsic < PINHOLE_CAMERA_END;
     }
 
-    static inline bool isSpherical(Eintrinsic eintrinsic) {
+    static inline bool IsSpherical(Eintrinsic eintrinsic) {
         return eintrinsic == CAMERA_SPHERICAL;
     }
 
@@ -70,12 +70,12 @@ namespace ns_veta {
     * @retval true if parameter is valid
     * @retval false if parameter is invalid
     */
-    static inline bool isValid(Eintrinsic eintrinsic) {
-        return isPinhole(eintrinsic) || isSpherical(eintrinsic);
+    static inline bool IsValid(Eintrinsic eintrinsic) {
+        return IsPinhole(eintrinsic) || IsSpherical(eintrinsic);
     }
 
     /**
-    * @enum IntrinsicParameterType Used to control which camera parameter must be \n
+    * @enum IntrinsicParamType Used to control which camera parameter must be \n
        considered as variable of held constant for non linear refinement
     * @var NONE
     *   Intrinsic parameters will be considered as FIXED
@@ -88,7 +88,7 @@ namespace ns_veta {
     * @var ADJUST_ALL
     *   All parameters will be considered as variable for refinement
     */
-    enum class IntrinsicParameterType : int {
+    enum class IntrinsicParamType : int {
         // Note: Use power of two values in order to use bitwise operators.
         NONE = 1, // All parameters will be held constant
         ADJUST_FOCAL_LENGTH = 2,
@@ -97,18 +97,18 @@ namespace ns_veta {
         ADJUST_ALL = ADJUST_FOCAL_LENGTH | ADJUST_PRINCIPAL_POINT | ADJUST_DISTORTION
     };
 
-    inline constexpr IntrinsicParameterType
-    operator|(IntrinsicParameterType x, IntrinsicParameterType y) {
-        return static_cast<IntrinsicParameterType>
-        (static_cast<std::underlying_type<IntrinsicParameterType>::type>(x) |
-         static_cast<std::underlying_type<IntrinsicParameterType>::type>(y));
+    inline constexpr IntrinsicParamType
+    operator|(IntrinsicParamType x, IntrinsicParamType y) {
+        return static_cast<IntrinsicParamType>
+        (static_cast<std::underlying_type<IntrinsicParamType>::type>(x) |
+         static_cast<std::underlying_type<IntrinsicParamType>::type>(y));
     }
 
-    inline constexpr IntrinsicParameterType
-    operator&(IntrinsicParameterType x, IntrinsicParameterType y) {
-        return static_cast<IntrinsicParameterType>
-        (static_cast<std::underlying_type<IntrinsicParameterType>::type>(x) &
-         static_cast<std::underlying_type<IntrinsicParameterType>::type>(y));
+    inline constexpr IntrinsicParamType
+    operator&(IntrinsicParamType x, IntrinsicParamType y) {
+        return static_cast<IntrinsicParamType>
+        (static_cast<std::underlying_type<IntrinsicParamType>::type>(x) &
+         static_cast<std::underlying_type<IntrinsicParamType>::type>(y));
     }
 
 
@@ -148,18 +148,18 @@ namespace ns_veta {
         /**
         * @brief Compute projection of a 3D point into the image plane
         * (Apply disto (if any) and Intrinsics)
-        * @param X 3D-point to project on image plane
+        * @param X 3D-point to Project on image plane
         * @return Projected (2D) point on image plane
         */
-        [[nodiscard]] virtual Vec2 project(const Vec3 &X, bool ignore_distortion) const;
+        [[nodiscard]] virtual Vec2 Project(const Vec3 &X, bool ignore_distortion) const;
 
         /**
-        * @brief Compute the residual between the 3D projected point and an image observation
-        * @param X 3d point to project on camera plane
+        * @brief Compute the Residual between the 3D projected point and an image observation
+        * @param X 3d point to Project on camera plane
         * @param x image observation
         * @brief Relative 2d distance between projected and observed points
         */
-        [[nodiscard]] Vec2 residual(const Vec3 &X, const Vec2 &x, bool ignore_distortion = false) const;
+        [[nodiscard]] Vec2 Residual(const Vec3 &X, const Vec2 &x, bool ignore_distortion = false) const;
 
         // ---------------
         // Virtual members
@@ -169,13 +169,13 @@ namespace ns_veta {
         * @brief Tell from which type the embed camera is
         * @return Corresponding intrinsic
         */
-        [[nodiscard]] virtual Eintrinsic getType() const = 0;
+        [[nodiscard]] virtual Eintrinsic GetType() const = 0;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
         * @return vector of parameter of this intrinsic
         */
-        [[nodiscard]] virtual std::vector<double> getParams() const = 0;
+        [[nodiscard]] virtual std::vector<double> GetParams() const = 0;
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
@@ -183,14 +183,14 @@ namespace ns_veta {
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        virtual bool updateFromParams(const std::vector<double> &params) = 0;
+        virtual bool UpdateFromParams(const std::vector<double> &params) = 0;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant
         * @param parametrization The given parametrization
         */
         [[nodiscard]] virtual std::vector<int>
-        subsetParameterization(const IntrinsicParameterType &parametrization) const = 0;
+        SubsetParameterization(const IntrinsicParamType &parametrization) const = 0;
 
         /**
         * @brief Get bearing vectors from image coordinates
@@ -203,63 +203,63 @@ namespace ns_veta {
         * @param p Camera plane point
         * @return Point on image plane
         */
-        [[nodiscard]] virtual Vec2 cam2ima(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2 CamToImg(const Vec2 &p) const = 0;
 
         /**
         * @brief Transform a point from the image plane to the camera plane
         * @param p Image plane point
         * @return camera plane point
         */
-        [[nodiscard]] virtual Vec2 ima2cam(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2 ImgToCam(const Vec2 &p) const = 0;
 
         /**
         * @brief Does the camera model handle a distortion field?
         * @retval true if intrinsic holds distortion
         * @retval false if intrinsic does not hold distortion
         */
-        [[nodiscard]] virtual bool have_disto() const;
+        [[nodiscard]] virtual bool HaveDisto() const;
 
         /**
         * @brief Add the distortion field to a point (that is in normalized camera frame)
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] virtual Vec2 add_disto(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2 AddDisto(const Vec2 &p) const = 0;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] virtual Vec2 remove_disto(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2 RemoveDisto(const Vec2 &p) const = 0;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] virtual Vec2 get_ud_pixel(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2 GetUndistoPixel(const Vec2 &p) const = 0;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] virtual Vec2 get_d_pixel(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2 GetDistoPixel(const Vec2 &p) const = 0;
 
         /**
         * @brief Normalize a given unit pixel error to the camera plane
         * @param value Error in image plane
         * @return error of passing from the image plane to the camera plane
         */
-        [[nodiscard]] virtual double imagePlane_toCameraPlaneError(double value) const = 0;
+        [[nodiscard]] virtual double ImagePlaneToCameraPlaneError(double value) const = 0;
 
         /**
         * @brief Return the projection matrix (interior & exterior) as a simplified projective projection
         * @param pose Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] virtual Mat34 get_projective_equivalent(const Pose &pose) const = 0;
+        [[nodiscard]] virtual Mat34 GetProjectiveEquivalent(const Pose &pose) const = 0;
 
         /**
         * @brief Serialization out
@@ -285,7 +285,7 @@ namespace ns_veta {
         * @brief Generate a unique Hash from the camera parameters (used for grouping)
         * @return Hash value
         */
-        [[nodiscard]] virtual std::size_t hashValue() const;
+        [[nodiscard]] virtual std::size_t HashValue() const;
     };
 
 }

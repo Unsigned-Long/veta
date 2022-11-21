@@ -14,31 +14,31 @@ namespace ns_veta {
         return h_;
     }
 
-    Vec2 IntrinsicBase::project(const Vec3 &X, bool ignore_distortion) const {
-        if (this->have_disto() && !ignore_distortion) {
+    Vec2 IntrinsicBase::Project(const Vec3 &X, bool ignore_distortion) const {
+        if (this->HaveDisto() && !ignore_distortion) {
             // apply disto & intrinsics
-            return this->cam2ima(this->add_disto(X.hnormalized()));
+            return this->CamToImg(this->AddDisto(X.hnormalized()));
         } else {
             // apply intrinsics
-            return this->cam2ima(X.hnormalized());
+            return this->CamToImg(X.hnormalized());
         }
     }
 
-    Vec2 IntrinsicBase::residual(const Vec3 &X, const Vec2 &x, bool ignore_distortion) const {
-        const Vec2 proj = this->project(X, ignore_distortion);
+    Vec2 IntrinsicBase::Residual(const Vec3 &X, const Vec2 &x, bool ignore_distortion) const {
+        const Vec2 proj = this->Project(X, ignore_distortion);
         return x - proj;
     }
 
-    bool IntrinsicBase::have_disto() const {
+    bool IntrinsicBase::HaveDisto() const {
         return false;
     }
 
-    std::size_t IntrinsicBase::hashValue() const {
+    std::size_t IntrinsicBase::HashValue() const {
         size_t seed = 0;
-        hash_combine(seed, static_cast<int>( this->getType()));
+        hash_combine(seed, static_cast<int>( this->GetType()));
         hash_combine(seed, w_);
         hash_combine(seed, h_);
-        const std::vector<double> params = this->getParams();
+        const std::vector<double> params = this->GetParams();
         for (const auto &param: params)
             hash_combine(seed, param);
         return seed;
