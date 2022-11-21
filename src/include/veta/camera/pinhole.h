@@ -9,10 +9,10 @@
 
 namespace ns_veta {
     /**
-    * @brief Define an ideal Pinhole camera intrinsics (store a K 3x3 matrix)
-    * with intrinsic parameters defining the K calibration matrix
+    * @brief Define an ideal Pinhole camera intrinsics (store a KMat 3x3 matrix)
+    * with intrinsic parameters defining the KMat calibration matrix
     *
-    * Intrinsic camera matrix is \f$ K = \begin{pmatrix} f & 0 & u_0 \\ 0 & f & v_0 \\ 0 & 0 & 1 \end{pmatrix} \f$
+    * Intrinsic camera matrix is \f$ KMat = \begin{pmatrix} f & 0 & u_0 \\ 0 & f & v_0 \\ 0 & 0 & 1 \end{pmatrix} \f$
     *
     * @note This is an ideal Pinhole camera because it doesn't handle skew and distortion
     * @note The camera does only handle one Focal length (ie: \f$ f_x = f_y = f \f$ )
@@ -22,11 +22,11 @@ namespace ns_veta {
 
     protected:
 
-        /// Intrinsic matrix : Focal & principal point are embed into the calibration matrix K
-        Mat3d K_;
+        // Intrinsic matrix : Focal & principal point are embed into the calibration matrix KMat
+        Mat3d K;
 
-        /// Inverse of intrinsic matrix
-        Mat3d KInv_;
+        // Inverse of intrinsic matrix
+        Mat3d KInv;
 
     public:
 
@@ -47,7 +47,7 @@ namespace ns_veta {
         * @param h Height of the image plane
         * @param K Intrinsic Matrix (3x3) {f,0,ppx; 0,f,ppy; 0,0,1}
         */
-        PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3d &K);
+        PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat);
 
         /**
         * @brief Destructor
@@ -64,13 +64,13 @@ namespace ns_veta {
         * @brief Get the intrinsic matrix
         * @return 3x3 intrinsic matrix
         */
-        [[nodiscard]] const Mat3d &K() const;
+        [[nodiscard]] const Mat3d &KMat() const;
 
         /**
         * @brief Get the Inverse of the intrinsic matrix
         * @return Inverse of intrinsic matrix
         */
-        [[nodiscard]] const Mat3d &KInv() const;
+        [[nodiscard]] const Mat3d &KInvMat() const;
 
 
         /**
@@ -183,8 +183,8 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             IntrinsicBase::save(ar);
-            ar(cereal::make_nvp("focal_length", K_(0, 0)));
-            const std::vector<double> pp{K_(0, 2), K_(1, 2)};
+            ar(cereal::make_nvp("focal_length", K(0, 0)));
+            const std::vector<double> pp{K(0, 2), K(1, 2)};
             ar(cereal::make_nvp("PrincipalPoint", pp));
         }
 
@@ -200,7 +200,7 @@ namespace ns_veta {
             ar(cereal::make_nvp("focal_length", focal_length));
             std::vector<double> pp(2);
             ar(cereal::make_nvp("PrincipalPoint", pp));
-            *this = PinholeIntrinsic(w_, h_, focal_length, pp[0], pp[1]);
+            *this = PinholeIntrinsic(width, height, focal_length, pp[0], pp[1]);
         }
 
         /**

@@ -8,7 +8,7 @@ namespace ns_veta {
 
     PinholeIntrinsicBrownT2::PinholeIntrinsicBrownT2(int w, int h, double focal, double ppx, double ppy,
                                                      double k1, double k2, double k3, double t1, double t2)
-            : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3, t1, t2}) {}
+            : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1, k2, k3, t1, t2}) {}
 
     Eintrinsic PinholeIntrinsicBrownT2::GetType() const {
         return PINHOLE_CAMERA_BROWN_T2;
@@ -19,18 +19,18 @@ namespace ns_veta {
     }
 
     Vec2d PinholeIntrinsicBrownT2::AddDisto(const Vec2d &p) const {
-        return (p + DistoFunction(params_, p));
+        return (p + DistoFunction(params, p));
     }
 
     Vec2d PinholeIntrinsicBrownT2::RemoveDisto(const Vec2d &p) const {
         const double epsilon = 1e-10; //criteria to stop the iteration
         Vec2d p_u = p;
 
-        Vec2d d = DistoFunction(params_, p_u);
+        Vec2d d = DistoFunction(params, p_u);
         while ((p_u + d - p).lpNorm<1>() > epsilon) //manhattan distance between the two points
         {
             p_u = p - d;
-            d = DistoFunction(params_, p_u);
+            d = DistoFunction(params, p_u);
         }
 
         return p_u;
@@ -38,14 +38,14 @@ namespace ns_veta {
 
     std::vector<double> PinholeIntrinsicBrownT2::GetParams() const {
         std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params_), std::end(params_));
+        params.insert(params.end(), std::begin(params), std::end(params));
         return params;
     }
 
     bool PinholeIntrinsicBrownT2::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 8) {
             *this = PinholeIntrinsicBrownT2(
-                    static_cast<int>(w_), static_cast<int>(h_),
+                    static_cast<int>(width), static_cast<int>(height),
                     params[0], params[1], params[2],
                     params[3], params[4], params[5],
                     params[6], params[7]

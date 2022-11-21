@@ -19,7 +19,7 @@ namespace ns_veta {
     }
 
     Vec2d PinholeIntrinsicRadialK1::AddDisto(const Vec2d &p) const {
-        const double k1 = params_[0];
+        const double k1 = params[0];
 
         const double r2 = p(0) * p(0) + p(1) * p(1);
         const double r_coeff = (1. + k1 * r2);
@@ -32,20 +32,20 @@ namespace ns_veta {
         // Minimize disto(radius(p')^2) == actual Squared(radius(p))
 
         const double r2 = p(0) * p(0) + p(1) * p(1);
-        const double radius = (r2 == 0) ? 1. : ::sqrt(BisectionRadiusSolve(params_, r2, DistoFunctor) / r2);
+        const double radius = (r2 == 0) ? 1. : ::sqrt(BisectionRadiusSolve(params, r2, DistoFunctor) / r2);
         return radius * p;
     }
 
     std::vector<double> PinholeIntrinsicRadialK1::GetParams() const {
         std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params_), std::end(params_));
+        params.insert(params.end(), std::begin(params), std::end(params));
         return params;
     }
 
     bool PinholeIntrinsicRadialK1::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 4) {
             *this = PinholeIntrinsicRadialK1(
-                    static_cast<int>(w_), static_cast<int>(h_), params[0], params[1], params[2], params[3]
+                    static_cast<int>(width), static_cast<int>(height), params[0], params[1], params[2], params[3]
             );
             return true;
         } else {
@@ -102,7 +102,7 @@ namespace ns_veta {
     }
 
     Vec2d PinholeIntrinsicRadialK3::AddDisto(const Vec2d &p) const {
-        const double &k1 = params_[0], &k2 = params_[1], &k3 = params_[2];
+        const double &k1 = params[0], &k2 = params[1], &k3 = params[2];
 
         const double r2 = p(0) * p(0) + p(1) * p(1);
         const double r4 = r2 * r2;
@@ -117,20 +117,20 @@ namespace ns_veta {
         // Minimize disto(radius(p')^2) == actual Squared(radius(p))
 
         const double r2 = p(0) * p(0) + p(1) * p(1);
-        const double radius = (r2 == 0) ? 1. : ::sqrt(BisectionRadiusSolve(params_, r2, DistoFunctor) / r2);
+        const double radius = (r2 == 0) ? 1. : ::sqrt(BisectionRadiusSolve(params, r2, DistoFunctor) / r2);
         return radius * p;
     }
 
     std::vector<double> PinholeIntrinsicRadialK3::GetParams() const {
         std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params_), std::end(params_));
+        params.insert(params.end(), std::begin(params), std::end(params));
         return params;
     }
 
     bool PinholeIntrinsicRadialK3::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 6) {
             *this = PinholeIntrinsicRadialK3(
-                    static_cast<int>(w_), static_cast<int>(h_), params[0], params[1], params[2],
+                    static_cast<int>(width), static_cast<int>(height), params[0], params[1], params[2],
                     params[3], params[4], params[5]
             );
             return true;

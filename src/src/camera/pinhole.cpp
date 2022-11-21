@@ -2,43 +2,46 @@
 // Created by csl on 11/21/22.
 //
 
+#include <utility>
+
 #include "veta/camera/pinhole.h"
 
 namespace ns_veta {
 
     PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, double focal_length_pix, double ppx,
                                        double ppy) : IntrinsicBase(w, h) {
-        K_ << focal_length_pix, 0., ppx, 0., focal_length_pix, ppy, 0., 0., 1.;
-        KInv_ = K_.inverse();
+        K << focal_length_pix, 0., ppx, 0., focal_length_pix, ppy, 0., 0., 1.;
+        KInv = K.inverse();
     }
 
-    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3d &K) : IntrinsicBase(w, h), K_(K) {
-        K_(0, 0) = K_(1, 1) = (K(0, 0) + K(1, 1)) / 2.0;
-        KInv_ = K_.inverse();
+    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat)
+            : IntrinsicBase(w, h), K(std::move(KMat)) {
+        K(0, 0) = K(1, 1) = (K(0, 0) + K(1, 1)) / 2.0;
+        KInv = K.inverse();
     }
 
     Eintrinsic PinholeIntrinsic::GetType() const {
         return PINHOLE_CAMERA;
     }
 
-    const Mat3d &PinholeIntrinsic::K() const {
-        return K_;
+    const Mat3d &PinholeIntrinsic::KMat() const {
+        return K;
     }
 
-    const Mat3d &PinholeIntrinsic::KInv() const {
-        return KInv_;
+    const Mat3d &PinholeIntrinsic::KInvMat() const {
+        return KInv;
     }
 
     double PinholeIntrinsic::Focal() const {
-        return K_(0, 0);
+        return K(0, 0);
     }
 
     Vec2d PinholeIntrinsic::PrincipalPoint() const {
-        return {K_(0, 2), K_(1, 2)};
+        return {K(0, 2), K(1, 2)};
     }
 
     Mat3Xd PinholeIntrinsic::operator()(const Mat2Xd &points) const {
-        return (KInv_ * points.colwise().homogeneous()).colwise().normalized();
+        return (KInv * points.colwise().homogeneous()).colwise().normalized();
     }
 
     Vec2d PinholeIntrinsic::CamToImg(const Vec2d &p) const {
@@ -66,16 +69,16 @@ namespace ns_veta {
     }
 
     Mat34 PinholeIntrinsic::GetProjectiveEquivalent(const Pose &pose) const {
-        return K_ * (Mat34() << pose.Rotation(), pose.Translation()).finished();
+        return K * (Mat34() << pose.Rotation(), pose.Translation()).finished();
     }
 
     std::vector<double> PinholeIntrinsic::GetParams() const {
-        return {K_(0, 0), K_(0, 2), K_(1, 2)};
+        return {K(0, 0), K(0, 2), K(1, 2)};
     }
 
     bool PinholeIntrinsic::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 3) {
-            *this = PinholeIntrinsic(w_, h_, params[0], params[1], params[2]);
+            *this = PinholeIntrinsic(width, height, params[0], params[1], params[2]);
             return true;
         } else {
             return false;

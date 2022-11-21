@@ -8,7 +8,7 @@ namespace ns_veta {
 
     PinholeIntrinsicFisheye::PinholeIntrinsicFisheye(int w, int h, double focal, double ppx, double ppy, double k1,
                                                      double k2, double k3, double k4)
-            : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3, k4}) {}
+            : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1, k2, k3, k4}) {}
 
     Eintrinsic PinholeIntrinsicFisheye::GetType() const {
         return PINHOLE_CAMERA_FISHEYE;
@@ -20,7 +20,7 @@ namespace ns_veta {
 
     Vec2d PinholeIntrinsicFisheye::AddDisto(const Vec2d &p) const {
         const double eps = 1e-8;
-        const double k1 = params_[0], k2 = params_[1], k3 = params_[2], k4 = params_[3];
+        const double k1 = params[0], k2 = params[1], k3 = params[2], k4 = params[3];
         const double r = std::hypot(p(0), p(1));
         const double theta = std::atan(r);
         const double
@@ -49,8 +49,8 @@ namespace ns_veta {
                 const double theta4 = theta2 * theta2;
                 const double theta6 = theta4 * theta2;
                 const double theta8 = theta6 * theta2;
-                theta = theta_dist / (1 + params_[0] * theta2 + params_[1] * theta4
-                                      + params_[2] * theta6 + params_[3] * theta8);
+                theta = theta_dist / (1 + params[0] * theta2 + params[1] * theta4
+                                      + params[2] * theta6 + params[3] * theta8);
             }
             scale = std::tan(theta) / theta_dist;
         }
@@ -59,14 +59,14 @@ namespace ns_veta {
 
     std::vector<double> PinholeIntrinsicFisheye::GetParams() const {
         std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params_), std::end(params_));
+        params.insert(params.end(), std::begin(params), std::end(params));
         return params;
     }
 
     bool PinholeIntrinsicFisheye::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 7) {
             *this = PinholeIntrinsicFisheye(
-                    static_cast<int>(w_), static_cast<int>(h_),
+                    static_cast<int>(width), static_cast<int>(height),
                     params[0], params[1], params[2], // Focal, ppx, ppy
                     params[3], params[4], params[5], params[6] // k1, k2, k3, k4
             );

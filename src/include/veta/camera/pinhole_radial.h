@@ -51,7 +51,7 @@ namespace ns_veta {
 
     protected:
         /// Center of distortion is applied by the Intrinsics class
-        std::vector<double> params_; // K1
+        std::vector<double> params; // K1
 
     public:
 
@@ -66,7 +66,7 @@ namespace ns_veta {
         */
         explicit PinholeIntrinsicRadialK1(int w = 0, int h = 0, double focal = 0.0,
                                           double ppx = 0, double ppy = 0, double k1 = 0.0)
-                : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1}) {}
+                : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1}) {}
 
         ~PinholeIntrinsicRadialK1() override = default;
 
@@ -139,7 +139,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("disto_k1", params_));
+            ar(cereal::make_nvp("disto_k1", params));
         }
 
         /**
@@ -149,7 +149,7 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("disto_k1", params_));
+            ar(cereal::make_nvp("disto_k1", params));
         }
 
         /**
@@ -179,7 +179,7 @@ namespace ns_veta {
     protected:
         // Center of distortion is applied by the Intrinsics class
         /// K1, K2, K3
-        std::vector<double> params_;
+        std::vector<double> params;
 
     public:
 
@@ -197,7 +197,7 @@ namespace ns_veta {
         explicit PinholeIntrinsicRadialK3(int w = 0, int h = 0,
                                           double focal = 0.0, double ppx = 0, double ppy = 0,
                                           double k1 = 0.0, double k2 = 0.0, double k3 = 0.0)
-                : PinholeIntrinsic(w, h, focal, ppx, ppy), params_({k1, k2, k3}) {}
+                : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1, k2, k3}) {}
 
         ~PinholeIntrinsicRadialK3() override = default;
 
@@ -269,7 +269,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("disto_k3", params_));
+            ar(cereal::make_nvp("disto_k3", params));
         }
 
         /**
@@ -279,7 +279,7 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("disto_k3", params_));
+            ar(cereal::make_nvp("disto_k3", params));
         }
 
         /**

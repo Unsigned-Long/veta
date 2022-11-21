@@ -24,13 +24,13 @@ namespace ns_veta {
     }
 
     Vec2d IntrinsicSpherical::CamToImg(const Vec2d &p) const {
-        const double size(std::max(w(), h()));
-        return {p.x() * size + w() / 2.0, p.y() * size + h() / 2.0};
+        const double size(std::max(Width(), Height()));
+        return {p.x() * size + Width() / 2.0, p.y() * size + Height() / 2.0};
     }
 
     Vec2d IntrinsicSpherical::ImgToCam(const Vec2d &p) const {
-        const double size(std::max(w(), h()));
-        return {(p.x() - w() / 2.0) / size, (p.y() - h() / 2.0) / size};
+        const double size(std::max(Width(), Height()));
+        return {(p.x() - Width() / 2.0) / size, (p.y() - Height() / 2.0) / size};
     }
 
     Mat3Xd IntrinsicSpherical::operator()(const Mat2Xd &points) const {
@@ -63,7 +63,9 @@ namespace ns_veta {
 
     Vec2d IntrinsicSpherical::GetDistoPixel(const Vec2d &p) const { return p; }
 
-    double IntrinsicSpherical::ImagePlaneToCameraPlaneError(double value) const { return value / std::max(w_, h_); }
+    double IntrinsicSpherical::ImagePlaneToCameraPlaneError(double value) const {
+        return value / std::max(width, height);
+    }
 
     Mat34 IntrinsicSpherical::GetProjectiveEquivalent(const Pose &pose) const {
         return HStack(pose.Rotation(), pose.Translation());

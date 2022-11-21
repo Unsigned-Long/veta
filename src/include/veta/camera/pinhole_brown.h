@@ -19,7 +19,7 @@ namespace ns_veta {
     protected:
 
         // Center of distortion is applied by the Intrinsics class
-        std::vector<double> params_; // K1, K2, K3, T1, T2
+        std::vector<double> params; // K1, K2, K3, T1, T2
 
     public:
 
@@ -112,7 +112,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("disto_t2", params_));
+            ar(cereal::make_nvp("disto_t2", params));
         }
 
         /**
@@ -122,7 +122,7 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("disto_t2", params_));
+            ar(cereal::make_nvp("disto_t2", params));
         }
 
         /**

@@ -23,7 +23,7 @@ namespace ns_veta {
     * @enum Eintrinsic List of usable camera Intrinsics
     * @var PINHOLE_CAMERA
     *   Pinhole camera is an ideal pinhole camera with 3x3 intrinsics matrix : \n
-    *      \f$ K=\begin{pmatrix} f & 0 & u_0 \\ 0 & f & v_0 \\ 0 & 0 & 1 \end{pmatrix} \f$
+    *      \f$ KMat=\begin{pmatrix} f & 0 & u_0 \\ 0 & f & v_0 \\ 0 & 0 & 1 \end{pmatrix} \f$
     * @var PINHOLE_CAMERA_RADIA_K1
     *   Same as PINHOLE_CAMERA but before projection, pixel are distorted using radial distortion using one parameter \f$k_1\f$ \n
     *    Assuming input pixel is \f$X\f$, distorted pixel \f$X_d\f$ is given by the relation : \n
@@ -117,16 +117,16 @@ namespace ns_veta {
     */
     struct IntrinsicBase : public Clonable<IntrinsicBase> {
         // Width of image
-        unsigned int w_;
+        unsigned int width;
         // Height of image
-        unsigned int h_;
+        unsigned int height;
 
         /**
         * @brief Constructor
         * @param w Width of the image
         * @param h Height of the image
         */
-        explicit IntrinsicBase(unsigned int w = 0, unsigned int h = 0) : w_(w), h_(h) {}
+        explicit IntrinsicBase(unsigned int w = 0, unsigned int h = 0) : width(w), height(h) {}
 
         /**
         * @brief Destructor
@@ -137,13 +137,13 @@ namespace ns_veta {
         * @brief Get width of the image
         * @return width of the image
         */
-        [[nodiscard]] unsigned int w() const;
+        [[nodiscard]] unsigned int Width() const;
 
         /**
         * @brief Get height of the image
         * @return height of the image
         */
-        [[nodiscard]] unsigned int h() const;
+        [[nodiscard]] unsigned int Height() const;
 
         /**
         * @brief Compute projection of a 3D point into the image plane
@@ -267,8 +267,8 @@ namespace ns_veta {
         */
         template<class Archive>
         void save(Archive &ar) const {
-            ar(cereal::make_nvp("width", w_));
-            ar(cereal::make_nvp("height", h_));
+            ar(cereal::make_nvp("width", width));
+            ar(cereal::make_nvp("height", height));
         }
 
         /**
@@ -277,8 +277,8 @@ namespace ns_veta {
         */
         template<class Archive>
         void load(Archive &ar) {
-            ar(cereal::make_nvp("width", w_));
-            ar(cereal::make_nvp("height", h_));
+            ar(cereal::make_nvp("width", width));
+            ar(cereal::make_nvp("height", height));
         }
 
         /**
