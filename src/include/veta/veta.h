@@ -28,6 +28,60 @@ namespace ns_veta {
     // Generic SfM data container
     // Store structure and camera properties:
     struct Veta {
+    public:
+        enum Parts : int {
+            /**
+             * @brief options
+             */
+            NONE = 1 << 0,
+            VIEWS = 1 << 1,
+            EXTRINSICS = 1 << 2,
+            INTRINSICS = 1 << 3,
+            STRUCTURE = 1 << 4,
+            ALL = VIEWS | EXTRINSICS | INTRINSICS | STRUCTURE
+        };
+
+        static bool IsPartsWith(int desired, int curParts) {
+            return (desired == (desired & curParts));
+        }
+
+        /**
+         * @brief override operator '<<' for type 'Parts'
+         */
+        friend std::ostream &operator<<(std::ostream &os, const Parts &curParts) {
+            std::stringstream stream;
+            int count = 0;
+            if (IsPartsWith(VIEWS, curParts)) {
+                stream << "VIEWS";
+                ++count;
+            }
+            if (IsPartsWith(EXTRINSICS, curParts)) {
+                stream << " | EXTRINSICS";
+                ++count;
+            }
+            if (IsPartsWith(INTRINSICS, curParts)) {
+                stream << " | INTRINSICS";
+                ++count;
+            }
+            if (IsPartsWith(STRUCTURE, curParts)) {
+                stream << " | STRUCTURE";
+                ++count;
+            }
+            if (count == 0) {
+                os << "NONE";
+            } else if (count == 4) {
+                os << "ALL";
+            } else {
+                std::string str = stream.str();
+                if (str.at(1) == '|') {
+                    str = str.substr(3, str.size() - 3);
+                }
+                os << str;
+            }
+            return os;
+        };
+
+    public:
 
         /// Considered views
         Views views;
@@ -56,27 +110,9 @@ namespace ns_veta {
         Pose GetPoseOrDie(const View *view) const;
     };
 
-    enum EVeta {
-        // Note: Use power of two values in order to use bitwise operators.
-        VIEWS = 1,
-        EXTRINSICS = 2,
-        INTRINSICS = 4,
-        STRUCTURE = 8,
-        CONTROL_POINTS = 16,
-        ALL = VIEWS | EXTRINSICS | INTRINSICS | STRUCTURE | CONTROL_POINTS
-    };
-
-
     template<typename archiveType>
-    bool Load_Cereal(Veta &data, const std::string &filename, EVeta flags_part) {
+    bool Load_Cereal(Veta &data, const std::string &filename, Veta::Parts flag) {
         const bool bBinary = extension_part(filename) == "bin";
-
-        // List which part of the file must be considered
-        const bool b_views = (flags_part & VIEWS) == VIEWS;
-        const bool b_intrinsics = (flags_part & INTRINSICS) == INTRINSICS;
-        const bool b_extrinsics = (flags_part & EXTRINSICS) == EXTRINSICS;
-        const bool b_structure = (flags_part & STRUCTURE) == STRUCTURE;
-        const bool b_control_point = (flags_part & CONTROL_POINTS) == CONTROL_POINTS;
 
         //Create the stream and check it is ok
         std::ifstream stream(filename, std::ios::binary | std::ios::in);
@@ -88,9 +124,9 @@ namespace ns_veta {
             archiveType archive(stream);
 
             std::string version;
-            archive(cereal::make_nvp("sfm_data_version", version));
+            archive(cereal::make_nvp("veta_version", version));
 
-            if (b_views) {
+            if (Veta::IsPartsWith(Veta::VIEWS, flag)) {
                 archive(cereal::make_nvp("views", data.views));
             } else if (bBinary) {
                 // Binary file requires to read all the member,
@@ -98,7 +134,7 @@ namespace ns_veta {
                 Views views;
                 archive(cereal::make_nvp("views", views));
             }
-            if (b_intrinsics) {
+            if (Veta::IsPartsWith(Veta::INTRINSICS, flag)) {
                 archive(cereal::make_nvp("intrinsics", data.intrinsics));
             } else if (bBinary) {
                 // Binary file requires to read all the member,
@@ -107,7 +143,7 @@ namespace ns_veta {
                 archive(cereal::make_nvp("intrinsics", intrinsics));
             }
 
-            if (b_extrinsics)
+            if (Veta::IsPartsWith(Veta::EXTRINSICS, flag))
                 archive(cereal::make_nvp("extrinsics", data.poses));
             else if (bBinary) {
                 // Binary file requires to read all the member,
@@ -116,7 +152,7 @@ namespace ns_veta {
                 archive(cereal::make_nvp("extrinsics", poses));
             }
 
-            if (b_structure)
+            if (Veta::IsPartsWith(Veta::STRUCTURE, flag))
                 archive(cereal::make_nvp("structure", data.structure));
             else if (bBinary) {
                 // Binary file requires to read all the member,
@@ -135,13 +171,7 @@ namespace ns_veta {
     }
 
     template<typename archiveType>
-    bool Save_Cereal(const Veta &data, const std::string &filename, EVeta flags_part) {
-        // List which part of the file must be considered
-        const bool b_views = (flags_part & VIEWS) == VIEWS;
-        const bool b_intrinsics = (flags_part & INTRINSICS) == INTRINSICS;
-        const bool b_extrinsics = (flags_part & EXTRINSICS) == EXTRINSICS;
-        const bool b_structure = (flags_part & STRUCTURE) == STRUCTURE;
-        const bool b_control_point = (flags_part & CONTROL_POINTS) == CONTROL_POINTS;
+    bool Save_Cereal(const Veta &data, const std::string &filename, Veta::Parts flag) {
 
         //Create the stream and check it is ok
         std::ofstream stream(filename.c_str(), std::ios::binary | std::ios::out);
@@ -152,26 +182,26 @@ namespace ns_veta {
         // Data serialization
         {
             archiveType archive(stream);
-            const std::string version = "0.3";
-            archive(cereal::make_nvp("sfm_data_version", version));
+            const std::string version = "0.1";
+            archive(cereal::make_nvp("veta_version", version));
 
-            if (b_views)
+            if (Veta::IsPartsWith(Veta::VIEWS, flag))
                 archive(cereal::make_nvp("views", data.views));
             else
                 archive(cereal::make_nvp("views", Views()));
 
-            if (b_intrinsics)
+            if (Veta::IsPartsWith(Veta::INTRINSICS, flag))
                 archive(cereal::make_nvp("intrinsics", data.intrinsics));
             else
                 archive(cereal::make_nvp("intrinsics", Intrinsics()));
 
-            if (b_extrinsics)
+            if (Veta::IsPartsWith(Veta::EXTRINSICS, flag))
                 archive(cereal::make_nvp("extrinsics", data.poses));
             else
                 archive(cereal::make_nvp("extrinsics", Poses()));
 
             // Structure -> See for export in another file
-            if (b_structure)
+            if (Veta::IsPartsWith(Veta::STRUCTURE, flag))
                 archive(cereal::make_nvp("structure", data.structure));
             else
                 archive(cereal::make_nvp("structure", Landmarks()));
@@ -181,37 +211,37 @@ namespace ns_veta {
     }
 
     template bool
-    Load_Cereal<cereal::BinaryInputArchive>(Veta &data, const std::string &filename, EVeta flags_part);
+    Load_Cereal<cereal::BinaryInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Load_Cereal<cereal::PortableBinaryInputArchive>(Veta &data, const std::string &filename, EVeta flags_part);
+    Load_Cereal<cereal::PortableBinaryInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Load_Cereal<cereal::JSONInputArchive>(Veta &data, const std::string &filename, EVeta flags_part);
+    Load_Cereal<cereal::JSONInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Load_Cereal<cereal::XMLInputArchive>(Veta &data, const std::string &filename, EVeta flags_part);
+    Load_Cereal<cereal::XMLInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::BinaryOutputArchive>(const Veta &data, const std::string &filename, EVeta flags_part);
+    Save_Cereal<cereal::BinaryOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::PortableBinaryOutputArchive>(const Veta &data, const std::string &filename, EVeta flags_part);
+    Save_Cereal<cereal::PortableBinaryOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::JSONOutputArchive>(const Veta &data, const std::string &filename, EVeta flags_part);
+    Save_Cereal<cereal::JSONOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::XMLOutputArchive>(const Veta &data, const std::string &filename, EVeta flags_part);
+    Save_Cereal<cereal::XMLOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     ///Check that each pose have a valid intrinsic and pose id in the existing View ids
-    static bool ValidIds(const Veta &sfm_data, EVeta flags_part);
+    bool ValidIds(const Veta &veta, Veta::Parts flag);
 
     /// Load SfM_Data SfM scene from a file
-    static bool Load(Veta &sfm_data, const std::string &filename, EVeta flags_part);
+    bool Load(Veta &veta, const std::string &filename, Veta::Parts flag);
 
     // Save SfM_Data SfM scene to a file
-    static bool Save(const Veta &sfm_data, const std::string &filename, EVeta flags_part);
+    bool Save(const Veta &veta, const std::string &filename, Veta::Parts flag);
 
 
 }
