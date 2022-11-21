@@ -16,7 +16,7 @@ namespace ns_veta {
 
     protected:
 
-        /// center of distortion is applied by the Intrinsics class
+        /// Center of distortion is applied by the Intrinsics class
         std::vector<double> params_; // K1, K2, K3, K4
 
 
@@ -57,14 +57,14 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d AddDisto(const Vec2d &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d RemoveDisto(const Vec2d &p) const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
@@ -92,14 +92,14 @@ namespace ns_veta {
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetUndistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetDistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Serialization out

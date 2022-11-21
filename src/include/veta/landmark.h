@@ -12,9 +12,9 @@ namespace ns_veta {
     struct Observation {
         Observation() : id_feat(UndefinedIndexT) {}
 
-        Observation(Vec2 p, IndexT idFeat) : x(std::move(p)), id_feat(idFeat) {}
+        Observation(Vec2d p, IndexT idFeat) : x(std::move(p)), id_feat(idFeat) {}
 
-        Vec2 x;
+        Vec2d x;
         IndexT id_feat;
 
         // Serialization
@@ -31,15 +31,15 @@ namespace ns_veta {
             ar(cereal::make_nvp("id_feat", id_feat));
             std::vector<double> p(2);
             ar(cereal::make_nvp("x", p));
-            x = Eigen::Map<const Vec2>(&p[0]);
+            x = Eigen::Map<const Vec2d>(&p[0]);
         }
     };
 
     // Observations are indexed by their View_id
-    using Observations = Hash_Map<IndexT, Observation>;
+    using Observations = HashMap<IndexT, Observation>;
 
     struct Landmark {
-        Vec3 X;
+        Vec3d X;
         Observations obs;
 
         // Serialization
@@ -55,7 +55,7 @@ namespace ns_veta {
         void load(Archive &ar) {
             std::vector<double> point(3);
             ar(cereal::make_nvp("X", point));
-            X = Eigen::Map<const Vec3>(&point[0]);
+            X = Eigen::Map<const Vec3d>(&point[0]);
             ar(cereal::make_nvp("observations", obs));
         }
     };

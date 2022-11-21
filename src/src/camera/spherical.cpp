@@ -23,20 +23,20 @@ namespace ns_veta {
         return {};
     }
 
-    Vec2 IntrinsicSpherical::CamToImg(const Vec2 &p) const {
+    Vec2d IntrinsicSpherical::CamToImg(const Vec2d &p) const {
         const double size(std::max(w(), h()));
         return {p.x() * size + w() / 2.0, p.y() * size + h() / 2.0};
     }
 
-    Vec2 IntrinsicSpherical::ImgToCam(const Vec2 &p) const {
+    Vec2d IntrinsicSpherical::ImgToCam(const Vec2d &p) const {
         const double size(std::max(w(), h()));
         return {(p.x() - w() / 2.0) / size, (p.y() - h() / 2.0) / size};
     }
 
-    Mat3X IntrinsicSpherical::operator()(const Mat2X &points) const {
-        Mat3X bearing(3, points.cols());
-        for (Mat2X::Index i(0); i < points.cols(); ++i) {
-            const Vec2 uv = ImgToCam(points.col(i));
+    Mat3Xd IntrinsicSpherical::operator()(const Mat2Xd &points) const {
+        Mat3Xd bearing(3, points.cols());
+        for (Mat2Xd::Index i(0); i < points.cols(); ++i) {
+            const Vec2d uv = ImgToCam(points.col(i));
 
             const double lon = uv.x() * 2 * M_PI;
             const double lat = -uv.y() * 2 * M_PI;
@@ -46,7 +46,7 @@ namespace ns_veta {
         return bearing;
     }
 
-    Vec2 IntrinsicSpherical::Project(const Vec3 &X, bool ignore_distortion) const {
+    Vec2d IntrinsicSpherical::Project(const Vec3d &X, bool ignore_distortion) const {
         const double lon = std::atan2(X.x(), X.z()); // Horizontal normalization of the  X-Z component
         const double lat = std::atan2(-X.y(), std::hypot(X.x(), X.z())); // Tilt angle
         // de-normalization (angle to pixel value)
@@ -55,18 +55,18 @@ namespace ns_veta {
 
     bool IntrinsicSpherical::HaveDisto() const { return false; }
 
-    Vec2 IntrinsicSpherical::AddDisto(const Vec2 &p) const { return p; }
+    Vec2d IntrinsicSpherical::AddDisto(const Vec2d &p) const { return p; }
 
-    Vec2 IntrinsicSpherical::RemoveDisto(const Vec2 &p) const { return p; }
+    Vec2d IntrinsicSpherical::RemoveDisto(const Vec2d &p) const { return p; }
 
-    Vec2 IntrinsicSpherical::GetUndistoPixel(const Vec2 &p) const { return p; }
+    Vec2d IntrinsicSpherical::GetUndistoPixel(const Vec2d &p) const { return p; }
 
-    Vec2 IntrinsicSpherical::GetDistoPixel(const Vec2 &p) const { return p; }
+    Vec2d IntrinsicSpherical::GetDistoPixel(const Vec2d &p) const { return p; }
 
     double IntrinsicSpherical::ImagePlaneToCameraPlaneError(double value) const { return value / std::max(w_, h_); }
 
     Mat34 IntrinsicSpherical::GetProjectiveEquivalent(const Pose &pose) const {
-        return HStack(pose.rotation(), pose.translation());
+        return HStack(pose.Rotation(), pose.Translation());
     }
 
     IntrinsicBase *IntrinsicSpherical::Clone() const {

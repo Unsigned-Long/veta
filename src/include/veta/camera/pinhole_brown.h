@@ -18,7 +18,7 @@ namespace ns_veta {
 
     protected:
 
-        // center of distortion is applied by the Intrinsics class
+        // Center of distortion is applied by the Intrinsics class
         std::vector<double> params_; // K1, K2, K3, T1, T2
 
     public:
@@ -58,7 +58,7 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d AddDisto(const Vec2d &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
@@ -68,7 +68,7 @@ namespace ns_veta {
         * Heikkila J (2000) Geometric Camera Calibration Using Circular Control Points.
         * IEEE Trans. Pattern Anal. Mach. Intell., 22:1066-1077
         */
-        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d RemoveDisto(const Vec2d &p) const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
@@ -96,14 +96,14 @@ namespace ns_veta {
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetUndistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetDistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Serialization out
@@ -140,7 +140,7 @@ namespace ns_veta {
         * @param p Input point
         * @return Transformed point
         */
-        static Vec2 DistoFunction(const std::vector<double> &params, const Vec2 &p);
+        static Vec2d DistoFunction(const std::vector<double> &params, const Vec2d &p);
     };
 
 }

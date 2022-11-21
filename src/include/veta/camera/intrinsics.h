@@ -151,7 +151,7 @@ namespace ns_veta {
         * @param X 3D-point to Project on image plane
         * @return Projected (2D) point on image plane
         */
-        [[nodiscard]] virtual Vec2 Project(const Vec3 &X, bool ignore_distortion) const;
+        [[nodiscard]] virtual Vec2d Project(const Vec3d &X, bool ignore_distortion) const;
 
         /**
         * @brief Compute the Residual between the 3D projected point and an image observation
@@ -159,7 +159,7 @@ namespace ns_veta {
         * @param x image observation
         * @brief Relative 2d distance between projected and observed points
         */
-        [[nodiscard]] Vec2 Residual(const Vec3 &X, const Vec2 &x, bool ignore_distortion = false) const;
+        [[nodiscard]] Vec2d Residual(const Vec3d &X, const Vec2d &x, bool ignore_distortion = false) const;
 
         // ---------------
         // Virtual members
@@ -196,21 +196,21 @@ namespace ns_veta {
         * @brief Get bearing vectors from image coordinates
         * @return bearing vectors
         */
-        virtual Mat3X operator()(const Mat2X &p) const = 0;
+        virtual Mat3Xd operator()(const Mat2Xd &p) const = 0;
 
         /**
         * @brief Transform a point from the camera plane to the image plane
         * @param p Camera plane point
         * @return Point on image plane
         */
-        [[nodiscard]] virtual Vec2 CamToImg(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2d CamToImg(const Vec2d &p) const = 0;
 
         /**
         * @brief Transform a point from the image plane to the camera plane
         * @param p Image plane point
         * @return camera plane point
         */
-        [[nodiscard]] virtual Vec2 ImgToCam(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2d ImgToCam(const Vec2d &p) const = 0;
 
         /**
         * @brief Does the camera model handle a distortion field?
@@ -224,28 +224,28 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] virtual Vec2 AddDisto(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2d AddDisto(const Vec2d &p) const = 0;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] virtual Vec2 RemoveDisto(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2d RemoveDisto(const Vec2d &p) const = 0;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] virtual Vec2 GetUndistoPixel(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2d GetUndistoPixel(const Vec2d &p) const = 0;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] virtual Vec2 GetDistoPixel(const Vec2 &p) const = 0;
+        [[nodiscard]] virtual Vec2d GetDistoPixel(const Vec2d &p) const = 0;
 
         /**
         * @brief Normalize a given unit pixel error to the camera plane

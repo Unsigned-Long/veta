@@ -50,7 +50,7 @@ namespace ns_veta {
         using class_type = PinholeIntrinsicRadialK1;
 
     protected:
-        /// center of distortion is applied by the Intrinsics class
+        /// Center of distortion is applied by the Intrinsics class
         std::vector<double> params_; // K1
 
     public:
@@ -88,14 +88,14 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d AddDisto(const Vec2d &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d RemoveDisto(const Vec2d &p) const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
@@ -123,14 +123,14 @@ namespace ns_veta {
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetUndistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetDistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Serialization out
@@ -163,7 +163,7 @@ namespace ns_veta {
         /**
         * @brief Functor to solve Square(disto(radius(p'))) = r^2
         * @param params List of parameters (only the first one is used)
-        * @param r2 square distance (relative to center)
+        * @param r2 square distance (relative to Center)
         * @return distance
         */
         static inline double DistoFunctor(const std::vector<double> &params, double r2);
@@ -177,7 +177,7 @@ namespace ns_veta {
         using class_type = PinholeIntrinsicRadialK3;
 
     protected:
-        // center of distortion is applied by the Intrinsics class
+        // Center of distortion is applied by the Intrinsics class
         /// K1, K2, K3
         std::vector<double> params_;
 
@@ -218,14 +218,14 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d AddDisto(const Vec2d &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d RemoveDisto(const Vec2d &p) const override;
 
         /**
         * @brief Data wrapper for non linear optimization (get data)
@@ -253,14 +253,14 @@ namespace ns_veta {
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetUndistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetDistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Serialization out
@@ -294,7 +294,7 @@ namespace ns_veta {
         /**
         * @brief Functor to solve Square(disto(radius(p'))) = r^2
         * @param params List of the radial factors {k1, k2, k3}
-        * @param r2 square distance (relative to center)
+        * @param r2 square distance (relative to Center)
         * @return distance
         */
         static inline double DistoFunctor(const std::vector<double> &params, double r2);

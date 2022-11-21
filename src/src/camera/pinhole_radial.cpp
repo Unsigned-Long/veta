@@ -18,7 +18,7 @@ namespace ns_veta {
         return true;
     }
 
-    Vec2 PinholeIntrinsicRadialK1::AddDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK1::AddDisto(const Vec2d &p) const {
         const double k1 = params_[0];
 
         const double r2 = p(0) * p(0) + p(1) * p(1);
@@ -27,7 +27,7 @@ namespace ns_veta {
         return (p * r_coeff);
     }
 
-    Vec2 PinholeIntrinsicRadialK1::RemoveDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK1::RemoveDisto(const Vec2d &p) const {
         // Compute the radius from which the point p comes from thanks to a bisection
         // Minimize disto(radius(p')^2) == actual Squared(radius(p))
 
@@ -72,11 +72,11 @@ namespace ns_veta {
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsicRadialK1::GetUndistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK1::GetUndistoPixel(const Vec2d &p) const {
         return CamToImg(RemoveDisto(ImgToCam(p)));
     }
 
-    Vec2 PinholeIntrinsicRadialK1::GetDistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK1::GetDistoPixel(const Vec2d &p) const {
         return CamToImg(AddDisto(ImgToCam(p)));
     }
 
@@ -101,7 +101,7 @@ namespace ns_veta {
         return true;
     }
 
-    Vec2 PinholeIntrinsicRadialK3::AddDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK3::AddDisto(const Vec2d &p) const {
         const double &k1 = params_[0], &k2 = params_[1], &k3 = params_[2];
 
         const double r2 = p(0) * p(0) + p(1) * p(1);
@@ -112,7 +112,7 @@ namespace ns_veta {
         return (p * r_coeff);
     }
 
-    Vec2 PinholeIntrinsicRadialK3::RemoveDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK3::RemoveDisto(const Vec2d &p) const {
         // Compute the radius from which the point p comes from thanks to a bisection
         // Minimize disto(radius(p')^2) == actual Squared(radius(p))
 
@@ -158,11 +158,11 @@ namespace ns_veta {
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsicRadialK3::GetUndistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK3::GetUndistoPixel(const Vec2d &p) const {
         return CamToImg(RemoveDisto(ImgToCam(p)));
     }
 
-    Vec2 PinholeIntrinsicRadialK3::GetDistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicRadialK3::GetDistoPixel(const Vec2d &p) const {
         return CamToImg(AddDisto(ImgToCam(p)));
     }
 

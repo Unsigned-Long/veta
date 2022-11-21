@@ -18,7 +18,7 @@ namespace ns_veta {
         return true;
     }
 
-    Vec2 PinholeIntrinsicFisheye::AddDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicFisheye::AddDisto(const Vec2d &p) const {
         const double eps = 1e-8;
         const double k1 = params_[0], k2 = params_[1], k3 = params_[2], k4 = params_[3];
         const double r = std::hypot(p(0), p(1));
@@ -38,7 +38,7 @@ namespace ns_veta {
         return p * cdist;
     }
 
-    Vec2 PinholeIntrinsicFisheye::RemoveDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicFisheye::RemoveDisto(const Vec2d &p) const {
         const double eps = 1e-8;
         double scale = 1.0;
         const double theta_dist = std::hypot(p(0), p(1));
@@ -95,11 +95,11 @@ namespace ns_veta {
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsicFisheye::GetUndistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicFisheye::GetUndistoPixel(const Vec2d &p) const {
         return CamToImg(RemoveDisto(ImgToCam(p)));
     }
 
-    Vec2 PinholeIntrinsicFisheye::GetDistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicFisheye::GetDistoPixel(const Vec2d &p) const {
         return CamToImg(AddDisto(ImgToCam(p)));
     }
 

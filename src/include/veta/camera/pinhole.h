@@ -23,10 +23,10 @@ namespace ns_veta {
     protected:
 
         /// Intrinsic matrix : Focal & principal point are embed into the calibration matrix K
-        Mat3 K_;
+        Mat3d K_;
 
         /// Inverse of intrinsic matrix
-        Mat3 KInv_;
+        Mat3d KInv_;
 
     public:
 
@@ -47,7 +47,7 @@ namespace ns_veta {
         * @param h Height of the image plane
         * @param K Intrinsic Matrix (3x3) {f,0,ppx; 0,f,ppy; 0,0,1}
         */
-        PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3 &K);
+        PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3d &K);
 
         /**
         * @brief Destructor
@@ -64,13 +64,13 @@ namespace ns_veta {
         * @brief Get the intrinsic matrix
         * @return 3x3 intrinsic matrix
         */
-        [[nodiscard]] const Mat3 &K() const;
+        [[nodiscard]] const Mat3d &K() const;
 
         /**
-        * @brief Get the inverse of the intrinsic matrix
+        * @brief Get the Inverse of the intrinsic matrix
         * @return Inverse of intrinsic matrix
         */
-        [[nodiscard]] const Mat3 &KInv() const;
+        [[nodiscard]] const Mat3d &KInv() const;
 
 
         /**
@@ -83,27 +83,27 @@ namespace ns_veta {
         * @brief Get principal point of the camera
         * @return Principal point of the camera
         */
-        [[nodiscard]] inline Vec2 PrincipalPoint() const;
+        [[nodiscard]] inline Vec2d PrincipalPoint() const;
 
         /**
         * @brief Get bearing vectors from image coordinates
         * @return bearing vectors
         */
-        Mat3X operator()(const Mat2X &points) const override;
+        Mat3Xd operator()(const Mat2Xd &points) const override;
 
         /**
         * @brief Transform a point from the camera plane to the image plane
         * @param p Camera plane point
         * @return Point on image plane
         */
-        [[nodiscard]] Vec2 CamToImg(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d CamToImg(const Vec2d &p) const override;
 
         /**
         * @brief Transform a point from the image plane to the camera plane
         * @param p Image plane point
         * @return camera plane point
         */
-        [[nodiscard]] Vec2 ImgToCam(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d ImgToCam(const Vec2d &p) const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
@@ -116,14 +116,14 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return point with distortion
         */
-        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d AddDisto(const Vec2d &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d RemoveDisto(const Vec2d &p) const override;
 
         /**
         * @brief Normalize a given unit pixel error to the camera plane
@@ -167,14 +167,14 @@ namespace ns_veta {
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetUndistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetDistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Serialization out

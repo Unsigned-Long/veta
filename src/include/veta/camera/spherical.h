@@ -59,20 +59,20 @@ namespace ns_veta {
         * @param p Camera plane point
         * @return Point on image plane
         */
-        [[nodiscard]] Vec2 CamToImg(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d CamToImg(const Vec2d &p) const override;
 
         /**
         * @brief Transform a point from the image plane to the camera plane
         * @param p Image plane point
         * @return camera plane point
         */
-        [[nodiscard]] Vec2 ImgToCam(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d ImgToCam(const Vec2d &p) const override;
 
         /**
         * @brief Get bearing vectors from image coordinates
         * @return bearing vectors
         */
-        Mat3X operator()(const Mat2X &points) const override;
+        Mat3Xd operator()(const Mat2Xd &points) const override;
 
         /**
         * @brief Compute projection of a 3D point into the image plane
@@ -80,7 +80,7 @@ namespace ns_veta {
         * @param pt3D 3D-point to Project on image plane
         * @return Projected (2D) point on image plane
         */
-        [[nodiscard]] Vec2 Project(const Vec3 &X, bool ignore_distortion) const override;
+        [[nodiscard]] Vec2d Project(const Vec3d &X, bool ignore_distortion) const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
@@ -93,28 +93,28 @@ namespace ns_veta {
         * @param p Point before distortion computation (in normalized camera frame)
         * @return the initial point p (spherical camera does not have distortion field)
         */
-        [[nodiscard]] Vec2 AddDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d AddDisto(const Vec2d &p) const override;
 
         /**
         * @brief Remove the distortion to a camera point (that is in normalized camera frame)
         * @param p Point with distortion
         * @return the initial point p (spherical camera does not have distortion field)
         */
-        [[nodiscard]] Vec2 RemoveDisto(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d RemoveDisto(const Vec2d &p) const override;
 
         /**
         * @brief Return the un-distorted pixel (with removed distortion)
         * @param p Input distorted pixel
         * @return Point without distortion
         */
-        [[nodiscard]] Vec2 GetUndistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetUndistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Return the distorted pixel (with added distortion)
         * @param p Input pixel
         * @return Distorted pixel
         */
-        [[nodiscard]] Vec2 GetDistoPixel(const Vec2 &p) const override;
+        [[nodiscard]] Vec2d GetDistoPixel(const Vec2d &p) const override;
 
         /**
         * @brief Normalize a given unit pixel error to the camera plane

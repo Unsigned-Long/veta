@@ -14,16 +14,16 @@
 namespace ns_veta {
 
     // Define a collection of IntrinsicParameter (indexed by View::id_intrinsic)
-    using Intrinsics = Hash_Map<IndexT, std::shared_ptr<IntrinsicBase>>;
+    using Intrinsics = HashMap<IndexT, std::shared_ptr<IntrinsicBase>>;
 
     // Define a collection of Pose (indexed by View::id_pose)
-    using Poses = Hash_Map<IndexT, Pose>;
+    using Poses = HashMap<IndexT, Pose>;
 
     // Define a collection of View (indexed by View::id_view)
-    using Views = Hash_Map<IndexT, std::shared_ptr<View>>;
+    using Views = HashMap<IndexT, std::shared_ptr<View>>;
 
     // Define a collection of landmarks are indexed by their TrackId
-    using Landmarks = Hash_Map<IndexT, Landmark>;
+    using Landmarks = HashMap<IndexT, Landmark>;
 
     // Generic SfM data container
     // Store structure and camera properties:
@@ -111,8 +111,8 @@ namespace ns_veta {
     };
 
     template<typename archiveType>
-    bool Load_Cereal(Veta &data, const std::string &filename, Veta::Parts flag) {
-        const bool bBinary = extension_part(filename) == "bin";
+    bool LoadCereal(Veta &data, const std::string &filename, Veta::Parts flag) {
+        const bool bBinary = ExtensionPart(filename) == "bin";
 
         //Create the stream and check it is ok
         std::ifstream stream(filename, std::ios::binary | std::ios::in);
@@ -171,7 +171,7 @@ namespace ns_veta {
     }
 
     template<typename archiveType>
-    bool Save_Cereal(const Veta &data, const std::string &filename, Veta::Parts flag) {
+    bool SaveCereal(const Veta &data, const std::string &filename, Veta::Parts flag) {
 
         //Create the stream and check it is ok
         std::ofstream stream(filename.c_str(), std::ios::binary | std::ios::out);
@@ -211,28 +211,28 @@ namespace ns_veta {
     }
 
     template bool
-    Load_Cereal<cereal::BinaryInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
+    LoadCereal<cereal::BinaryInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Load_Cereal<cereal::PortableBinaryInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
+    LoadCereal<cereal::PortableBinaryInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Load_Cereal<cereal::JSONInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
+    LoadCereal<cereal::JSONInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Load_Cereal<cereal::XMLInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
+    LoadCereal<cereal::XMLInputArchive>(Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::BinaryOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
+    SaveCereal<cereal::BinaryOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::PortableBinaryOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
+    SaveCereal<cereal::PortableBinaryOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::JSONOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
+    SaveCereal<cereal::JSONOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     template bool
-    Save_Cereal<cereal::XMLOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
+    SaveCereal<cereal::XMLOutputArchive>(const Veta &data, const std::string &filename, Veta::Parts flag);
 
     ///Check that each pose have a valid intrinsic and pose id in the existing View ids
     bool ValidIds(const Veta &veta, Veta::Parts flag);

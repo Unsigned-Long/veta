@@ -20,7 +20,7 @@
 
 namespace ns_veta {
     template<class T>
-    inline void hash_combine(std::size_t &seed, const T &v) {
+    inline void HashCombine(std::size_t &seed, const T &v) {
         std::hash<T> hasher;
         seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
@@ -39,7 +39,7 @@ namespace ns_veta {
 #define SUM_OR_DYNAMIC(x, y) (x==Eigen::Dynamic||y==Eigen::Dynamic)?Eigen::Dynamic:(x+y)
 
     template<typename Derived1, typename Derived2>
-    struct hstack_return {
+    struct HStackReturn {
         using Scalar = typename Derived1::Scalar;
         enum {
             RowsAtCompileTime = Derived1::RowsAtCompileTime,
@@ -57,43 +57,43 @@ namespace ns_veta {
     };
 
     template<typename Derived1, typename Derived2>
-    typename hstack_return<Derived1, Derived2>::type
+    typename HStackReturn<Derived1, Derived2>::type
     HStack(const Eigen::MatrixBase<Derived1> &lhs, const Eigen::MatrixBase<Derived2> &rhs) {
-        typename hstack_return<Derived1, Derived2>::type res;
+        typename HStackReturn<Derived1, Derived2>::type res;
         res.resize(lhs.rows(), lhs.cols() + rhs.cols());
         res << lhs, rhs;
         return res;
     }
 
 #ifdef MSWINDOWS
-    static const char* separator_set = "\\/";
-  static const char preferred_separator = '\\';
+    static const char* separatorSet = "\\/";
+    static const char preferredSeparator = '\\';
 #else
-    static const char *separator_set = "/";
-    static const char preferred_separator = '/';
+    static const char *separatorSet = "/";
+    static const char preferredSeparator = '/';
 #endif
 
-    inline bool is_separator(char ch) {
-        for (int i = 0; separator_set[i]; i++) {
-            if (separator_set[i] == ch)
+    inline bool IsSeparator(char ch) {
+        for (int i = 0; separatorSet[i]; i++) {
+            if (separatorSet[i] == ch)
                 return true;
         }
         return false;
     }
 
-    inline std::string filename_part(const std::string &spec) {
-        // scan back through filename until a preferred_separator is found and remove prefix;
-        // if there is no preferred_separator then remove nothing, i.e. the whole filespec is filename
+    inline std::string FilenamePart(const std::string &spec) {
+        // scan back through filename until a preferredSeparator is found and remove prefix;
+        // if there is no preferredSeparator then remove nothing, i.e. the whole filespec is filename
         size_t i = spec.size();
         while (i--) {
-            if (is_separator(spec[i]))
+            if (IsSeparator(spec[i]))
                 return spec.substr(i + 1, spec.size() - i - 1);
         }
         return spec;
     }
 
-    inline std::string extension_part(const std::string &spec) {
-        std::string fname = filename_part(spec);
+    inline std::string ExtensionPart(const std::string &spec) {
+        std::string fname = FilenamePart(spec);
         // scan back through filename until a '.' is found and remove prefix;
         std::string::size_type i = fname.find_last_of('.');
         // observe Unix convention that a dot at the start of a filename is part of the name, not the extension;

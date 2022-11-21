@@ -6,19 +6,19 @@
 
 namespace ns_veta {
 
-    const Mat3 &Pose::rotation() const {
+    const Mat3d &Pose::Rotation() const {
         return rotation_;
     }
 
-    Mat3 &Pose::rotation() {
+    Mat3d &Pose::Rotation() {
         return rotation_;
     }
 
-    const Vec3 &Pose::center() const {
+    const Vec3d &Pose::Center() const {
         return center_;
     }
 
-    Vec3 &Pose::center() {
+    Vec3d &Pose::Center() {
         return center_;
     }
 
@@ -26,19 +26,19 @@ namespace ns_veta {
         return Pose{rotation_ * P.rotation_, P.center_ + P.rotation_.transpose() * center_};
     }
 
-    Pose Pose::inverse() const {
+    Pose Pose::Inverse() const {
         return Pose{rotation_.transpose(), -(rotation_ * center_)};
     }
 
-    Mat34 Pose::asMatrix() const {
-        return (Mat34() << rotation_, translation()).finished();
+    Mat34 Pose::AsMatrix() const {
+        return (Mat34() << rotation_, Translation()).finished();
     }
 
-    typename Vec3::PlainObject Pose::operator()(const Vec3 &p) const {
+    typename Vec3d::PlainObject Pose::operator()(const Vec3d &p) const {
         return rotation_ * (p - center_);
     }
 
-    Vec3 Pose::translation() const {
+    Vec3d Pose::Translation() const {
         return -(rotation_ * center_);
     }
 

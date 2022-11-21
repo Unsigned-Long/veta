@@ -18,15 +18,15 @@ namespace ns_veta {
         return true;
     }
 
-    Vec2 PinholeIntrinsicBrownT2::AddDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicBrownT2::AddDisto(const Vec2d &p) const {
         return (p + DistoFunction(params_, p));
     }
 
-    Vec2 PinholeIntrinsicBrownT2::RemoveDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicBrownT2::RemoveDisto(const Vec2d &p) const {
         const double epsilon = 1e-10; //criteria to stop the iteration
-        Vec2 p_u = p;
+        Vec2d p_u = p;
 
-        Vec2 d = DistoFunction(params_, p_u);
+        Vec2d d = DistoFunction(params_, p_u);
         while ((p_u + d - p).lpNorm<1>() > epsilon) //manhattan distance between the two points
         {
             p_u = p - d;
@@ -75,11 +75,11 @@ namespace ns_veta {
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsicBrownT2::GetUndistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicBrownT2::GetUndistoPixel(const Vec2d &p) const {
         return CamToImg(RemoveDisto(ImgToCam(p)));
     }
 
-    Vec2 PinholeIntrinsicBrownT2::GetDistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsicBrownT2::GetDistoPixel(const Vec2d &p) const {
         return CamToImg(AddDisto(ImgToCam(p)));
     }
 
@@ -87,7 +87,7 @@ namespace ns_veta {
         return new class_type(*this);
     }
 
-    Vec2 PinholeIntrinsicBrownT2::DistoFunction(const std::vector<double> &params, const Vec2 &p) {
+    Vec2d PinholeIntrinsicBrownT2::DistoFunction(const std::vector<double> &params, const Vec2d &p) {
         const double k1 = params[0], k2 = params[1], k3 = params[2], t1 = params[3], t2 = params[4];
         const double r2 = p(0) * p(0) + p(1) * p(1);
         const double r4 = r2 * r2;

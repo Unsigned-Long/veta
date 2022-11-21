@@ -69,13 +69,13 @@ namespace ns_veta {
 
     bool Load(Veta &veta, const std::string &filename, Veta::Parts flag) {
         bool bStatus;
-        const std::string ext = extension_part(filename);
+        const std::string ext = ExtensionPart(filename);
         if (ext == "json")
-            bStatus = Load_Cereal<cereal::JSONInputArchive>(veta, filename, flag);
+            bStatus = LoadCereal<cereal::JSONInputArchive>(veta, filename, flag);
         else if (ext == "bin")
-            bStatus = Load_Cereal<cereal::PortableBinaryInputArchive>(veta, filename, flag);
+            bStatus = LoadCereal<cereal::PortableBinaryInputArchive>(veta, filename, flag);
         else if (ext == "xml")
-            bStatus = Load_Cereal<cereal::XMLInputArchive>(veta, filename, flag);
+            bStatus = LoadCereal<cereal::XMLInputArchive>(veta, filename, flag);
         else {
             std::cerr << "Unknown veta input format: " << filename;
             return false;
@@ -90,13 +90,13 @@ namespace ns_veta {
     }
 
     bool Save(const Veta &veta, const std::string &filename, Veta::Parts flag) {
-        const std::string ext = extension_part(filename);
+        const std::string ext = ExtensionPart(filename);
         if (ext == "json")
-            return Save_Cereal<cereal::JSONOutputArchive>(veta, filename, flag);
+            return SaveCereal<cereal::JSONOutputArchive>(veta, filename, flag);
         else if (ext == "bin")
-            return Save_Cereal<cereal::PortableBinaryOutputArchive>(veta, filename, flag);
+            return SaveCereal<cereal::PortableBinaryOutputArchive>(veta, filename, flag);
         else if (ext == "xml")
-            return Save_Cereal<cereal::XMLOutputArchive>(veta, filename, flag);
+            return SaveCereal<cereal::XMLOutputArchive>(veta, filename, flag);
         else {
             std::cerr << "Unknown veta export format: " << filename;
         }

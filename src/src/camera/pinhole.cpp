@@ -12,7 +12,7 @@ namespace ns_veta {
         KInv_ = K_.inverse();
     }
 
-    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3 &K) : IntrinsicBase(w, h), K_(K) {
+    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, const Mat3d &K) : IntrinsicBase(w, h), K_(K) {
         K_(0, 0) = K_(1, 1) = (K(0, 0) + K(1, 1)) / 2.0;
         KInv_ = K_.inverse();
     }
@@ -21,11 +21,11 @@ namespace ns_veta {
         return PINHOLE_CAMERA;
     }
 
-    const Mat3 &PinholeIntrinsic::K() const {
+    const Mat3d &PinholeIntrinsic::K() const {
         return K_;
     }
 
-    const Mat3 &PinholeIntrinsic::KInv() const {
+    const Mat3d &PinholeIntrinsic::KInv() const {
         return KInv_;
     }
 
@@ -33,19 +33,19 @@ namespace ns_veta {
         return K_(0, 0);
     }
 
-    Vec2 PinholeIntrinsic::PrincipalPoint() const {
+    Vec2d PinholeIntrinsic::PrincipalPoint() const {
         return {K_(0, 2), K_(1, 2)};
     }
 
-    Mat3X PinholeIntrinsic::operator()(const Mat2X &points) const {
+    Mat3Xd PinholeIntrinsic::operator()(const Mat2Xd &points) const {
         return (KInv_ * points.colwise().homogeneous()).colwise().normalized();
     }
 
-    Vec2 PinholeIntrinsic::CamToImg(const Vec2 &p) const {
+    Vec2d PinholeIntrinsic::CamToImg(const Vec2d &p) const {
         return Focal() * p + PrincipalPoint();
     }
 
-    Vec2 PinholeIntrinsic::ImgToCam(const Vec2 &p) const {
+    Vec2d PinholeIntrinsic::ImgToCam(const Vec2d &p) const {
         return (p - PrincipalPoint()) / Focal();
     }
 
@@ -53,11 +53,11 @@ namespace ns_veta {
         return false;
     }
 
-    Vec2 PinholeIntrinsic::AddDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsic::AddDisto(const Vec2d &p) const {
         return p;
     }
 
-    Vec2 PinholeIntrinsic::RemoveDisto(const Vec2 &p) const {
+    Vec2d PinholeIntrinsic::RemoveDisto(const Vec2d &p) const {
         return p;
     }
 
@@ -66,7 +66,7 @@ namespace ns_veta {
     }
 
     Mat34 PinholeIntrinsic::GetProjectiveEquivalent(const Pose &pose) const {
-        return K_ * (Mat34() << pose.rotation(), pose.translation()).finished();
+        return K_ * (Mat34() << pose.Rotation(), pose.Translation()).finished();
     }
 
     std::vector<double> PinholeIntrinsic::GetParams() const {
@@ -96,11 +96,11 @@ namespace ns_veta {
         return constant_index;
     }
 
-    Vec2 PinholeIntrinsic::GetUndistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsic::GetUndistoPixel(const Vec2d &p) const {
         return p;
     }
 
-    Vec2 PinholeIntrinsic::GetDistoPixel(const Vec2 &p) const {
+    Vec2d PinholeIntrinsic::GetDistoPixel(const Vec2d &p) const {
         return p;
     }
 

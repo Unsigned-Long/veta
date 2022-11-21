@@ -59,13 +59,13 @@ namespace ns_veta {
     using Pair = std::pair<IndexT, IndexT>;
 
     // Set of Pair
-    using Pair_Set = std::set<Pair>;
+    using PairSet = std::set<Pair>;
 
     // Vector of Pair
-    using Pair_Vec = std::vector<Pair>;
+    using PairVec = std::vector<Pair>;
 
     template<typename Key, typename Value>
-    using Hash_Map = std::map<Key, Value, std::less<Key>,
+    using HashMap = std::map<Key, Value, std::less<Key>,
             Eigen::aligned_allocator<std::pair<const Key, Value>>>;
 
     using Eigen::Map;
@@ -74,7 +74,7 @@ namespace ns_veta {
     using EigenDoubleTraits = Eigen::NumTraits<double>;
 
     // 3d vector using double internal format
-    using Vec3 = Eigen::Vector3d;
+    using Vec3d = Eigen::Vector3d;
 
     // 2d vector using int internal format
     using Vec2i = Eigen::Vector2i;
@@ -86,83 +86,83 @@ namespace ns_veta {
     using Vec3f = Eigen::Vector3f;
 
     // 9d vector using double internal format
-    using Vec9 = Eigen::Matrix<double, 9, 1>;
+    using Vec9d = Eigen::Matrix<double, 9, 1>;
 
     // Quaternion type
     using Quaternion = Eigen::Quaternion<double>;
 
     // 3x3 matrix using double internal format
-    using Mat3 = Eigen::Matrix<double, 3, 3>;
+    using Mat3d = Eigen::Matrix<double, 3, 3>;
 
     // 3x4 matrix using double internal format
     using Mat34 = Eigen::Matrix<double, 3, 4>;
 
     // 2d vector using double internal format
-    using Vec2 = Eigen::Vector2d;
+    using Vec2d = Eigen::Vector2d;
 
     // 4d vector using double internal format
-    using Vec4 = Eigen::Vector4d;
+    using Vec4d = Eigen::Vector4d;
 
     // 6d vector using double internal format
-    using Vec6 = Eigen::Matrix<double, 6, 1>;
+    using Vec6d = Eigen::Matrix<double, 6, 1>;
 
     // 4x4 matrix using double internal format
-    using Mat4 = Eigen::Matrix<double, 4, 4>;
+    using Mat4d = Eigen::Matrix<double, 4, 4>;
 
     // generic matrix using unsigned int internal format
-    using Matu = Eigen::Matrix<unsigned int, Eigen::Dynamic, Eigen::Dynamic>;
+    using MatXui = Eigen::Matrix<unsigned int, Eigen::Dynamic, Eigen::Dynamic>;
 
     // 3x3 matrix using double internal format with RowMajor storage
-    using RMat3 = Eigen::Matrix<double, 3, 3, Eigen::RowMajor>;
+    using RMat3d = Eigen::Matrix<double, 3, 3, Eigen::RowMajor>;
 
     // ---------------------------------
     // General purpose Matrix and Vector
     // ---------------------------------
 
     // Unconstrained matrix using double internal format
-    using Mat = Eigen::MatrixXd;
+    using MatXd = Eigen::MatrixXd;
 
     // Unconstrained vector using double internal format
-    using Vec = Eigen::VectorXd;
+    using VecXd = Eigen::VectorXd;
 
     // Unconstrained vector using unsigned int internal format
-    using Vecu = Eigen::Matrix<unsigned int, Eigen::Dynamic, 1>;
+    using VecXui = Eigen::Matrix<unsigned int, Eigen::Dynamic, 1>;
 
     // Unconstrained matrix using float internal format
-    using Matf = Eigen::MatrixXf;
+    using MatXf = Eigen::MatrixXf;
 
     // Unconstrained vector using float internal format
-    using Vecf = Eigen::VectorXf;
+    using VecXf = Eigen::VectorXf;
 
     // 2xN matrix using double internal format
-    using Mat2X = Eigen::Matrix<double, 2, Eigen::Dynamic>;
+    using Mat2Xd = Eigen::Matrix<double, 2, Eigen::Dynamic>;
 
     // 3xN matrix using double internal format
-    using Mat3X = Eigen::Matrix<double, 3, Eigen::Dynamic>;
+    using Mat3Xd = Eigen::Matrix<double, 3, Eigen::Dynamic>;
 
     // 4xN matrix using double internal format
-    using Mat4X = Eigen::Matrix<double, 4, Eigen::Dynamic>;
+    using Mat4Xd = Eigen::Matrix<double, 4, Eigen::Dynamic>;
 
     // Nx9 matrix using double internal format
-    using MatX9 = Eigen::Matrix<double, Eigen::Dynamic, 9>;
+    using MatX9d = Eigen::Matrix<double, Eigen::Dynamic, 9>;
 
     // -------------------------------------------
     // Sparse Matrix (Column major, and row major)
     // -------------------------------------------
 
     // Sparse unconstrained matrix using double internal format
-    using sMat = Eigen::SparseMatrix<double>;
+    using SMat = Eigen::SparseMatrix<double>;
 
     /// Sparse unconstrained matrix using double internal format and Row Major storage
-    using sRMat = Eigen::SparseMatrix<double, Eigen::RowMajor>;
+    using SRMat = Eigen::SparseMatrix<double, Eigen::RowMajor>;
 
 } // namespace ns_veta
 
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec2)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec3)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec4)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec6)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec9)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec2d)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec3d)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec4d)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec6d)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec9d)
 
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec2i)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec2f)
@@ -170,9 +170,9 @@ EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec3f)
 
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Quaternion)
 
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat3)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::RMat3)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat4)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat3d)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::RMat3d)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat4d)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat34)
 
 #endif // VETA_TYPE_DEF_HPP
