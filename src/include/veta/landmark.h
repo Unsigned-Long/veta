@@ -5,6 +5,8 @@
 #ifndef VETA_LANDMARK_H
 #define VETA_LANDMARK_H
 
+#include <utility>
+
 #include "type_def.hpp"
 
 namespace ns_veta {
