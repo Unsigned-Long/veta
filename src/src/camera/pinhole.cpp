@@ -8,9 +8,9 @@
 
 namespace ns_veta {
 
-    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, double focal_length_pix, double ppx,
+    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, double focalLengthPix, double ppx,
                                        double ppy) : IntrinsicBase(w, h) {
-        K << focal_length_pix, 0., ppx, 0., focal_length_pix, ppy, 0., 0., 1.;
+        K << focalLengthPix, 0., ppx, 0., focalLengthPix, ppy, 0., 0., 1.;
         KInv = K.inverse();
     }
 
@@ -109,5 +109,14 @@ namespace ns_veta {
 
     IntrinsicBase *PinholeIntrinsic::Clone() const {
         return new class_type(*this);
+    }
+
+    std::shared_ptr<IntrinsicBase>
+    PinholeIntrinsic::Create(unsigned int w, unsigned int h, double focalLengthPix, double ppx, double ppy) {
+        return std::make_shared<PinholeIntrinsic>(w, h, focalLengthPix, ppx, ppy);
+    }
+
+    std::shared_ptr<IntrinsicBase> PinholeIntrinsic::Create(unsigned int w, unsigned int h, const Mat3d &KMat) {
+        return std::make_shared<PinholeIntrinsic>(w, h, KMat);
     }
 }

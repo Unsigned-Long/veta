@@ -70,6 +70,9 @@ namespace ns_veta {
 
         ~PinholeIntrinsicRadialK1() override = default;
 
+        static std::shared_ptr<IntrinsicBase>
+        Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0, double k1 = 0.0);
+
         /**
         * @brief Tell from which type the embed camera is
         * @retval PINHOLE_CAMERA_RADIA_K1
@@ -105,11 +108,11 @@ namespace ns_veta {
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
-        * @param params List of params used to update this intrinsic
+        * @param paramsVec List of paramsVec used to update this intrinsic
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool UpdateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &paramsVec) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant
@@ -201,6 +204,10 @@ namespace ns_veta {
 
         ~PinholeIntrinsicRadialK3() override = default;
 
+        static std::shared_ptr<IntrinsicBase>
+        Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
+               double k1 = 0.0, double k2 = 0.0, double k3 = 0.0);
+
         /**
         * @brief Tell from which type the embed camera is
         * @retval PINHOLE_CAMERA_RADIA_K3
@@ -235,11 +242,11 @@ namespace ns_veta {
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
-        * @param params List of params used to update this intrinsic
+        * @param paramsVec List of paramsVec used to update this intrinsic
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool UpdateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &paramsVec) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant

@@ -41,6 +41,10 @@ namespace ns_veta {
                                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0,
                                          double t1 = 0.0, double t2 = 0.0);
 
+        static std::shared_ptr<IntrinsicBase>
+        Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
+               double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double t1 = 0.0, double t2 = 0.0);
+
         /**
         * @brief Get type of the intrinsic
         * @retval PINHOLE_CAMERA_BROWN_T2

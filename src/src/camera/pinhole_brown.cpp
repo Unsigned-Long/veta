@@ -97,4 +97,10 @@ namespace ns_veta {
         const double t_y = t1 * (r2 + 2 * p(1) * p(1)) + 2 * t2 * p(0) * p(1);
         return {p(0) * k_diff + t_x, p(1) * k_diff + t_y};
     }
+
+    std::shared_ptr<IntrinsicBase>
+    PinholeIntrinsicBrownT2::Create(int w, int h, double focal, double ppx, double ppy, double k1, double k2, double k3,
+                                    double t1, double t2) {
+        return std::make_shared<PinholeIntrinsicBrownT2>(w, h, focal, ppx, ppy, k1, k2, k3, t1, t2);
+    }
 }

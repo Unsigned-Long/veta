@@ -34,11 +34,11 @@ namespace ns_veta {
         * @brief Constructor
         * @param w Width of the image plane
         * @param h Height of the image plane
-        * @param focal_length_pix Focal length (in pixel) of the camera
+        * @param focalLengthPix Focal length (in pixel) of the camera
         * @param ppx Principal point on x-axis
         * @param ppy Principal point on y-axis
         */
-        explicit PinholeIntrinsic(unsigned int w = 0, unsigned int h = 0, double focal_length_pix = 0.0,
+        explicit PinholeIntrinsic(unsigned int w = 0, unsigned int h = 0, double focalLengthPix = 0.0,
                                   double ppx = 0.0, double ppy = 0.0);
 
         /**
@@ -48,6 +48,12 @@ namespace ns_veta {
         * @param K Intrinsic Matrix (3x3) {f,0,ppx; 0,f,ppy; 0,0,1}
         */
         PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat);
+
+        static std::shared_ptr<IntrinsicBase>
+        Create(unsigned int w = 0, unsigned int h = 0, double focalLengthPix = 0.0, double ppx = 0.0, double ppy = 0.0);
+
+        static std::shared_ptr<IntrinsicBase>
+        Create(unsigned int w, unsigned int h, const Mat3d &KMat);
 
         /**
         * @brief Destructor

@@ -12,6 +12,9 @@ namespace ns_veta {
     // A view define an image by a string and unique indexes for the view, the camera intrinsic & the pose
     struct View {
 
+        // timestamp
+        TimeT timestamp;
+
         // id of the view
         IndexT viewId;
 
@@ -22,11 +25,17 @@ namespace ns_veta {
         IndexT imgWidth, imgHeight;
 
         // Constructor (use unique index for the viewId)
-        explicit View(IndexT viewId = UndefinedIndexT, IndexT intrinsicId = UndefinedIndexT,
-                      IndexT poseId = UndefinedIndexT, IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT)
-                : viewId(viewId), intrinsicId(intrinsicId), poseId(poseId), imgWidth(width), imgHeight(height) {}
+        explicit View(TimeT timestamp = UndefinedTimeT, IndexT viewId = UndefinedIndexT,
+                      IndexT intrinsicId = UndefinedIndexT, IndexT poseId = UndefinedIndexT,
+                      IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT)
+                : timestamp(timestamp), viewId(viewId), intrinsicId(intrinsicId),
+                  poseId(poseId), imgWidth(width), imgHeight(height) {}
 
         virtual ~View() = default;
+
+        static std::shared_ptr<View> Create(TimeT timestamp = UndefinedTimeT, IndexT viewId = UndefinedIndexT,
+                                            IndexT intrinsicId = UndefinedIndexT, IndexT poseId = UndefinedIndexT,
+                                            IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT);
 
         /**
         * Serialization out
@@ -36,6 +45,7 @@ namespace ns_veta {
         void save(Archive &ar) const {
             ar(cereal::make_nvp("img_width", imgWidth),
                cereal::make_nvp("img_height", imgHeight),
+               cereal::make_nvp("timestamp", timestamp),
                cereal::make_nvp("view_id", viewId),
                cereal::make_nvp("intrinsic_id", intrinsicId),
                cereal::make_nvp("pose_id", poseId));
@@ -49,6 +59,7 @@ namespace ns_veta {
         void load(Archive &ar) {
             ar(cereal::make_nvp("img_width", imgWidth),
                cereal::make_nvp("img_height", imgHeight),
+               cereal::make_nvp("timestamp", timestamp),
                cereal::make_nvp("view_id", viewId),
                cereal::make_nvp("intrinsic_id", intrinsicId),
                cereal::make_nvp("pose_id", poseId));

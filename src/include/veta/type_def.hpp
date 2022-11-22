@@ -55,6 +55,12 @@ namespace ns_veta {
     // Portable value used to save an undefined index value
     static const IndexT UndefinedIndexT = std::numeric_limits<IndexT>::max();
 
+    // the type of timestamp
+    using TimeT = double;
+
+    // undefined time stamp
+    static const TimeT UndefinedTimeT = std::numeric_limits<TimeT>::min();
+
     // Standard Pair of IndexT
     using Pair = std::pair<IndexT, IndexT>;
 

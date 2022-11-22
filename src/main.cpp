@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
 
     {
         // view
-        auto view = std::make_shared<ns_veta::View>(0, 0, 0, 200, 100);
+        auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 0, 0, 0, 200, 100);
         veta.views.insert(std::make_pair(view->viewId, view));
     }
     {
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     }
     {
         // intri
-        auto intri = std::make_shared<ns_veta::PinholeIntrinsicBrownT2>(200, 100, 150, 100, 50);
+        auto intri = ns_veta::PinholeIntrinsicBrownT2::Create(200, 100, 150, 100, 50);
         veta.intrinsics.insert(std::make_pair(0, intri));
     }
     {

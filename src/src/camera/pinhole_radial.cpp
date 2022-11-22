@@ -37,15 +37,16 @@ namespace ns_veta {
     }
 
     std::vector<double> PinholeIntrinsicRadialK1::GetParams() const {
-        std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params), std::end(params));
-        return params;
+        std::vector<double> paramsVec = PinholeIntrinsic::GetParams();
+        paramsVec.insert(paramsVec.end(), std::begin(paramsVec), std::end(paramsVec));
+        return paramsVec;
     }
 
-    bool PinholeIntrinsicRadialK1::UpdateFromParams(const std::vector<double> &params) {
-        if (params.size() == 4) {
+    bool PinholeIntrinsicRadialK1::UpdateFromParams(const std::vector<double> &paramsVec) {
+        if (paramsVec.size() == 4) {
             *this = PinholeIntrinsicRadialK1(
-                    static_cast<int>(imgWidth), static_cast<int>(imgHeight), params[0], params[1], params[2], params[3]
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight),
+                    paramsVec[0], paramsVec[1], paramsVec[2], paramsVec[3]
             );
             return true;
         } else {
@@ -89,6 +90,11 @@ namespace ns_veta {
         return r2 * Square(1. + r2 * k1);
     }
 
+    std::shared_ptr<IntrinsicBase>
+    PinholeIntrinsicRadialK1::Create(int w, int h, double focal, double ppx, double ppy, double k1) {
+        return std::make_shared<PinholeIntrinsicRadialK1>(w, h, focal, ppx, ppy, k1);
+    }
+
     // ---------------------------
     // PinholeIntrinsicRadialK3
     // ---------------------------
@@ -122,16 +128,16 @@ namespace ns_veta {
     }
 
     std::vector<double> PinholeIntrinsicRadialK3::GetParams() const {
-        std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params), std::end(params));
-        return params;
+        std::vector<double> paramsVec = PinholeIntrinsic::GetParams();
+        paramsVec.insert(paramsVec.end(), std::begin(paramsVec), std::end(paramsVec));
+        return paramsVec;
     }
 
-    bool PinholeIntrinsicRadialK3::UpdateFromParams(const std::vector<double> &params) {
-        if (params.size() == 6) {
+    bool PinholeIntrinsicRadialK3::UpdateFromParams(const std::vector<double> &paramsVec) {
+        if (paramsVec.size() == 6) {
             *this = PinholeIntrinsicRadialK3(
-                    static_cast<int>(imgWidth), static_cast<int>(imgHeight), params[0], params[1], params[2],
-                    params[3], params[4], params[5]
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight), paramsVec[0], paramsVec[1], paramsVec[2],
+                    paramsVec[3], paramsVec[4], paramsVec[5]
             );
             return true;
         } else {
@@ -173,5 +179,11 @@ namespace ns_veta {
     double PinholeIntrinsicRadialK3::DistoFunctor(const std::vector<double> &params, double r2) {
         const double &k1 = params[0], &k2 = params[1], &k3 = params[2];
         return r2 * Square(1. + r2 * (k1 + r2 * (k2 + r2 * k3)));
+    }
+
+    std::shared_ptr<IntrinsicBase>
+    PinholeIntrinsicRadialK3::Create(int w, int h, double focal, double ppx, double ppy, double k1, double k2,
+                                     double k3) {
+        return std::make_shared<PinholeIntrinsicRadialK3>(w, h, focal, ppx, ppy, k1, k2, k3);
     }
 }
