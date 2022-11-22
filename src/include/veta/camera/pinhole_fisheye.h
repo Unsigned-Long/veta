@@ -40,7 +40,7 @@ namespace ns_veta {
 
         ~PinholeIntrinsicFisheye() override = default;
 
-        static std::shared_ptr<IntrinsicBase>
+        static std::shared_ptr<PinholeIntrinsicFisheye>
         Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
                double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double k4 = 0.0);
 

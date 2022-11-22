@@ -111,12 +111,12 @@ namespace ns_veta {
         return new class_type(*this);
     }
 
-    std::shared_ptr<IntrinsicBase>
+    std::shared_ptr<PinholeIntrinsic>
     PinholeIntrinsic::Create(unsigned int w, unsigned int h, double focalLengthPix, double ppx, double ppy) {
         return std::make_shared<PinholeIntrinsic>(w, h, focalLengthPix, ppx, ppy);
     }
 
-    std::shared_ptr<IntrinsicBase> PinholeIntrinsic::Create(unsigned int w, unsigned int h, const Mat3d &KMat) {
+    std::shared_ptr<PinholeIntrinsic> PinholeIntrinsic::Create(unsigned int w, unsigned int h, const Mat3d &KMat) {
         return std::make_shared<PinholeIntrinsic>(w, h, KMat);
     }
 }

@@ -70,7 +70,7 @@ namespace ns_veta {
 
         ~PinholeIntrinsicRadialK1() override = default;
 
-        static std::shared_ptr<IntrinsicBase>
+        static std::shared_ptr<PinholeIntrinsicRadialK1>
         Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0, double k1 = 0.0);
 
         /**
@@ -204,7 +204,7 @@ namespace ns_veta {
 
         ~PinholeIntrinsicRadialK3() override = default;
 
-        static std::shared_ptr<IntrinsicBase>
+        static std::shared_ptr<PinholeIntrinsicRadialK3>
         Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
                double k1 = 0.0, double k2 = 0.0, double k3 = 0.0);
 

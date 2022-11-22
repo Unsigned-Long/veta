@@ -107,7 +107,7 @@ namespace ns_veta {
         return new class_type(*this);
     }
 
-    std::shared_ptr<IntrinsicBase>
+    std::shared_ptr<PinholeIntrinsicFisheye>
     PinholeIntrinsicFisheye::Create(int w, int h, double focal, double ppx, double ppy, double k1, double k2, double k3,
                                     double k4) {
         return std::make_shared<PinholeIntrinsicFisheye>(w, h, focal, ppx, ppy, k1, k2, k3, k4);

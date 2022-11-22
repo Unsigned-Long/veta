@@ -49,10 +49,10 @@ namespace ns_veta {
         */
         PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat);
 
-        static std::shared_ptr<IntrinsicBase>
+        static std::shared_ptr<PinholeIntrinsic>
         Create(unsigned int w = 0, unsigned int h = 0, double focalLengthPix = 0.0, double ppx = 0.0, double ppy = 0.0);
 
-        static std::shared_ptr<IntrinsicBase>
+        static std::shared_ptr<PinholeIntrinsic>
         Create(unsigned int w, unsigned int h, const Mat3d &KMat);
 
         /**
