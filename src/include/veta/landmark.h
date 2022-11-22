@@ -22,7 +22,7 @@ namespace ns_veta {
         // Serialization
         template<class Archive>
         void save(Archive &ar) const {
-            ar(cereal::make_nvp("featId", featId));
+            ar(cereal::make_nvp("feat_id", featId));
             const std::vector<double> pp{x(0), x(1)};
             ar(cereal::make_nvp("x", pp));
         }
@@ -30,7 +30,7 @@ namespace ns_veta {
         // Serialization
         template<class Archive>
         void load(Archive &ar) {
-            ar(cereal::make_nvp("featId", featId));
+            ar(cereal::make_nvp("feat_id", featId));
             std::vector<double> p(2);
             ar(cereal::make_nvp("x", p));
             x = Eigen::Map<const Vec2d>(&p[0]);
