@@ -34,11 +34,11 @@ namespace ns_veta {
         */
         template<class Archive>
         void save(Archive &ar) const {
-            ar(cereal::make_nvp("width", imgWidth),
-               cereal::make_nvp("height", imgHeight),
-               cereal::make_nvp("viewId", viewId),
-               cereal::make_nvp("intrinsicId", intrinsicId),
-               cereal::make_nvp("poseId", poseId));
+            ar(cereal::make_nvp("img_width", imgWidth),
+               cereal::make_nvp("img_height", imgHeight),
+               cereal::make_nvp("view_id", viewId),
+               cereal::make_nvp("intrinsic_id", intrinsicId),
+               cereal::make_nvp("pose_id", poseId));
         }
 
         /**
@@ -47,11 +47,11 @@ namespace ns_veta {
         */
         template<class Archive>
         void load(Archive &ar) {
-            ar(cereal::make_nvp("width", imgWidth),
-               cereal::make_nvp("height", imgHeight),
-               cereal::make_nvp("viewId", viewId),
-               cereal::make_nvp("intrinsicId", intrinsicId),
-               cereal::make_nvp("poseId", poseId));
+            ar(cereal::make_nvp("img_width", imgWidth),
+               cereal::make_nvp("img_height", imgHeight),
+               cereal::make_nvp("view_id", viewId),
+               cereal::make_nvp("intrinsic_id", intrinsicId),
+               cereal::make_nvp("pose_id", poseId));
         }
     };
 }

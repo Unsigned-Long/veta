@@ -66,7 +66,7 @@ namespace ns_veta {
     bool PinholeIntrinsicFisheye::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 7) {
             *this = PinholeIntrinsicFisheye(
-                    static_cast<int>(width), static_cast<int>(height),
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight),
                     params[0], params[1], params[2], // Focal, ppx, ppy
                     params[3], params[4], params[5], params[6] // k1, k2, k3, k4
             );

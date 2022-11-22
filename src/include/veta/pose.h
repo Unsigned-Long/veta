@@ -112,10 +112,10 @@ namespace ns_veta {
                     {rotation(2, 0), rotation(2, 1), rotation(2, 2)}
             };
 
-            ar(cereal::make_nvp("Rotation", mat));
+            ar(cereal::make_nvp("rotation", mat));
 
             const std::vector<double> vec = {center(0), center(1), center(2)};
-            ar(cereal::make_nvp("Center", vec));
+            ar(cereal::make_nvp("center", vec));
         }
 
         /**
@@ -125,14 +125,14 @@ namespace ns_veta {
         template<class Archive>
         void load(Archive &ar) {
             std::vector<std::vector<double>> mat(3, std::vector<double>(3));
-            ar(cereal::make_nvp("Rotation", mat));
+            ar(cereal::make_nvp("rotation", mat));
             // copy back to the Rotation
             rotation.row(0) = Eigen::Map<const Vec3d>(&(mat[0][0]));
             rotation.row(1) = Eigen::Map<const Vec3d>(&(mat[1][0]));
             rotation.row(2) = Eigen::Map<const Vec3d>(&(mat[2][0]));
 
             std::vector<double> vec(3);
-            ar(cereal::make_nvp("Center", vec));
+            ar(cereal::make_nvp("center", vec));
             center = Eigen::Map<const Vec3d>(&vec[0]);
         }
     };

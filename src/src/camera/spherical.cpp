@@ -64,7 +64,7 @@ namespace ns_veta {
     Vec2d IntrinsicSpherical::GetDistoPixel(const Vec2d &p) const { return p; }
 
     double IntrinsicSpherical::ImagePlaneToCameraPlaneError(double value) const {
-        return value / std::max(width, height);
+        return value / std::max(imgWidth, imgHeight);
     }
 
     Mat34 IntrinsicSpherical::GetProjectiveEquivalent(const Pose &pose) const {

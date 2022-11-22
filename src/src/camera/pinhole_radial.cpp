@@ -45,7 +45,7 @@ namespace ns_veta {
     bool PinholeIntrinsicRadialK1::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 4) {
             *this = PinholeIntrinsicRadialK1(
-                    static_cast<int>(width), static_cast<int>(height), params[0], params[1], params[2], params[3]
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight), params[0], params[1], params[2], params[3]
             );
             return true;
         } else {
@@ -130,7 +130,7 @@ namespace ns_veta {
     bool PinholeIntrinsicRadialK3::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 6) {
             *this = PinholeIntrinsicRadialK3(
-                    static_cast<int>(width), static_cast<int>(height), params[0], params[1], params[2],
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight), params[0], params[1], params[2],
                     params[3], params[4], params[5]
             );
             return true;

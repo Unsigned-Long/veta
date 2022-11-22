@@ -7,11 +7,11 @@
 namespace ns_veta {
 
     unsigned int IntrinsicBase::Width() const {
-        return width;
+        return imgWidth;
     }
 
     unsigned int IntrinsicBase::Height() const {
-        return height;
+        return imgHeight;
     }
 
     Vec2d IntrinsicBase::Project(const Vec3d &X, bool ignore_distortion) const {
@@ -36,8 +36,8 @@ namespace ns_veta {
     std::size_t IntrinsicBase::HashValue() const {
         size_t seed = 0;
         HashCombine(seed, static_cast<int>( this->GetType()));
-        HashCombine(seed, width);
-        HashCombine(seed, height);
+        HashCombine(seed, imgWidth);
+        HashCombine(seed, imgHeight);
         const std::vector<double> params = this->GetParams();
         for (const auto &param: params)
             HashCombine(seed, param);

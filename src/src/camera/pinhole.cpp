@@ -78,7 +78,7 @@ namespace ns_veta {
 
     bool PinholeIntrinsic::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 3) {
-            *this = PinholeIntrinsic(width, height, params[0], params[1], params[2]);
+            *this = PinholeIntrinsic(imgWidth, imgHeight, params[0], params[1], params[2]);
             return true;
         } else {
             return false;

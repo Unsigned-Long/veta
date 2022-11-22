@@ -117,16 +117,16 @@ namespace ns_veta {
     */
     struct IntrinsicBase : public Clonable<IntrinsicBase> {
         // Width of image
-        unsigned int width;
+        unsigned int imgWidth;
         // Height of image
-        unsigned int height;
+        unsigned int imgHeight;
 
         /**
         * @brief Constructor
         * @param w Width of the image
         * @param h Height of the image
         */
-        explicit IntrinsicBase(unsigned int w = 0, unsigned int h = 0) : width(w), height(h) {}
+        explicit IntrinsicBase(unsigned int w = 0, unsigned int h = 0) : imgWidth(w), imgHeight(h) {}
 
         /**
         * @brief Destructor
@@ -134,14 +134,14 @@ namespace ns_veta {
         ~IntrinsicBase() override = default;
 
         /**
-        * @brief Get width of the image
-        * @return width of the image
+        * @brief Get imgWidth of the image
+        * @return imgWidth of the image
         */
         [[nodiscard]] unsigned int Width() const;
 
         /**
-        * @brief Get height of the image
-        * @return height of the image
+        * @brief Get imgHeight of the image
+        * @return imgHeight of the image
         */
         [[nodiscard]] unsigned int Height() const;
 
@@ -267,8 +267,8 @@ namespace ns_veta {
         */
         template<class Archive>
         void save(Archive &ar) const {
-            ar(cereal::make_nvp("width", width));
-            ar(cereal::make_nvp("height", height));
+            ar(cereal::make_nvp("img_width", imgWidth));
+            ar(cereal::make_nvp("img_height", imgHeight));
         }
 
         /**
@@ -277,8 +277,8 @@ namespace ns_veta {
         */
         template<class Archive>
         void load(Archive &ar) {
-            ar(cereal::make_nvp("width", width));
-            ar(cereal::make_nvp("height", height));
+            ar(cereal::make_nvp("img_width", imgWidth));
+            ar(cereal::make_nvp("img_height", imgHeight));
         }
 
         /**

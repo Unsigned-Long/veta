@@ -45,7 +45,7 @@ namespace ns_veta {
     bool PinholeIntrinsicBrownT2::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 8) {
             *this = PinholeIntrinsicBrownT2(
-                    static_cast<int>(width), static_cast<int>(height),
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight),
                     params[0], params[1], params[2],
                     params[3], params[4], params[5],
                     params[6], params[7]
