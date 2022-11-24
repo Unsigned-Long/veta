@@ -67,8 +67,8 @@ namespace ns_veta {
         return value / Focal();
     }
 
-    Mat34d PinholeIntrinsic::GetProjectiveEquivalent(const Pose &pose) const {
-        return K * (Mat34d() << pose.Rotation(), pose.Translation()).finished();
+    Mat34d PinholeIntrinsic::GetProjectiveEquivalent(const Pose &RefToCam) const {
+        return K * (Mat34d() << RefToCam.Rotation(), RefToCam.Translation()).finished();
     }
 
     std::vector<double> PinholeIntrinsic::GetParams() const {

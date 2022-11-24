@@ -14,41 +14,28 @@ namespace ns_veta {
         return rotation;
     }
 
-    const Vec3d &Pose::Center() const {
-        return center;
-    }
-
-    Vec3d &Pose::Center() {
-        return center;
-    }
-
-    Pose Pose::operator*(const Pose &P) const {
-        return Pose{rotation * P.rotation, P.center + P.rotation.transpose() * center};
+    Pose Pose::operator*(const Pose &pose) const {
+        return Pose{rotation * pose.rotation, rotation * pose.translation + translation};
     }
 
     Pose Pose::Inverse() const {
-        return Pose{rotation.transpose(), -(rotation * center)};
+        return Pose{rotation.transpose(), -(rotation.transpose() * translation)};
     }
 
     Mat34d Pose::AsMatrix() const {
-        return (Mat34d() << rotation, Translation()).finished();
+        return (Mat34d() << rotation, translation).finished();
     }
 
     typename Vec3d::PlainObject Pose::operator()(const Vec3d &p) const {
-        return rotation * (p - center);
+        return rotation * p + translation;
     }
 
-    Vec3d Pose::Translation() const {
-        return -(rotation * center);
+    const Vec3d &Pose::Translation() const {
+        return translation;
     }
 
-    Pose Pose::CreateFromRC(const Mat3d &r, const Vec3d &c) {
-        return Pose(r, c);
-    }
-
-    Pose Pose::CreateFromRT(const Mat3d &r, const Vec3d &t) {
-        // t =-rc
-        return Pose(r, -r.inverse() * t);
+    Vec3d &Pose::Translation() {
+        return translation;
     }
 
 }

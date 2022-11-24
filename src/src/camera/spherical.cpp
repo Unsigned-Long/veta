@@ -67,8 +67,8 @@ namespace ns_veta {
         return value / std::max(imgWidth, imgHeight);
     }
 
-    Mat34d IntrinsicSpherical::GetProjectiveEquivalent(const Pose &pose) const {
-        return HStack(pose.Rotation(), pose.Translation());
+    Mat34d IntrinsicSpherical::GetProjectiveEquivalent(const Pose &RefToCam) const {
+        return HStack(RefToCam.Rotation(), RefToCam.Translation());
     }
 
     IntrinsicBase *IntrinsicSpherical::Clone() const {

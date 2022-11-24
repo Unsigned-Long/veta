@@ -148,10 +148,10 @@ namespace ns_veta {
 
         /**
         * @brief Return the projection matrix (interior & exterior) as a simplified projective projection
-        * @param pose Extrinsic matrix
+        * @param RefToCam Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] Mat34d GetProjectiveEquivalent(const Pose &pose) const override;
+        [[nodiscard]] Mat34d GetProjectiveEquivalent(const Pose &RefToCam) const override;
 
 
         /**

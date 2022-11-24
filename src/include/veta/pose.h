@@ -20,23 +20,19 @@ namespace ns_veta {
         // Orientation matrix
         Mat3d rotation;
 
-        // Center of Rotation
-        Vec3d center;
+        // Translation vector
+        Vec3d translation;
 
     public:
 
         /**
         * @brief Constructor
         * @param r Rotation
-        * @param c Center
+        * @param t Translation
         * @note Default (without args) defines an Identity pose.
         */
-        explicit Pose(Mat3d r = Mat3d::Identity(), Vec3d c = Vec3d::Zero())
-                : rotation(std::move(r)), center(std::move(c)) {}
-
-        static Pose CreateFromRC(const Mat3d &r = Mat3d::Identity(), const Vec3d &c = Vec3d::Zero());
-
-        static Pose CreateFromRT(const Mat3d &r = Mat3d::Identity(), const Vec3d &t = Vec3d::Zero());
+        explicit Pose(Mat3d r = Mat3d::Identity(), Vec3d t = Vec3d::Zero())
+                : rotation(std::move(r)), translation(std::move(t)) {}
 
         /**
         * @brief Get Rotation matrix
@@ -51,24 +47,16 @@ namespace ns_veta {
         Mat3d &Rotation();
 
         /**
-        * @brief Get Center of Rotation
-        * @return Center of Rotation
-        */
-        [[nodiscard]] const Vec3d &Center() const;
-
-        /**
-        * @brief Get Center of Rotation
-        * @return Center of Rotation
-        */
-        Vec3d &Center();
-
-        /**
         * @brief Get Translation vector
         * @return Translation vector
-        * @note t = -RC
         */
-        [[nodiscard]] Vec3d Translation() const;
+        [[nodiscard]] const Vec3d &Translation() const;
 
+        /**
+         * @brief Get Translation vector
+         * @return Translation vector
+         */
+        Vec3d &Translation();
 
         /**
         * @brief Apply pose
@@ -77,20 +65,18 @@ namespace ns_veta {
         */
         template<typename T>
         typename T::PlainObject operator()(const T &p) const {
-            return rotation * (p.colwise() - center);
+            return rotation * p.colwise() + translation;
         }
 
         // Specialization for Vec3d
         typename Vec3d::PlainObject operator()(const Vec3d &p) const;
 
-
         /**
         * @brief Composition of poses
-        * @param P a Pose
+        * @param pose a Pose
         * @return Composition of current pose and parameter pose
         */
-        Pose operator*(const Pose &P) const;
-
+        Pose operator*(const Pose &pose) const;
 
         /**
         * @brief Get Inverse of the pose
@@ -118,8 +104,8 @@ namespace ns_veta {
 
             ar(cereal::make_nvp("rotation", mat));
 
-            const std::vector<double> vec = {center(0), center(1), center(2)};
-            ar(cereal::make_nvp("center", vec));
+            const std::vector<double> vec = {translation(0), translation(1), translation(2)};
+            ar(cereal::make_nvp("translation", vec));
         }
 
         /**
@@ -136,8 +122,8 @@ namespace ns_veta {
             rotation.row(2) = Eigen::Map<const Vec3d>(&(mat[2][0]));
 
             std::vector<double> vec(3);
-            ar(cereal::make_nvp("center", vec));
-            center = Eigen::Map<const Vec3d>(&vec[0]);
+            ar(cereal::make_nvp("translation", vec));
+            translation = Eigen::Map<const Vec3d>(&vec[0]);
         }
     };
 }
