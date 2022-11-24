@@ -11,6 +11,8 @@ namespace ns_veta {
 
     // A view define an image by a string and unique indexes for the view, the camera intrinsic & the pose
     struct View {
+    public:
+        using Ptr = std::shared_ptr<View>;
 
         // timestamp
         TimeT timestamp;
@@ -33,9 +35,9 @@ namespace ns_veta {
 
         virtual ~View() = default;
 
-        static std::shared_ptr<View> Create(TimeT timestamp = UndefinedTimeT, IndexT viewId = UndefinedIndexT,
-                                            IndexT intrinsicId = UndefinedIndexT, IndexT poseId = UndefinedIndexT,
-                                            IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT);
+        static Ptr Create(TimeT timestamp = UndefinedTimeT, IndexT viewId = UndefinedIndexT,
+                          IndexT intrinsicId = UndefinedIndexT, IndexT poseId = UndefinedIndexT,
+                          IndexT width = UndefinedIndexT, IndexT height = UndefinedIndexT);
 
         /**
         * Serialization out

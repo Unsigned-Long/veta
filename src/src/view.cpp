@@ -6,7 +6,7 @@
 
 namespace ns_veta {
 
-    std::shared_ptr<View>
+    View::Ptr
     View::Create(TimeT timestamp, IndexT viewId, IndexT intrinsicId, IndexT poseId, IndexT width, IndexT height) {
         return std::make_shared<View>(timestamp, viewId, intrinsicId, poseId, width, height);
     }
