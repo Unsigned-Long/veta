@@ -30,8 +30,8 @@ namespace ns_veta {
         return Pose{rotation.transpose(), -(rotation * center)};
     }
 
-    Mat34 Pose::AsMatrix() const {
-        return (Mat34() << rotation, Translation()).finished();
+    Mat34d Pose::AsMatrix() const {
+        return (Mat34d() << rotation, Translation()).finished();
     }
 
     typename Vec3d::PlainObject Pose::operator()(const Vec3d &p) const {
