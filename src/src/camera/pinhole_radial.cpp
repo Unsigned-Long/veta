@@ -57,21 +57,21 @@ namespace ns_veta {
 
     std::vector<int>
     PinholeIntrinsicRadialK1::SubsetParameterization(const IntrinsicParamType &parametrization) const {
-        std::vector<int> constant_index;
+        std::vector<int> constantIndex;
         const int param = static_cast<int>(parametrization);
         if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), 0);
+            constantIndex.insert(constantIndex.end(), {0, 1}); // fx, fy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), {1, 2});
+            constantIndex.insert(constantIndex.end(), {2, 3}); // ppx, ppy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_DISTORTION)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), 3);
+            constantIndex.insert(constantIndex.end(), 4); // k1
         }
-        return constant_index;
+        return constantIndex;
     }
 
     Vec2d PinholeIntrinsicRadialK1::GetUndistoPixel(const Vec2d &p) const {
@@ -149,21 +149,21 @@ namespace ns_veta {
 
     std::vector<int>
     PinholeIntrinsicRadialK3::SubsetParameterization(const IntrinsicParamType &parametrization) const {
-        std::vector<int> constant_index;
+        std::vector<int> constantIndex;
         const int param = static_cast<int>(parametrization);
         if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), 0);
+            constantIndex.insert(constantIndex.end(), {0, 1}); // fx, fy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), {1, 2});
+            constantIndex.insert(constantIndex.end(), {2, 3}); // ppx, ppy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_DISTORTION)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), {3, 4, 5});
+            constantIndex.insert(constantIndex.end(), {4, 5, 6}); // k1, k2, k3
         }
-        return constant_index;
+        return constantIndex;
     }
 
     Vec2d PinholeIntrinsicRadialK3::GetUndistoPixel(const Vec2d &p) const {

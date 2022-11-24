@@ -62,15 +62,15 @@ namespace ns_veta {
         const int param = static_cast<int>(parametrization);
         if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
             || param & (int) IntrinsicParamType::NONE) {
-            constantIndex.insert(constantIndex.end(), 0);
+            constantIndex.insert(constantIndex.end(), {0, 1}); // fx, fy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
             || param & (int) IntrinsicParamType::NONE) {
-            constantIndex.insert(constantIndex.end(), {1, 2});
+            constantIndex.insert(constantIndex.end(), {2, 3}); // ppx, ppy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_DISTORTION)
             || param & (int) IntrinsicParamType::NONE) {
-            constantIndex.insert(constantIndex.end(), {3, 4, 5, 6, 7});
+            constantIndex.insert(constantIndex.end(), {4, 5, 6, 7, 8}); // k1, k2, k3, t1, t2
         }
         return constantIndex;
     }
