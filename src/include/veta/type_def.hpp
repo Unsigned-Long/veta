@@ -95,7 +95,7 @@ namespace ns_veta {
     using Vec9d = Eigen::Matrix<double, 9, 1>;
 
     // Quaternion type
-    using Quaternion = Eigen::Quaternion<double>;
+    using Quaterniond = Eigen::Quaternion<double>;
 
     // 3x3 matrix using double internal format
     using Mat3d = Eigen::Matrix<double, 3, 3>;
@@ -174,7 +174,7 @@ EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec2i)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec2f)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Vec3f)
 
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Quaternion)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Quaterniond)
 
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat3d)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::RMat3d)
