@@ -90,7 +90,7 @@ namespace ns_veta {
         return r2 * Square(1. + r2 * k1);
     }
 
-    std::shared_ptr<PinholeIntrinsicRadialK1>
+    PinholeIntrinsicRadialK1::Ptr
     PinholeIntrinsicRadialK1::Create(int w, int h, double focal, double ppx, double ppy, double k1) {
         return std::make_shared<PinholeIntrinsicRadialK1>(w, h, focal, ppx, ppy, k1);
     }
@@ -181,9 +181,9 @@ namespace ns_veta {
         return r2 * Square(1. + r2 * (k1 + r2 * (k2 + r2 * k3)));
     }
 
-    std::shared_ptr<PinholeIntrinsicRadialK3>
-    PinholeIntrinsicRadialK3::Create(int w, int h, double focal, double ppx, double ppy, double k1, double k2,
-                                     double k3) {
+    PinholeIntrinsicRadialK3::Ptr
+    PinholeIntrinsicRadialK3::Create(int w, int h, double focal, double ppx, double ppy,
+                                     double k1, double k2, double k3) {
         return std::make_shared<PinholeIntrinsicRadialK3>(w, h, focal, ppx, ppy, k1, k2, k3);
     }
 }

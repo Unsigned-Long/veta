@@ -98,9 +98,9 @@ namespace ns_veta {
         return {p(0) * k_diff + t_x, p(1) * k_diff + t_y};
     }
 
-    std::shared_ptr<PinholeIntrinsicBrownT2>
-    PinholeIntrinsicBrownT2::Create(int w, int h, double focal, double ppx, double ppy, double k1, double k2, double k3,
-                                    double t1, double t2) {
+    PinholeIntrinsicBrownT2::Ptr
+    PinholeIntrinsicBrownT2::Create(int w, int h, double focal, double ppx, double ppy,
+                                    double k1, double k2, double k3, double t1, double t2) {
         return std::make_shared<PinholeIntrinsicBrownT2>(w, h, focal, ppx, ppy, k1, k2, k3, t1, t2);
     }
 }

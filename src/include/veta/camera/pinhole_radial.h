@@ -47,6 +47,9 @@ namespace ns_veta {
      * \f$ x_d = x_u (1 + K_1 r^2 ) \f$
      */
     class PinholeIntrinsicRadialK1 : public PinholeIntrinsic {
+    public:
+        using Ptr = std::shared_ptr<PinholeIntrinsicRadialK1>;
+
         using class_type = PinholeIntrinsicRadialK1;
 
     protected:
@@ -70,8 +73,7 @@ namespace ns_veta {
 
         ~PinholeIntrinsicRadialK1() override = default;
 
-        static std::shared_ptr<PinholeIntrinsicRadialK1>
-        Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0, double k1 = 0.0);
+        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0, double k1 = 0.0);
 
         /**
         * @brief Tell from which type the embed camera is
@@ -177,6 +179,9 @@ namespace ns_veta {
     * \f$ x_d = x_u (1 + K_1 r^2 + K_2 r^4 + K_3 r^6) \f$
     */
     class PinholeIntrinsicRadialK3 : public PinholeIntrinsic {
+    public:
+        using Ptr = std::shared_ptr<PinholeIntrinsicRadialK3>;
+
         using class_type = PinholeIntrinsicRadialK3;
 
     protected:
@@ -204,9 +209,8 @@ namespace ns_veta {
 
         ~PinholeIntrinsicRadialK3() override = default;
 
-        static std::shared_ptr<PinholeIntrinsicRadialK3>
-        Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
-               double k1 = 0.0, double k2 = 0.0, double k3 = 0.0);
+        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
+                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0);
 
         /**
         * @brief Tell from which type the embed camera is

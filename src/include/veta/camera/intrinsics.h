@@ -116,6 +116,9 @@ namespace ns_veta {
     * @brief Base class used to store common intrinsics parameters
     */
     struct IntrinsicBase : public Clonable<IntrinsicBase> {
+    public:
+        using Ptr = std::shared_ptr<IntrinsicBase>;
+
         // Width of image
         unsigned int imgWidth;
         // Height of image

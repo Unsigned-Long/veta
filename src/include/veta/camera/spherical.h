@@ -12,6 +12,8 @@ namespace ns_veta {
  * @brief Implement a Spherical camera model
  */
     class IntrinsicSpherical : public IntrinsicBase {
+    public:
+        using Ptr = std::shared_ptr<IntrinsicSpherical>;
 
         using class_type = IntrinsicSpherical;
 
@@ -24,6 +26,8 @@ namespace ns_veta {
         */
         explicit IntrinsicSpherical(unsigned int w = 0, unsigned int h = 0)
                 : IntrinsicBase(w, h) {}
+
+        static Ptr Create(unsigned int w = 0, unsigned int h = 0);
 
         ~IntrinsicSpherical() override = default;
 

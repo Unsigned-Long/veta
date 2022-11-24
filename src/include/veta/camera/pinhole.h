@@ -18,6 +18,9 @@ namespace ns_veta {
     * @note The camera does only handle one Focal length (ie: \f$ f_x = f_y = f \f$ )
     */
     class PinholeIntrinsic : public IntrinsicBase {
+    public:
+        using Ptr = std::shared_ptr<PinholeIntrinsic>;
+
         using class_type = PinholeIntrinsic;
 
     protected:
@@ -49,11 +52,10 @@ namespace ns_veta {
         */
         PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat);
 
-        static std::shared_ptr<PinholeIntrinsic>
+        static Ptr
         Create(unsigned int w = 0, unsigned int h = 0, double focalLengthPix = 0.0, double ppx = 0.0, double ppy = 0.0);
 
-        static std::shared_ptr<PinholeIntrinsic>
-        Create(unsigned int w, unsigned int h, const Mat3d &KMat);
+        static Ptr Create(unsigned int w, unsigned int h, const Mat3d &KMat);
 
         /**
         * @brief Destructor

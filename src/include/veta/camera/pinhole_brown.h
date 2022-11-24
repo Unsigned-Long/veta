@@ -14,6 +14,9 @@ namespace ns_veta {
     * \f$ y_d = y_u (1 + K_1 r^2 + K_2 r^4 + K_3 r^6) + (T_1 (r^2 + 2 y_u^2) + 2 T_2 x_u y_u) \f$
     */
     class PinholeIntrinsicBrownT2 : public PinholeIntrinsic {
+    public:
+        using Ptr = std::shared_ptr<PinholeIntrinsicBrownT2>;
+
         using class_type = PinholeIntrinsicBrownT2;
 
     protected:
@@ -41,9 +44,8 @@ namespace ns_veta {
                                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0,
                                          double t1 = 0.0, double t2 = 0.0);
 
-        static std::shared_ptr<PinholeIntrinsicBrownT2>
-        Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
-               double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double t1 = 0.0, double t2 = 0.0);
+        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
+                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double t1 = 0.0, double t2 = 0.0);
 
         /**
         * @brief Get type of the intrinsic

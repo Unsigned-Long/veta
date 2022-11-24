@@ -74,4 +74,8 @@ namespace ns_veta {
     IntrinsicBase *IntrinsicSpherical::Clone() const {
         return new class_type(*this);
     }
+
+    IntrinsicSpherical::Ptr IntrinsicSpherical::Create(unsigned int w, unsigned int h) {
+        return std::make_shared<IntrinsicSpherical>(w, h);
+    }
 }
