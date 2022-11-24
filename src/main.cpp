@@ -13,8 +13,26 @@ int main(int argc, char **argv) {
 
     {
         // view
-        auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 0, 0, 0, 200, 100);
-        veta.views.insert(std::make_pair(view->viewId, view));
+        {
+            auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 0, 0, 0, 200, 100);
+            veta.views.insert(std::make_pair(view->viewId, view));
+        }
+        {
+            auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 1, 1, 0, 200, 100);
+            veta.views.insert(std::make_pair(view->viewId, view));
+        }
+        {
+            auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 2, 2, 0, 200, 100);
+            veta.views.insert(std::make_pair(view->viewId, view));
+        }
+        {
+            auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 3, 3, 0, 200, 100);
+            veta.views.insert(std::make_pair(view->viewId, view));
+        }
+        {
+            auto view = ns_veta::View::Create(ns_veta::UndefinedTimeT, 4, 4, 0, 200, 100);
+            veta.views.insert(std::make_pair(view->viewId, view));
+        }
     }
     {
         // pose
@@ -23,8 +41,16 @@ int main(int argc, char **argv) {
     }
     {
         // intri
-        auto intri = ns_veta::PinholeIntrinsicBrownT2::Create(200, 100, 160, 140, 100, 50);
-        veta.intrinsics.insert(std::make_pair(0, intri));
+        auto pinholeIntrinsicBrownT2 = ns_veta::PinholeIntrinsicBrownT2::Create(200, 100, 160, 140, 100, 50);
+        veta.intrinsics.insert(std::make_pair(0, pinholeIntrinsicBrownT2));
+        auto pinholeIntrinsicRadialK1 = ns_veta::PinholeIntrinsicRadialK1::Create(200, 100, 160, 140, 100, 50);
+        veta.intrinsics.insert(std::make_pair(1, pinholeIntrinsicRadialK1));
+        auto pinholeIntrinsicRadialK3 = ns_veta::PinholeIntrinsicRadialK3::Create(200, 100, 160, 140, 100, 50);
+        veta.intrinsics.insert(std::make_pair(2, pinholeIntrinsicRadialK3));
+        auto pinholeIntrinsicFisheye = ns_veta::PinholeIntrinsicFisheye::Create(200, 100, 160, 140, 100, 50);
+        veta.intrinsics.insert(std::make_pair(3, pinholeIntrinsicFisheye));
+        auto spherical = ns_veta::IntrinsicSpherical::Create(200, 100);
+        veta.intrinsics.insert(std::make_pair(4, spherical));
     }
     {
         // structure
