@@ -38,6 +38,50 @@ namespace ns_veta {
         }
     }
 
+    bool Veta::IsViewWithPoseDefined(IndexT viewId) const {
+        if (viewId == UndefinedIndexT) {
+            return false;
+        }
+        if (auto iter = views.find(viewId); iter == views.cend()) {
+            return false;
+        } else {
+            return IsViewWithPoseDefined(iter->second);
+        }
+    }
+
+    bool Veta::IsViewWithIntrinsicDefined(IndexT viewId) const {
+        if (viewId == UndefinedIndexT) {
+            return false;
+        }
+        if (auto iter = views.find(viewId); iter == views.cend()) {
+            return false;
+        } else {
+            return IsViewWithIntrinsicDefined(iter->second);
+        }
+    }
+
+    std::optional<Pose> Veta::GetViewPose(IndexT viewId) const {
+        if (viewId == UndefinedIndexT) {
+            return {};
+        }
+        if (auto iter = views.find(viewId); iter == views.cend()) {
+            return {};
+        } else {
+            return GetViewPose(iter->second);
+        }
+    }
+
+    std::optional<IntrinsicBase::Ptr> Veta::GetViewIntrinsic(IndexT viewId) const {
+        if (viewId == UndefinedIndexT) {
+            return {};
+        }
+        if (auto iter = views.find(viewId); iter == views.cend()) {
+            return {};
+        } else {
+            return GetViewIntrinsic(iter->second);
+        }
+    }
+
     bool ValidIds(const Veta &veta, Veta::Parts flag) {
 
         std::set<IndexT> set_id_intrinsics; // unique so we can use a set

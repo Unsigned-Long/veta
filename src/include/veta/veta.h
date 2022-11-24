@@ -92,15 +92,25 @@ namespace ns_veta {
         /// Structure (3D points with their 2D observations)
         Landmarks structure;
 
-        // Check if the View have defined intrinsic and pose
+        // Check if the View have defined pose
         [[nodiscard]] bool IsViewWithPoseDefined(const View::Ptr &view) const;
 
-        // Check if the View have defined intrinsic and pose
+        // Check if the View have defined pose
+        [[nodiscard]] bool IsViewWithPoseDefined(IndexT viewId) const;
+
+        // Check if the View have defined intrinsic
         [[nodiscard]] bool IsViewWithIntrinsicDefined(const View::Ptr &view) const;
+
+        // Check if the View have defined intrinsic
+        [[nodiscard]] bool IsViewWithIntrinsicDefined(IndexT viewId) const;
 
         [[nodiscard]] std::optional<Pose> GetViewPose(const View::Ptr &view) const;
 
+        [[nodiscard]] std::optional<Pose> GetViewPose(IndexT viewId) const;
+
         [[nodiscard]] std::optional<IntrinsicBase::Ptr> GetViewIntrinsic(const View::Ptr &view) const;
+
+        [[nodiscard]] std::optional<IntrinsicBase::Ptr> GetViewIntrinsic(IndexT viewId) const;
     };
 
     template<typename archiveType>
