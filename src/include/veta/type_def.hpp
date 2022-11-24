@@ -79,88 +79,139 @@ namespace ns_veta {
     // Trait used for double type
     using EigenDoubleTraits = Eigen::NumTraits<double>;
 
+    template<typename ScaleType>
+    using Vec2 = Eigen::Matrix<ScaleType, 2, 1>;
+
+    template<typename ScaleType>
+    using Vec3 = Eigen::Matrix<ScaleType, 3, 1>;
+
+    template<typename ScaleType>
+    using Vec4 = Eigen::Matrix<ScaleType, 4, 1>;
+
+    template<typename ScaleType>
+    using Vec6 = Eigen::Matrix<ScaleType, 6, 1>;
+
+    template<typename ScaleType>
+    using Vec9 = Eigen::Matrix<ScaleType, 9, 1>;
+
+    template<typename ScaleType>
+    using VecX = Eigen::Matrix<ScaleType, Eigen::Dynamic, 1>;
+
     // 3d vector using double internal format
-    using Vec3d = Eigen::Vector3d;
+    using Vec3d = Vec3<double>;
 
     // 2d vector using int internal format
-    using Vec2i = Eigen::Vector2i;
+    using Vec2i = Vec2<int>;
 
     // 2d vector using float internal format
-    using Vec2f = Eigen::Vector2f;
+    using Vec2f = Vec2<float>;
 
     // 3d vector using float internal format
-    using Vec3f = Eigen::Vector3f;
+    using Vec3f = Vec3<float>;
 
     // 9d vector using double internal format
-    using Vec9d = Eigen::Matrix<double, 9, 1>;
+    using Vec9d = Vec9<double>;
 
     // Quaternion type
     using Quaterniond = Eigen::Quaternion<double>;
 
+    template<typename ScaleType>
+    using Mat3 = Eigen::Matrix<ScaleType, 3, 3>;
+
+    template<typename ScaleType>
+    using RMat3 = Eigen::Matrix<ScaleType, 3, 3, Eigen::RowMajor>;
+
+    template<typename ScaleType>
+    using Mat34 = Eigen::Matrix<ScaleType, 3, 4>;
+
+    template<typename ScaleType>
+    using Mat4 = Eigen::Matrix<ScaleType, 4, 4>;
+
+    template<typename ScaleType>
+    using MatX = Eigen::Matrix<ScaleType, Eigen::Dynamic, Eigen::Dynamic>;
+
     // 3x3 matrix using double internal format
-    using Mat3d = Eigen::Matrix<double, 3, 3>;
+    using Mat3d = Mat3<double>;
 
     // 3x4 matrix using double internal format
-    using Mat34d = Eigen::Matrix<double, 3, 4>;
+    using Mat34d = Mat34<double>;
 
     // 2d vector using double internal format
-    using Vec2d = Eigen::Vector2d;
+    using Vec2d = Vec2<double>;
 
     // 4d vector using double internal format
-    using Vec4d = Eigen::Vector4d;
+    using Vec4d = Vec4<double>;
 
     // 6d vector using double internal format
-    using Vec6d = Eigen::Matrix<double, 6, 1>;
+    using Vec6d = Vec6<double>;
 
     // 4x4 matrix using double internal format
-    using Mat4d = Eigen::Matrix<double, 4, 4>;
+    using Mat4d = Mat4<double>;
 
     // generic matrix using unsigned int internal format
-    using MatXui = Eigen::Matrix<unsigned int, Eigen::Dynamic, Eigen::Dynamic>;
+    using MatXui = MatX<unsigned int>;
 
     // 3x3 matrix using double internal format with RowMajor storage
-    using RMat3d = Eigen::Matrix<double, 3, 3, Eigen::RowMajor>;
+    using RMat3d = RMat3<double>;
 
     // ---------------------------------
     // General purpose Matrix and Vector
     // ---------------------------------
 
     // Unconstrained matrix using double internal format
-    using MatXd = Eigen::MatrixXd;
+    using MatXd = MatX<double>;
 
     // Unconstrained vector using double internal format
-    using VecXd = Eigen::VectorXd;
+    using VecXd = VecX<double>;
 
     // Unconstrained vector using unsigned int internal format
-    using VecXui = Eigen::Matrix<unsigned int, Eigen::Dynamic, 1>;
+    using VecXui = VecX<unsigned int>;
 
     // Unconstrained matrix using float internal format
-    using MatXf = Eigen::MatrixXf;
+    using MatXf = MatX<float>;
 
     // Unconstrained vector using float internal format
-    using VecXf = Eigen::VectorXf;
+    using VecXf = VecX<float>;
+
+    template<typename ScaleType>
+    using Mat2X = Eigen::Matrix<ScaleType, 2, Eigen::Dynamic>;
+
+    template<typename ScaleType>
+    using Mat3X = Eigen::Matrix<ScaleType, 3, Eigen::Dynamic>;
+
+    template<typename ScaleType>
+    using Mat4X = Eigen::Matrix<ScaleType, 4, Eigen::Dynamic>;
+
+    template<typename ScaleType>
+    using Mat9X = Eigen::Matrix<ScaleType, 9, Eigen::Dynamic>;
 
     // 2xN matrix using double internal format
-    using Mat2Xd = Eigen::Matrix<double, 2, Eigen::Dynamic>;
+    using Mat2Xd = Mat2X<double>;
 
     // 3xN matrix using double internal format
-    using Mat3Xd = Eigen::Matrix<double, 3, Eigen::Dynamic>;
+    using Mat3Xd = Mat3X<double>;
 
     // 4xN matrix using double internal format
-    using Mat4Xd = Eigen::Matrix<double, 4, Eigen::Dynamic>;
+    using Mat4Xd = Mat4X<double>;
 
     // Nx9 matrix using double internal format
-    using MatX9d = Eigen::Matrix<double, Eigen::Dynamic, 9>;
+    using MatX9d = Mat9X<double>;
 
     // -------------------------------------------
     // Sparse Matrix (Column major, and row major)
     // -------------------------------------------
 
+    template<typename ScaleType>
+    using SMat = Eigen::SparseMatrix<ScaleType>;
+
+    template<typename ScaleType>
+    using SRMat = Eigen::SparseMatrix<ScaleType, Eigen::RowMajor>;
+
     // Sparse unconstrained matrix using double internal format
-    using SMat = Eigen::SparseMatrix<double>;
+    using SMatd = SMat<double>;
 
     /// Sparse unconstrained matrix using double internal format and Row Major storage
-    using SRMat = Eigen::SparseMatrix<double, Eigen::RowMajor>;
+    using SRMatd = SRMat<double>;
 
 } // namespace ns_veta
 
