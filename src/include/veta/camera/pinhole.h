@@ -197,8 +197,8 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             IntrinsicBase::save(ar);
-            ar(cereal::make_nvp("focal_x", K(0, 0)));
-            ar(cereal::make_nvp("focal_y", K(1, 1)));
+            const std::vector<double> focalLength{K(0, 0), K(1, 1)};
+            ar(cereal::make_nvp("focal_length", focalLength));
             const std::vector<double> pp{K(0, 2), K(1, 2)};
             ar(cereal::make_nvp("principal_point", pp));
         }
@@ -211,12 +211,11 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             IntrinsicBase::load(ar);
-            double fx, fy;
-            ar(cereal::make_nvp("focal_x", fx));
-            ar(cereal::make_nvp("focal_y", fy));
+            std::vector<double> focalLength(2);
+            ar(cereal::make_nvp("focal_length", focalLength));
             std::vector<double> pp(2);
             ar(cereal::make_nvp("principal_point", pp));
-            *this = PinholeIntrinsic(imgWidth, imgHeight, fx, fy, pp[0], pp[1]);
+            *this = PinholeIntrinsic(imgWidth, imgHeight, focalLength[0], focalLength[1], pp[0], pp[1]);
         }
 
         /**
