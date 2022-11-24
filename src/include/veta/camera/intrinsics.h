@@ -262,7 +262,7 @@ namespace ns_veta {
         * @param pose Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] virtual Mat34 GetProjectiveEquivalent(const Pose &pose) const = 0;
+        [[nodiscard]] virtual Mat34d GetProjectiveEquivalent(const Pose &pose) const = 0;
 
         /**
         * @brief Serialization out
