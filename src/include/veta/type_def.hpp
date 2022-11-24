@@ -101,7 +101,7 @@ namespace ns_veta {
     using Mat3d = Eigen::Matrix<double, 3, 3>;
 
     // 3x4 matrix using double internal format
-    using Mat34 = Eigen::Matrix<double, 3, 4>;
+    using Mat34d = Eigen::Matrix<double, 3, 4>;
 
     // 2d vector using double internal format
     using Vec2d = Eigen::Vector2d;
@@ -179,6 +179,6 @@ EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Quaterniond)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat3d)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::RMat3d)
 EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat4d)
-EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat34)
+EIGEN_DEFINE_STL_VECTOR_SPECIALIZATION_INITIALIZER_LIST(ns_veta::Mat34d)
 
 #endif // VETA_TYPE_DEF_HPP
