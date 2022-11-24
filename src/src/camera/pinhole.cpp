@@ -8,15 +8,14 @@
 
 namespace ns_veta {
 
-    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, double focalLengthPix, double ppx,
-                                       double ppy) : IntrinsicBase(w, h) {
-        K << focalLengthPix, 0., ppx, 0., focalLengthPix, ppy, 0., 0., 1.;
+    PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, double fx, double fy,
+                                       double ppx, double ppy) : IntrinsicBase(w, h) {
+        K << fx, 0., ppx, 0., fy, ppy, 0., 0., 1.;
         KInv = K.inverse();
     }
 
     PinholeIntrinsic::PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat)
             : IntrinsicBase(w, h), K(std::move(KMat)) {
-        K(0, 0) = K(1, 1) = (K(0, 0) + K(1, 1)) / 2.0;
         KInv = K.inverse();
     }
 
@@ -33,7 +32,7 @@ namespace ns_veta {
     }
 
     double PinholeIntrinsic::Focal() const {
-        return K(0, 0);
+        return 0.5 * (K(0, 0) + K(1, 1));
     }
 
     Vec2d PinholeIntrinsic::PrincipalPoint() const {
@@ -45,11 +44,11 @@ namespace ns_veta {
     }
 
     Vec2d PinholeIntrinsic::CamToImg(const Vec2d &p) const {
-        return Focal() * p + PrincipalPoint();
+        return FocalXY().asDiagonal() * p + PrincipalPoint();
     }
 
     Vec2d PinholeIntrinsic::ImgToCam(const Vec2d &p) const {
-        return (p - PrincipalPoint()) / Focal();
+        return Vec2d(1.0 / FocalX(), 1.0 / FocalY()).asDiagonal() * (p - PrincipalPoint());
     }
 
     bool PinholeIntrinsic::HaveDisto() const {
@@ -73,12 +72,15 @@ namespace ns_veta {
     }
 
     std::vector<double> PinholeIntrinsic::GetParams() const {
-        return {K(0, 0), K(0, 2), K(1, 2)};
+        return {K(0, 0), K(1, 1), K(0, 2), K(1, 2)}; // fx, fy, ppx, ppy
     }
 
     bool PinholeIntrinsic::UpdateFromParams(const std::vector<double> &params) {
         if (params.size() == 3) {
-            *this = PinholeIntrinsic(imgWidth, imgHeight, params[0], params[1], params[2]);
+            *this = PinholeIntrinsic(
+                    imgWidth, imgHeight,
+                    params[0], params[1], params[2], params[3] // fx, fy, ppx, ppy
+            );
             return true;
         } else {
             return false;
@@ -112,11 +114,23 @@ namespace ns_veta {
     }
 
     PinholeIntrinsic::Ptr
-    PinholeIntrinsic::Create(unsigned int w, unsigned int h, double focalLengthPix, double ppx, double ppy) {
-        return std::make_shared<PinholeIntrinsic>(w, h, focalLengthPix, ppx, ppy);
+    PinholeIntrinsic::Create(unsigned int w, unsigned int h, double fx, double fy, double ppx, double ppy) {
+        return std::make_shared<PinholeIntrinsic>(w, h, fx, fy, ppx, ppy);
     }
 
     PinholeIntrinsic::Ptr PinholeIntrinsic::Create(unsigned int w, unsigned int h, const Mat3d &KMat) {
         return std::make_shared<PinholeIntrinsic>(w, h, KMat);
+    }
+
+    double PinholeIntrinsic::FocalX() const {
+        return K(0, 0);
+    }
+
+    double PinholeIntrinsic::FocalY() const {
+        return K(1, 1);
+    }
+
+    Vec2d PinholeIntrinsic::FocalXY() const {
+        return {K(0, 0), K(1, 1)};
     }
 }

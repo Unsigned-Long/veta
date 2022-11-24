@@ -67,13 +67,14 @@ namespace ns_veta {
         * @param ppy Principal point on Y-Axis
         * @param k1 Distortion coefficient
         */
-        explicit PinholeIntrinsicRadialK1(int w = 0, int h = 0, double focal = 0.0,
-                                          double ppx = 0, double ppy = 0, double k1 = 0.0)
-                : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1}) {}
+        explicit PinholeIntrinsicRadialK1(int w, int h, double fx, double fy, double ppx, double ppy, double k1 = 0.0)
+                : PinholeIntrinsic(w, h, fx, fy, ppx, ppy), params({k1}) {}
+
+        PinholeIntrinsicRadialK1() = default;
 
         ~PinholeIntrinsicRadialK1() override = default;
 
-        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0, double k1 = 0.0);
+        static Ptr Create(int w, int h, double fx, double fy, double ppx, double ppy, double k1 = 0.0);
 
         /**
         * @brief Tell from which type the embed camera is
@@ -202,14 +203,15 @@ namespace ns_veta {
         * @param k2 Second radial distortion coefficient
         * @param k3 Third radial distortion coefficient
         */
-        explicit PinholeIntrinsicRadialK3(int w = 0, int h = 0,
-                                          double focal = 0.0, double ppx = 0, double ppy = 0,
+        explicit PinholeIntrinsicRadialK3(int w, int h, double fx, double fy, double ppx, double ppy,
                                           double k1 = 0.0, double k2 = 0.0, double k3 = 0.0)
-                : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1, k2, k3}) {}
+                : PinholeIntrinsic(w, h, fx, fy, ppx, ppy), params({k1, k2, k3}) {}
+
+        PinholeIntrinsicRadialK3() = default;
 
         ~PinholeIntrinsicRadialK3() override = default;
 
-        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
+        static Ptr Create(int w, int h, double fx, double fy, double ppx, double ppy,
                           double k1 = 0.0, double k2 = 0.0, double k3 = 0.0);
 
         /**

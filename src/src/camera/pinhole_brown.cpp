@@ -6,9 +6,9 @@
 
 namespace ns_veta {
 
-    PinholeIntrinsicBrownT2::PinholeIntrinsicBrownT2(int w, int h, double focal, double ppx, double ppy,
+    PinholeIntrinsicBrownT2::PinholeIntrinsicBrownT2(int w, int h, double fx, double fy, double ppx, double ppy,
                                                      double k1, double k2, double k3, double t1, double t2)
-            : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1, k2, k3, t1, t2}) {}
+            : PinholeIntrinsic(w, h, fx, fy, ppx, ppy), params({k1, k2, k3, t1, t2}) {}
 
     Eintrinsic PinholeIntrinsicBrownT2::GetType() const {
         return PINHOLE_CAMERA_BROWN_T2;
@@ -37,18 +37,18 @@ namespace ns_veta {
     }
 
     std::vector<double> PinholeIntrinsicBrownT2::GetParams() const {
-        std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params), std::end(params));
-        return params;
+        std::vector<double> paramsVec = PinholeIntrinsic::GetParams();
+        paramsVec.insert(paramsVec.end(), std::begin(params), std::end(params));
+        return paramsVec;
     }
 
-    bool PinholeIntrinsicBrownT2::UpdateFromParams(const std::vector<double> &params) {
-        if (params.size() == 8) {
+    bool PinholeIntrinsicBrownT2::UpdateFromParams(const std::vector<double> &paramsVec) {
+        if (paramsVec.size() == 9) {
             *this = PinholeIntrinsicBrownT2(
                     static_cast<int>(imgWidth), static_cast<int>(imgHeight),
-                    params[0], params[1], params[2],
-                    params[3], params[4], params[5],
-                    params[6], params[7]
+                    paramsVec[0], paramsVec[1], paramsVec[2], paramsVec[3], // fx, fy, ppx, ppy
+                    paramsVec[4], paramsVec[5], paramsVec[6],               // k1, k2, k3
+                    paramsVec[7], paramsVec[8]                              // t1, t2
             );
             return true;
         } else {
@@ -58,21 +58,21 @@ namespace ns_veta {
 
     std::vector<int>
     PinholeIntrinsicBrownT2::SubsetParameterization(const IntrinsicParamType &parametrization) const {
-        std::vector<int> constant_index;
+        std::vector<int> constantIndex;
         const int param = static_cast<int>(parametrization);
         if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), 0);
+            constantIndex.insert(constantIndex.end(), 0);
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), {1, 2});
+            constantIndex.insert(constantIndex.end(), {1, 2});
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_DISTORTION)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), {3, 4, 5, 6, 7});
+            constantIndex.insert(constantIndex.end(), {3, 4, 5, 6, 7});
         }
-        return constant_index;
+        return constantIndex;
     }
 
     Vec2d PinholeIntrinsicBrownT2::GetUndistoPixel(const Vec2d &p) const {
@@ -99,8 +99,8 @@ namespace ns_veta {
     }
 
     PinholeIntrinsicBrownT2::Ptr
-    PinholeIntrinsicBrownT2::Create(int w, int h, double focal, double ppx, double ppy,
+    PinholeIntrinsicBrownT2::Create(int w, int h, double fx, double fy, double ppx, double ppy,
                                     double k1, double k2, double k3, double t1, double t2) {
-        return std::make_shared<PinholeIntrinsicBrownT2>(w, h, focal, ppx, ppy, k1, k2, k3, t1, t2);
+        return std::make_shared<PinholeIntrinsicBrownT2>(w, h, fx, fy, ppx, ppy, k1, k2, k3, t1, t2);
     }
 }

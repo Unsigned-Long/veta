@@ -39,13 +39,15 @@ namespace ns_veta {
         * @param t1 First tangential distortion coefficient
         * @param t2 Second tangential distortion coefficient
         */
-        explicit PinholeIntrinsicBrownT2(int w = 0, int h = 0,
-                                         double focal = 0.0, double ppx = 0, double ppy = 0,
+        explicit PinholeIntrinsicBrownT2(int w, int h, double fx, double fy, double ppx, double ppy,
                                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0,
                                          double t1 = 0.0, double t2 = 0.0);
 
-        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
-                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double t1 = 0.0, double t2 = 0.0);
+        PinholeIntrinsicBrownT2() = default;
+
+        static Ptr Create(int w, int h, double fx, double fy, double ppx, double ppy,
+                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0,
+                          double t1 = 0.0, double t2 = 0.0);
 
         /**
         * @brief Get type of the intrinsic
@@ -84,11 +86,11 @@ namespace ns_veta {
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
-        * @param params List of params used to update this intrinsic
+        * @param paramsVec List of paramsVec used to update this intrinsic
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool UpdateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &paramsVec) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant

@@ -41,8 +41,9 @@ namespace ns_veta {
         * @param ppx Principal point on x-axis
         * @param ppy Principal point on y-axis
         */
-        explicit PinholeIntrinsic(unsigned int w = 0, unsigned int h = 0, double focalLengthPix = 0.0,
-                                  double ppx = 0.0, double ppy = 0.0);
+        explicit PinholeIntrinsic(unsigned int w, unsigned int h, double fx, double fy, double ppx, double ppy);
+
+        PinholeIntrinsic() = default;
 
         /**
         * @brief Constructor
@@ -52,8 +53,7 @@ namespace ns_veta {
         */
         PinholeIntrinsic(unsigned int w, unsigned int h, Mat3d KMat);
 
-        static Ptr
-        Create(unsigned int w = 0, unsigned int h = 0, double focalLengthPix = 0.0, double ppx = 0.0, double ppy = 0.0);
+        static Ptr Create(unsigned int w, unsigned int h, double fx, double fy, double ppx, double ppy);
 
         static Ptr Create(unsigned int w, unsigned int h, const Mat3d &KMat);
 
@@ -86,6 +86,12 @@ namespace ns_veta {
         * @return Focal of the camera (in pixel)
         */
         [[nodiscard]] inline double Focal() const;
+
+        [[nodiscard]] inline double FocalX() const;
+
+        [[nodiscard]] inline double FocalY() const;
+
+        [[nodiscard]] inline Vec2d FocalXY() const;
 
         /**
         * @brief Get principal point of the camera
@@ -191,7 +197,8 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             IntrinsicBase::save(ar);
-            ar(cereal::make_nvp("focal_length", K(0, 0)));
+            ar(cereal::make_nvp("focal_x", K(0, 0)));
+            ar(cereal::make_nvp("focal_y", K(1, 1)));
             const std::vector<double> pp{K(0, 2), K(1, 2)};
             ar(cereal::make_nvp("principal_point", pp));
         }
@@ -204,11 +211,12 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             IntrinsicBase::load(ar);
-            double focalLength;
-            ar(cereal::make_nvp("focal_length", focalLength));
+            double fx, fy;
+            ar(cereal::make_nvp("focal_x", fx));
+            ar(cereal::make_nvp("focal_y", fy));
             std::vector<double> pp(2);
             ar(cereal::make_nvp("principal_point", pp));
-            *this = PinholeIntrinsic(imgWidth, imgHeight, focalLength, pp[0], pp[1]);
+            *this = PinholeIntrinsic(imgWidth, imgHeight, fx, fy, pp[0], pp[1]);
         }
 
         /**

@@ -6,9 +6,9 @@
 
 namespace ns_veta {
 
-    PinholeIntrinsicFisheye::PinholeIntrinsicFisheye(int w, int h, double focal, double ppx, double ppy, double k1,
-                                                     double k2, double k3, double k4)
-            : PinholeIntrinsic(w, h, focal, ppx, ppy), params({k1, k2, k3, k4}) {}
+    PinholeIntrinsicFisheye::PinholeIntrinsicFisheye(int w, int h, double fx, double fy, double ppx, double ppy,
+                                                     double k1, double k2, double k3, double k4)
+            : PinholeIntrinsic(w, h, fx, fy, ppx, ppy), params({k1, k2, k3, k4}) {}
 
     Eintrinsic PinholeIntrinsicFisheye::GetType() const {
         return PINHOLE_CAMERA_FISHEYE;
@@ -58,17 +58,17 @@ namespace ns_veta {
     }
 
     std::vector<double> PinholeIntrinsicFisheye::GetParams() const {
-        std::vector<double> params = PinholeIntrinsic::GetParams();
-        params.insert(params.end(), std::begin(params), std::end(params));
-        return params;
+        std::vector<double> paramsVec = PinholeIntrinsic::GetParams();
+        paramsVec.insert(paramsVec.end(), std::begin(params), std::end(params));
+        return paramsVec;
     }
 
-    bool PinholeIntrinsicFisheye::UpdateFromParams(const std::vector<double> &params) {
-        if (params.size() == 7) {
+    bool PinholeIntrinsicFisheye::UpdateFromParams(const std::vector<double> &paramsVec) {
+        if (paramsVec.size() == 8) {
             *this = PinholeIntrinsicFisheye(
                     static_cast<int>(imgWidth), static_cast<int>(imgHeight),
-                    params[0], params[1], params[2], // Focal, ppx, ppy
-                    params[3], params[4], params[5], params[6] // k1, k2, k3, k4
+                    paramsVec[0], paramsVec[1], paramsVec[2], paramsVec[3], // fx, fy, ppx, ppy
+                    paramsVec[4], paramsVec[5], paramsVec[6], paramsVec[7]  // k1, k2, k3, k4
             );
             return true;
         } else {
@@ -108,8 +108,8 @@ namespace ns_veta {
     }
 
     PinholeIntrinsicFisheye::Ptr
-    PinholeIntrinsicFisheye::Create(int w, int h, double focal, double ppx, double ppy,
+    PinholeIntrinsicFisheye::Create(int w, int h, double fx, double fy, double ppx, double ppy,
                                     double k1, double k2, double k3, double k4) {
-        return std::make_shared<PinholeIntrinsicFisheye>(w, h, focal, ppx, ppy, k1, k2, k3, k4);
+        return std::make_shared<PinholeIntrinsicFisheye>(w, h, fx, fy, ppx, ppy, k1, k2, k3, k4);
     }
 }

@@ -38,15 +38,16 @@ namespace ns_veta {
 
     std::vector<double> PinholeIntrinsicRadialK1::GetParams() const {
         std::vector<double> paramsVec = PinholeIntrinsic::GetParams();
-        paramsVec.insert(paramsVec.end(), std::begin(paramsVec), std::end(paramsVec));
+        paramsVec.insert(paramsVec.end(), std::begin(params), std::end(params));
         return paramsVec;
     }
 
     bool PinholeIntrinsicRadialK1::UpdateFromParams(const std::vector<double> &paramsVec) {
-        if (paramsVec.size() == 4) {
+        if (paramsVec.size() == 5) {
             *this = PinholeIntrinsicRadialK1(
                     static_cast<int>(imgWidth), static_cast<int>(imgHeight),
-                    paramsVec[0], paramsVec[1], paramsVec[2], paramsVec[3]
+                    paramsVec[0], paramsVec[1], paramsVec[2], paramsVec[3], // fx, fy, ppx, ppy
+                    paramsVec[4]                                            // k1
             );
             return true;
         } else {
@@ -91,8 +92,8 @@ namespace ns_veta {
     }
 
     PinholeIntrinsicRadialK1::Ptr
-    PinholeIntrinsicRadialK1::Create(int w, int h, double focal, double ppx, double ppy, double k1) {
-        return std::make_shared<PinholeIntrinsicRadialK1>(w, h, focal, ppx, ppy, k1);
+    PinholeIntrinsicRadialK1::Create(int w, int h, double fx, double fy, double ppx, double ppy, double k1) {
+        return std::make_shared<PinholeIntrinsicRadialK1>(w, h, fx, fy, ppx, ppy, k1);
     }
 
     // ---------------------------
@@ -129,15 +130,16 @@ namespace ns_veta {
 
     std::vector<double> PinholeIntrinsicRadialK3::GetParams() const {
         std::vector<double> paramsVec = PinholeIntrinsic::GetParams();
-        paramsVec.insert(paramsVec.end(), std::begin(paramsVec), std::end(paramsVec));
+        paramsVec.insert(paramsVec.end(), std::begin(params), std::end(params));
         return paramsVec;
     }
 
     bool PinholeIntrinsicRadialK3::UpdateFromParams(const std::vector<double> &paramsVec) {
-        if (paramsVec.size() == 6) {
+        if (paramsVec.size() == 7) {
             *this = PinholeIntrinsicRadialK3(
-                    static_cast<int>(imgWidth), static_cast<int>(imgHeight), paramsVec[0], paramsVec[1], paramsVec[2],
-                    paramsVec[3], paramsVec[4], paramsVec[5]
+                    static_cast<int>(imgWidth), static_cast<int>(imgHeight),
+                    paramsVec[0], paramsVec[1], paramsVec[2], paramsVec[3], // fx, fy, ppx, ppy
+                    paramsVec[4], paramsVec[5], paramsVec[6]                // k1, k2, k3
             );
             return true;
         } else {
@@ -182,8 +184,8 @@ namespace ns_veta {
     }
 
     PinholeIntrinsicRadialK3::Ptr
-    PinholeIntrinsicRadialK3::Create(int w, int h, double focal, double ppx, double ppy,
+    PinholeIntrinsicRadialK3::Create(int w, int h, double fx, double fy, double ppx, double ppy,
                                      double k1, double k2, double k3) {
-        return std::make_shared<PinholeIntrinsicRadialK3>(w, h, focal, ppx, ppy, k1, k2, k3);
+        return std::make_shared<PinholeIntrinsicRadialK3>(w, h, fx, fy, ppx, ppy, k1, k2, k3);
     }
 }

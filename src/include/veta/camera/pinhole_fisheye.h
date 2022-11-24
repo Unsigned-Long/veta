@@ -37,13 +37,14 @@ namespace ns_veta {
         * @param k3 Distortion coefficient
         * @param k4 Distortion coefficient
         */
-        explicit PinholeIntrinsicFisheye(int w = 0, int h = 0,
-                                         double focal = 0.0, double ppx = 0, double ppy = 0,
+        explicit PinholeIntrinsicFisheye(int w, int h, double fx, double fy, double ppx, double ppy,
                                          double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double k4 = 0.0);
+
+        PinholeIntrinsicFisheye() = default;
 
         ~PinholeIntrinsicFisheye() override = default;
 
-        static Ptr Create(int w = 0, int h = 0, double focal = 0.0, double ppx = 0, double ppy = 0,
+        static Ptr Create(int w, int h, double fx, double fy, double ppx, double ppy,
                           double k1 = 0.0, double k2 = 0.0, double k3 = 0.0, double k4 = 0.0);
 
         /**
@@ -80,11 +81,11 @@ namespace ns_veta {
 
         /**
         * @brief Data wrapper for non linear optimization (update from data)
-        * @param params List of params used to update this intrinsic
+        * @param paramsVec List of paramsVec used to update this intrinsic
         * @retval true if update is correct
         * @retval false if there was an error during update
         */
-        bool UpdateFromParams(const std::vector<double> &params) override;
+        bool UpdateFromParams(const std::vector<double> &paramsVec) override;
 
         /**
         * @brief Return the list of parameter indexes that must be held constant
