@@ -24,10 +24,12 @@ namespace ns_veta {
         * @param w Width of the image plane
         * @param h Height of the image plane
         */
-        explicit IntrinsicSpherical(unsigned int w = 0, unsigned int h = 0)
+        explicit IntrinsicSpherical(unsigned int w, unsigned int h)
                 : IntrinsicBase(w, h) {}
 
-        static Ptr Create(unsigned int w = 0, unsigned int h = 0);
+        IntrinsicSpherical() = default;
+
+        static Ptr Create(unsigned int w, unsigned int h);
 
         ~IntrinsicSpherical() override = default;
 
@@ -84,7 +86,7 @@ namespace ns_veta {
         * @param pt3D 3D-point to Project on image plane
         * @return Projected (2D) point on image plane
         */
-        [[nodiscard]] Vec2d Project(const Vec3d &X, bool ignore_distortion) const override;
+        [[nodiscard]] Vec2d Project(const Vec3d &X, bool ignoreDisto) const override;
 
         /**
         * @brief Does the camera model handle a distortion field?
@@ -132,7 +134,7 @@ namespace ns_veta {
         * @param pose Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] Mat34 GetProjectiveEquivalent(const Pose &pose) const override;
+        [[nodiscard]] Mat34d GetProjectiveEquivalent(const Pose &pose) const override;
 
         /**
         * @brief Serialization out

@@ -46,7 +46,7 @@ namespace ns_veta {
         return bearing;
     }
 
-    Vec2d IntrinsicSpherical::Project(const Vec3d &X, bool ignore_distortion) const {
+    Vec2d IntrinsicSpherical::Project(const Vec3d &X, bool ignoreDisto) const {
         const double lon = std::atan2(X.x(), X.z()); // Horizontal normalization of the  X-Z component
         const double lat = std::atan2(-X.y(), std::hypot(X.x(), X.z())); // Tilt angle
         // de-normalization (angle to pixel value)
@@ -67,7 +67,7 @@ namespace ns_veta {
         return value / std::max(imgWidth, imgHeight);
     }
 
-    Mat34 IntrinsicSpherical::GetProjectiveEquivalent(const Pose &pose) const {
+    Mat34d IntrinsicSpherical::GetProjectiveEquivalent(const Pose &pose) const {
         return HStack(pose.Rotation(), pose.Translation());
     }
 
