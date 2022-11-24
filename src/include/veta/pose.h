@@ -95,10 +95,10 @@ namespace ns_veta {
         [[nodiscard]] Pose Inverse() const;
 
         /**
-        * @brief Return the pose as a single Mat34 matrix [R|t]
-        * @return The pose as a Mat34 matrix
+        * @brief Return the pose as a single Mat34d matrix [R|t]
+        * @return The pose as a Mat34d matrix
         */
-        [[nodiscard]]   Mat34 AsMatrix() const;
+        [[nodiscard]]   Mat34d AsMatrix() const;
 
         /**
         * Serialization out
