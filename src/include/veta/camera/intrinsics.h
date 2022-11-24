@@ -154,7 +154,7 @@ namespace ns_veta {
         * @param X 3D-point to Project on image plane
         * @return Projected (2D) point on image plane
         */
-        [[nodiscard]] virtual Vec2d Project(const Vec3d &X, bool ignore_distortion) const;
+        [[nodiscard]] virtual Vec2d Project(const Vec3d &X, bool ignoreDisto) const;
 
         /**
         * @brief Compute the Residual between the 3D projected point and an image observation
@@ -162,7 +162,7 @@ namespace ns_veta {
         * @param x image observation
         * @brief Relative 2d distance between projected and observed points
         */
-        [[nodiscard]] Vec2d Residual(const Vec3d &X, const Vec2d &x, bool ignore_distortion = false) const;
+        [[nodiscard]] Vec2d Residual(const Vec3d &X, const Vec2d &x, bool ignoreDisto = false) const;
 
         // ---------------
         // Virtual members

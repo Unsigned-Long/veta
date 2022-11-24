@@ -14,8 +14,8 @@ namespace ns_veta {
         return imgHeight;
     }
 
-    Vec2d IntrinsicBase::Project(const Vec3d &X, bool ignore_distortion) const {
-        if (this->HaveDisto() && !ignore_distortion) {
+    Vec2d IntrinsicBase::Project(const Vec3d &X, bool ignoreDisto) const {
+        if (this->HaveDisto() && !ignoreDisto) {
             // apply disto & intrinsics
             return this->CamToImg(this->AddDisto(X.hnormalized()));
         } else {
@@ -24,8 +24,8 @@ namespace ns_veta {
         }
     }
 
-    Vec2d IntrinsicBase::Residual(const Vec3d &X, const Vec2d &x, bool ignore_distortion) const {
-        const Vec2d proj = this->Project(X, ignore_distortion);
+    Vec2d IntrinsicBase::Residual(const Vec3d &X, const Vec2d &x, bool ignoreDisto) const {
+        const Vec2d proj = this->Project(X, ignoreDisto);
         return x - proj;
     }
 
