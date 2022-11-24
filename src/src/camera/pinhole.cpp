@@ -67,8 +67,8 @@ namespace ns_veta {
         return value / Focal();
     }
 
-    Mat34 PinholeIntrinsic::GetProjectiveEquivalent(const Pose &pose) const {
-        return K * (Mat34() << pose.Rotation(), pose.Translation()).finished();
+    Mat34d PinholeIntrinsic::GetProjectiveEquivalent(const Pose &pose) const {
+        return K * (Mat34d() << pose.Rotation(), pose.Translation()).finished();
     }
 
     std::vector<double> PinholeIntrinsic::GetParams() const {
@@ -76,7 +76,7 @@ namespace ns_veta {
     }
 
     bool PinholeIntrinsic::UpdateFromParams(const std::vector<double> &params) {
-        if (params.size() == 3) {
+        if (params.size() == 4) {
             *this = PinholeIntrinsic(
                     imgWidth, imgHeight,
                     params[0], params[1], params[2], params[3] // fx, fy, ppx, ppy
@@ -88,17 +88,17 @@ namespace ns_veta {
     }
 
     std::vector<int> PinholeIntrinsic::SubsetParameterization(const IntrinsicParamType &parametrization) const {
-        std::vector<int> constant_index;
+        std::vector<int> constantIndex;
         const int param = static_cast<int>(parametrization);
         if (!(param & (int) IntrinsicParamType::ADJUST_FOCAL_LENGTH)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), 0);
+            constantIndex.insert(constantIndex.end(), {0, 1}); // fx, fy
         }
         if (!(param & (int) IntrinsicParamType::ADJUST_PRINCIPAL_POINT)
             || param & (int) IntrinsicParamType::NONE) {
-            constant_index.insert(constant_index.end(), {1, 2});
+            constantIndex.insert(constantIndex.end(), {2, 3}); // ppx, ppy
         }
-        return constant_index;
+        return constantIndex;
     }
 
     Vec2d PinholeIntrinsic::GetUndistoPixel(const Vec2d &p) const {

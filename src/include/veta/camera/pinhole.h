@@ -151,7 +151,7 @@ namespace ns_veta {
         * @param pose Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] Mat34 GetProjectiveEquivalent(const Pose &pose) const override;
+        [[nodiscard]] Mat34d GetProjectiveEquivalent(const Pose &pose) const override;
 
 
         /**
