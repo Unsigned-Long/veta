@@ -54,8 +54,9 @@ int main(int argc, char **argv) {
     }
     {
         // structure
-        auto landmark = ns_veta::Landmark{ns_veta::Vec3d::Zero(), {}};
-        landmark.obs.insert(std::make_pair(0, ns_veta::Observation(ns_veta::Vec2d::Zero(), 0)));
+        auto landmark = ns_veta::Landmark(
+                ns_veta::Vec3d::Zero(), {{0, ns_veta::Observation(ns_veta::Vec2d::Zero(), 0)}}
+        );
         veta.structure.insert(std::make_pair(0, landmark));
     }
 

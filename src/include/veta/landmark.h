@@ -44,6 +44,10 @@ namespace ns_veta {
         Vec3d X;
         Observations obs;
 
+        Landmark(Vec3d x, Observations obs) : X(std::move(x)), obs(std::move(obs)) {}
+
+        Landmark() = default;
+
         // Serialization
         template<class Archive>
         void save(Archive &ar) const {
