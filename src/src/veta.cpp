@@ -82,42 +82,57 @@ namespace ns_veta {
         }
     }
 
+    bool Veta::IsViewWithTimestampDefined(const View::Ptr &view) {
+        if (!view) return false;
+        return view->timestamp >= 0.0;
+    }
+
+    bool Veta::IsViewWithTimestampDefined(IndexT viewId) {
+        if (viewId == UndefinedIndexT) {
+            return false;
+        }
+        if (auto iter = views.find(viewId); iter == views.cend()) {
+            return false;
+        } else {
+            return IsViewWithTimestampDefined(iter->second);
+        }
+    }
+
     bool ValidIds(const Veta &veta, Veta::Parts flag) {
 
-        std::set<IndexT> set_id_intrinsics; // unique so we can use a set
+        std::set<IndexT> intrinsicsIdSet; // unique so we can use a set
         transform(veta.intrinsics.cbegin(), veta.intrinsics.cend(),
-                  std::inserter(set_id_intrinsics, set_id_intrinsics.begin()), RetrieveKey());
+                  std::inserter(intrinsicsIdSet, intrinsicsIdSet.begin()), RetrieveKey());
 
-        std::set<IndexT> set_id_extrinsics; // unique so we can use a set
+        std::set<IndexT> extrinsicsIdSet; // unique so we can use a set
         transform(veta.poses.cbegin(), veta.poses.cend(),
-                  std::inserter(set_id_extrinsics, set_id_extrinsics.begin()), RetrieveKey());
+                  std::inserter(extrinsicsIdSet, extrinsicsIdSet.begin()), RetrieveKey());
 
         // Collect existing intrinsicId && id_extrinsic from views
-        std::set<IndexT> reallyDefined_id_intrinsics;
-        std::set<IndexT> reallyDefined_id_extrinsics;
-        for (const auto &view_it: veta.views) {
+        std::set<IndexT> reallyDefinedIntrinsicsIdSet;
+        std::set<IndexT> reallyDefinedExtrinsicsIdSet;
+        for (const auto &[viewId, view]: veta.views) {
             // If a pose is defined, at least the intrinsic must be valid,
             // In order to generate a valid camera.
-            const IndexT id_pose = view_it.second->poseId;
-            const IndexT id_intrinsic = view_it.second->intrinsicId;
+            const IndexT poseId = view->poseId;
+            const IndexT intrinsicId = view->intrinsicId;
 
-            if (set_id_extrinsics.count(id_pose))
-                reallyDefined_id_extrinsics.insert(id_pose); //at least it exists
+            if (extrinsicsIdSet.count(poseId))
+                reallyDefinedExtrinsicsIdSet.insert(poseId); //at least it exists
 
-            if (set_id_intrinsics.count(id_intrinsic))
-                reallyDefined_id_intrinsics.insert(id_intrinsic); //at least it exists
+            if (intrinsicsIdSet.count(intrinsicId))
+                reallyDefinedIntrinsicsIdSet.insert(intrinsicId); //at least it exists
         }
         // Check if defined intrinsic & extrinsic are at least connected to views
         bool bRet = true;
         if (Veta::IsPartsWith(Veta::INTRINSICS, flag))
-            bRet &= set_id_intrinsics.size() == reallyDefined_id_intrinsics.size();
+            bRet &= intrinsicsIdSet.size() == reallyDefinedIntrinsicsIdSet.size();
 
         if (Veta::IsPartsWith(Veta::EXTRINSICS, flag))
-            bRet &= set_id_extrinsics.size() == reallyDefined_id_extrinsics.size();
+            bRet &= extrinsicsIdSet.size() == reallyDefinedExtrinsicsIdSet.size();
 
         if (!bRet) {
-            std::cout
-                    << "There is orphan intrinsics data or poses (some pose(s) or intrinsic(s) do not depend on any view)";
+            std::cout << "There is intrinsics data or poses (some pose(s) or intrinsic(s) do not depend on any view)";
         }
 
         return bRet;
@@ -138,8 +153,8 @@ namespace ns_veta {
         }
 
         // Assert that loaded intrinsics | extrinsics are linked to valid view
-        if (bStatus && (flag & Veta::VIEWS) == Veta::VIEWS &&
-            ((flag & Veta::INTRINSICS) == Veta::INTRINSICS || (flag & Veta::EXTRINSICS) == Veta::EXTRINSICS)) {
+        if (bStatus && Veta::IsPartsWith(Veta::VIEWS, flag) &&
+            (Veta::IsPartsWith(Veta::INTRINSICS, flag) || Veta::IsPartsWith(Veta::EXTRINSICS, flag))) {
             return ValidIds(veta, flag);
         }
         return bStatus;

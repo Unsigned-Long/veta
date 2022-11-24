@@ -92,6 +92,12 @@ namespace ns_veta {
         /// Structure (3D points with their 2D observations)
         Landmarks structure;
 
+        // Check if the View have defined timestamp
+        [[nodiscard]] static bool IsViewWithTimestampDefined(const View::Ptr &view);
+
+        // Check if the View have defined timestamp
+        [[nodiscard]] bool IsViewWithTimestampDefined(IndexT viewId);
+
         // Check if the View have defined pose
         [[nodiscard]] bool IsViewWithPoseDefined(const View::Ptr &view) const;
 
