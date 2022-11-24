@@ -17,10 +17,10 @@ namespace ns_veta {
     class Pose {
     protected:
 
-        /// Orientation matrix
+        // Orientation matrix
         Mat3d rotation;
 
-        /// Center of Rotation
+        // Center of Rotation
         Vec3d center;
 
     public:
@@ -33,6 +33,10 @@ namespace ns_veta {
         */
         explicit Pose(Mat3d r = Mat3d::Identity(), Vec3d c = Vec3d::Zero())
                 : rotation(std::move(r)), center(std::move(c)) {}
+
+        static Pose CreateFromRC(const Mat3d &r = Mat3d::Identity(), const Vec3d &c = Vec3d::Zero());
+
+        static Pose CreateFromRT(const Mat3d &r = Mat3d::Identity(), const Vec3d &t = Vec3d::Zero());
 
         /**
         * @brief Get Rotation matrix
@@ -98,7 +102,7 @@ namespace ns_veta {
         * @brief Return the pose as a single Mat34d matrix [R|t]
         * @return The pose as a Mat34d matrix
         */
-        [[nodiscard]]   Mat34d AsMatrix() const;
+        [[nodiscard]] Mat34d AsMatrix() const;
 
         /**
         * Serialization out

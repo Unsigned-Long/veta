@@ -42,4 +42,13 @@ namespace ns_veta {
         return -(rotation * center);
     }
 
+    Pose Pose::CreateFromRC(const Mat3d &r, const Vec3d &c) {
+        return Pose(r, c);
+    }
+
+    Pose Pose::CreateFromRT(const Mat3d &r, const Vec3d &t) {
+        // t =-rc
+        return Pose(r, -r.inverse() * t);
+    }
+
 }
