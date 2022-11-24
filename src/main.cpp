@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     }
     {
         // intri
-        auto intri = ns_veta::PinholeIntrinsicBrownT2::Create(200, 100, 150, 100, 50);
+        auto intri = ns_veta::PinholeIntrinsicBrownT2::Create(200, 100, 160, 140, 100, 50);
         veta.intrinsics.insert(std::make_pair(0, intri));
     }
     {
@@ -40,5 +40,9 @@ int main(int argc, char **argv) {
     ns_veta::Load(veta, "/home/csl/CppWorks/artwork/veta/output/veta.json", ns_veta::Veta::ALL);
     ns_veta::Load(veta, "/home/csl/CppWorks/artwork/veta/output/veta.bin", ns_veta::Veta::ALL);
     ns_veta::Load(veta, "/home/csl/CppWorks/artwork/veta/output/veta.xml", ns_veta::Veta::ALL);
+
+    ns_veta::Save(veta, "/home/csl/CppWorks/artwork/veta/output/veta.json", ns_veta::Veta::ALL);
+    ns_veta::Save(veta, "/home/csl/CppWorks/artwork/veta/output/veta.bin", ns_veta::Veta::ALL);
+    ns_veta::Save(veta, "/home/csl/CppWorks/artwork/veta/output/veta.xml", ns_veta::Veta::ALL);
     return 0;
 }
