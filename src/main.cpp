@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     }
     {
         // pose
-        auto pose = ns_veta::Pose(ns_veta::Mat3d::Identity(), ns_veta::Vec3d::Zero());
+        auto pose = ns_veta::Posed(ns_veta::Mat3d::Identity(), ns_veta::Vec3d::Zero());
         veta.poses.insert(std::make_pair(0, pose));
     }
     {

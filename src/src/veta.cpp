@@ -16,7 +16,7 @@ namespace ns_veta {
         return (view->intrinsicId != UndefinedIndexT && intrinsics.find(view->intrinsicId) != intrinsics.end());
     }
 
-    std::optional<Pose> Veta::GetViewPose(const View::Ptr &view) const {
+    std::optional<Posed> Veta::GetViewPose(const View::Ptr &view) const {
         if (!view || view->poseId == UndefinedIndexT) {
             return {};
         }
@@ -60,7 +60,7 @@ namespace ns_veta {
         }
     }
 
-    std::optional<Pose> Veta::GetViewPose(IndexT viewId) const {
+    std::optional<Posed> Veta::GetViewPose(IndexT viewId) const {
         if (viewId == UndefinedIndexT) {
             return {};
         }

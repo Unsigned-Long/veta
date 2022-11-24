@@ -262,7 +262,7 @@ namespace ns_veta {
         * @param RefToCam Extrinsic matrix
         * @return Concatenation of intrinsic matrix and extrinsic matrix
         */
-        [[nodiscard]] virtual Mat34d GetProjectiveEquivalent(const Pose &RefToCam) const = 0;
+        [[nodiscard]] virtual Mat34d GetProjectiveEquivalent(const Posed &RefToCam) const = 0;
 
         /**
         * @brief Serialization out

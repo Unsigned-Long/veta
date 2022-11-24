@@ -12,16 +12,16 @@ namespace ns_veta {
 
     /**
     * @brief Defines a pose in 3d space
-    * [R|C] t = -RC
     */
+    template<typename ScaleType>
     class Pose {
     protected:
 
         // Orientation matrix
-        Mat3d rotation;
+        Mat3<ScaleType> rotation;
 
         // Translation vector
-        Vec3d translation;
+        Vec3<ScaleType> translation;
 
     public:
 
@@ -31,32 +31,40 @@ namespace ns_veta {
         * @param t Translation
         * @note Default (without args) defines an Identity pose.
         */
-        explicit Pose(Mat3d r = Mat3d::Identity(), Vec3d t = Vec3d::Zero())
+        explicit Pose(Mat3<ScaleType> r = Mat3<ScaleType>::Identity(), Vec3<ScaleType> t = Vec3<ScaleType>::Zero())
                 : rotation(std::move(r)), translation(std::move(t)) {}
 
         /**
         * @brief Get Rotation matrix
         * @return Rotation matrix
         */
-        [[nodiscard]] const Mat3d &Rotation() const;
+        [[nodiscard]] const Mat3<ScaleType> &Rotation() const {
+            return rotation;
+        }
 
         /**
         * @brief Get Rotation matrix
         * @return Rotation matrix
         */
-        Mat3d &Rotation();
+        Mat3<ScaleType> &Rotation() {
+            return rotation;
+        }
 
         /**
         * @brief Get Translation vector
         * @return Translation vector
         */
-        [[nodiscard]] const Vec3d &Translation() const;
+        [[nodiscard]] const Vec3<ScaleType> &Translation() const {
+            return translation;
+        }
 
         /**
          * @brief Get Translation vector
          * @return Translation vector
          */
-        Vec3d &Translation();
+        Vec3<ScaleType> &Translation() {
+            return translation;
+        }
 
         /**
         * @brief Apply pose
@@ -69,26 +77,39 @@ namespace ns_veta {
         }
 
         // Specialization for Vec3d
-        typename Vec3d::PlainObject operator()(const Vec3d &p) const;
+        typename Vec3<ScaleType>::PlainObject operator()(const Vec3<ScaleType> &p) const {
+            return rotation * p + translation;
+        }
 
         /**
         * @brief Composition of poses
         * @param pose a Pose
         * @return Composition of current pose and parameter pose
         */
-        Pose operator*(const Pose &pose) const;
+        Pose operator*(const Pose &pose) const {
+            return Pose{rotation * pose.rotation, rotation * pose.translation + translation};
+        }
 
         /**
         * @brief Get Inverse of the pose
         * @return Inverse of the pose
         */
-        [[nodiscard]] Pose Inverse() const;
+        [[nodiscard]] Pose Inverse() const {
+            return Pose{rotation.transpose(), -(rotation.transpose() * translation)};
+        }
 
         /**
         * @brief Return the pose as a single Mat34d matrix [R|t]
         * @return The pose as a Mat34d matrix
         */
-        [[nodiscard]] Mat34d AsMatrix() const;
+        [[nodiscard]] Mat34<ScaleType> AsMatrix() const {
+            return (Mat34d() << rotation, translation).finished();
+        }
+
+        template<typename T>
+        Pose<T> Cast() {
+            return Pose<T>(rotation.template cast<T>(), translation.template cast<T>());
+        }
 
         /**
         * Serialization out
@@ -96,7 +117,7 @@ namespace ns_veta {
         */
         template<class Archive>
         void save(Archive &ar) const {
-            const std::vector<std::vector<double>> mat = {
+            const std::vector<std::vector<ScaleType>> mat = {
                     {rotation(0, 0), rotation(0, 1), rotation(0, 2)},
                     {rotation(1, 0), rotation(1, 1), rotation(1, 2)},
                     {rotation(2, 0), rotation(2, 1), rotation(2, 2)}
@@ -104,7 +125,7 @@ namespace ns_veta {
 
             ar(cereal::make_nvp("rotation", mat));
 
-            const std::vector<double> vec = {translation(0), translation(1), translation(2)};
+            const std::vector<ScaleType> vec = {translation(0), translation(1), translation(2)};
             ar(cereal::make_nvp("translation", vec));
         }
 
@@ -114,18 +135,21 @@ namespace ns_veta {
         */
         template<class Archive>
         void load(Archive &ar) {
-            std::vector<std::vector<double>> mat(3, std::vector<double>(3));
+            std::vector<std::vector<ScaleType>> mat(3, std::vector<ScaleType>(3));
             ar(cereal::make_nvp("rotation", mat));
             // copy back to the Rotation
             rotation.row(0) = Eigen::Map<const Vec3d>(&(mat[0][0]));
             rotation.row(1) = Eigen::Map<const Vec3d>(&(mat[1][0]));
             rotation.row(2) = Eigen::Map<const Vec3d>(&(mat[2][0]));
 
-            std::vector<double> vec(3);
+            std::vector<ScaleType> vec(3);
             ar(cereal::make_nvp("translation", vec));
-            translation = Eigen::Map<const Vec3d>(&vec[0]);
+            translation = Eigen::Map<const Vec3<ScaleType>>(&vec[0]);
         }
     };
+
+    using Posed = Pose<double>;
+    using Posef = Pose<float>;
 }
 
 

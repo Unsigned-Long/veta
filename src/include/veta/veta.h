@@ -17,7 +17,7 @@ namespace ns_veta {
     using Intrinsics = HashMap<IndexT, std::shared_ptr<IntrinsicBase>>;
 
     // Define a collection of Pose (indexed by View::poseId)
-    using Poses = HashMap<IndexT, Pose>;
+    using Poses = HashMap<IndexT, Posed>;
 
     // Define a collection of View (indexed by View::viewId)
     using Views = HashMap<IndexT, std::shared_ptr<View>>;
@@ -110,9 +110,9 @@ namespace ns_veta {
         // Check if the View have defined intrinsic
         [[nodiscard]] bool IsViewWithIntrinsicDefined(IndexT viewId) const;
 
-        [[nodiscard]] std::optional<Pose> GetViewPose(const View::Ptr &view) const;
+        [[nodiscard]] std::optional<Posed> GetViewPose(const View::Ptr &view) const;
 
-        [[nodiscard]] std::optional<Pose> GetViewPose(IndexT viewId) const;
+        [[nodiscard]] std::optional<Posed> GetViewPose(IndexT viewId) const;
 
         [[nodiscard]] std::optional<IntrinsicBase::Ptr> GetViewIntrinsic(const View::Ptr &view) const;
 
