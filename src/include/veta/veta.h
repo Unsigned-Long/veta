@@ -92,6 +92,13 @@ namespace ns_veta {
         /// Structure (3D points with their 2D observations)
         Landmarks structure;
 
+    public:
+        using Ptr = std::shared_ptr<Veta>;
+
+        Veta();
+
+        static Ptr Create();
+
         // Check if the View have defined timestamp
         [[nodiscard]] static bool IsViewWithTimestampDefined(const View::Ptr &view);
 

@@ -6,6 +6,12 @@
 
 namespace ns_veta {
 
+    Veta::Veta() = default;
+
+    Veta::Ptr Veta::Create() {
+        return std::make_shared<Veta>();
+    }
+
     bool Veta::IsViewWithPoseDefined(const View::Ptr &view) const {
         if (!view) return false;
         return (view->poseId != UndefinedIndexT && poses.find(view->poseId) != poses.end());
