@@ -25,6 +25,45 @@ namespace ns_veta {
     // Define a collection of landmarks are indexed by their TrackId
     using Landmarks = HashMap<IndexT, Landmark>;
 
+    struct IndexGenerator {
+    protected:
+        static IndexT ViewIdCounter;
+
+        static IndexT PoseIdCounter;
+
+        static IndexT IntrinsicsIdCounter;
+
+        static IndexT LandmarkIdCounter;
+
+        static IndexT FeatureIdCounter;
+
+    public:
+
+        // generate
+
+        static IndexT GenNewViewId();
+
+        static IndexT GenNewPoseId();
+
+        static IndexT GenNewIntrinsicsId();
+
+        static IndexT GenNewLandmarkId();
+
+        static IndexT GenNewFeatureId();
+
+        // reset
+
+        static void ResetViewIdCounter();
+
+        static void ResetPoseIdCounter();
+
+        static void ResetIntrinsicsIdCounter();
+
+        static void ResetLandmarkIdCounter();
+
+        static void ResetFeatureIdCounter();
+    };
+
     // Generic SfM data container
     // Store structure and camera properties:
     struct Veta {

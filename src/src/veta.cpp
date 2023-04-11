@@ -6,6 +6,59 @@
 
 namespace ns_veta {
 
+    // --------------
+    // IndexGenerator
+    // --------------
+    IndexT IndexGenerator::ViewIdCounter = 0;
+    IndexT IndexGenerator::PoseIdCounter = 0;
+    IndexT IndexGenerator::IntrinsicsIdCounter = 0;
+    IndexT IndexGenerator::LandmarkIdCounter = 0;
+    IndexT IndexGenerator::FeatureIdCounter = 0;
+
+    IndexT IndexGenerator::GenNewViewId() {
+        return ++ViewIdCounter;
+    }
+
+    IndexT IndexGenerator::GenNewPoseId() {
+        return ++PoseIdCounter;
+    }
+
+    IndexT IndexGenerator::GenNewIntrinsicsId() {
+        return ++IntrinsicsIdCounter;
+    }
+
+    IndexT IndexGenerator::GenNewLandmarkId() {
+        return ++LandmarkIdCounter;
+    }
+
+    IndexT IndexGenerator::GenNewFeatureId() {
+        return ++FeatureIdCounter;
+    }
+
+    void IndexGenerator::ResetViewIdCounter() {
+        ViewIdCounter = 0;
+    }
+
+    void IndexGenerator::ResetPoseIdCounter() {
+        PoseIdCounter = 0;
+    }
+
+    void IndexGenerator::ResetIntrinsicsIdCounter() {
+        IntrinsicsIdCounter = 0;
+    }
+
+    void IndexGenerator::ResetLandmarkIdCounter() {
+        LandmarkIdCounter = 0;
+    }
+
+    void IndexGenerator::ResetFeatureIdCounter() {
+        FeatureIdCounter = 0;
+    }
+
+    // ----
+    // veta
+    // ----
+
     Veta::Veta() = default;
 
     Veta::Ptr Veta::Create() {
