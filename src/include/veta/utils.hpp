@@ -17,8 +17,19 @@
 #include <cereal/types/unordered_map.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/polymorphic.hpp>
+#include "sophus/se3.hpp"
 
 namespace ns_veta {
+    template<class ScalarType>
+    inline Sophus::Matrix3<ScalarType> AdjustRotationMatrix(const Sophus::Matrix3<ScalarType> &rotMat) {
+        // adjust
+        Eigen::JacobiSVD<Sophus::Matrix3<ScalarType>> svd(rotMat, Eigen::ComputeFullV | Eigen::ComputeFullU);
+        const Sophus::Matrix3<ScalarType> &vMatrix = svd.matrixV();
+        const Sophus::Matrix3<ScalarType> &uMatrix = svd.matrixU();
+        Sophus::Matrix3<ScalarType> adjustedRotMat = uMatrix * vMatrix.transpose();
+        return adjustedRotMat;
+    }
+
     template<class T>
     inline void HashCombine(std::size_t &seed, const T &v) {
         std::hash<T> hasher;

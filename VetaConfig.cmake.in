@@ -1,6 +1,7 @@
 include(CMakeFindDependencyMacro)
 
 find_dependency(Eigen3 REQUIRED)
+find_dependency(Sophus REQUIRED)
 
 # Add the targets file
 include("${CMAKE_CURRENT_LIST_DIR}/VetaTargets.cmake")

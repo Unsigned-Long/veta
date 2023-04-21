@@ -68,7 +68,7 @@ namespace ns_veta {
     }
 
     Mat34d IntrinsicSpherical::GetProjectiveEquivalent(const Posed &RefToCam) const {
-        return HStack(RefToCam.Rotation(), RefToCam.Translation());
+        return HStack(RefToCam.Rotation().matrix(), RefToCam.Translation());
     }
 
     IntrinsicBase *IntrinsicSpherical::Clone() const {

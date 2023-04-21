@@ -7,6 +7,7 @@
 
 
 #include "type_def.hpp"
+#include "sophus/se3.hpp"
 
 namespace ns_veta {
 
@@ -18,7 +19,7 @@ namespace ns_veta {
     protected:
 
         // Orientation matrix
-        Mat3<ScaleType> rotation;
+        Sophus::SO3<ScaleType> rotation;
 
         // Translation vector
         Vec3<ScaleType> translation;
@@ -31,14 +32,24 @@ namespace ns_veta {
         * @param t Translation
         * @note Default (without args) defines an Identity pose.
         */
-        explicit Pose(Mat3<ScaleType> r = Mat3<ScaleType>::Identity(), Vec3<ScaleType> t = Vec3<ScaleType>::Zero())
-                : rotation(std::move(r)), translation(std::move(t)) {}
+        explicit Pose(const Mat3<ScaleType> &r, const Vec3<ScaleType> &t)
+                : rotation(AdjustRotationMatrix(r)), translation(t) {}
+
+        /**
+        * @brief Constructor
+        * @param r Rotation
+        * @param t Translation
+        * @note Default (without args) defines an Identity pose.
+        */
+        explicit Pose(const Sophus::SO3<ScaleType> &r = Sophus::SO3<ScaleType>(),
+                      const Vec3<ScaleType> &t = Vec3<ScaleType>::Zero())
+                : rotation(), translation(t) {}
 
         /**
         * @brief Get Rotation matrix
         * @return Rotation matrix
         */
-        [[nodiscard]] const Mat3<ScaleType> &Rotation() const {
+        [[nodiscard]] const Sophus::SO3<ScaleType> &Rotation() const {
             return rotation;
         }
 
@@ -46,7 +57,7 @@ namespace ns_veta {
         * @brief Get Rotation matrix
         * @return Rotation matrix
         */
-        Mat3<ScaleType> &Rotation() {
+        Sophus::SO3<ScaleType> &Rotation() {
             return rotation;
         }
 
@@ -103,7 +114,7 @@ namespace ns_veta {
         * @return The pose as a Mat34d matrix
         */
         [[nodiscard]] Mat34<ScaleType> AsMatrix() const {
-            return (Mat34d() << rotation, translation).finished();
+            return (Mat34d() << rotation.matrix(), translation).finished();
         }
 
         template<typename T>
@@ -111,16 +122,18 @@ namespace ns_veta {
             return Pose<T>(rotation.template cast<T>(), translation.template cast<T>());
         }
 
+    public:
         /**
-        * Serialization out
-        * @param ar Archive
-        */
+       * Serialization out
+       * @param ar Archive
+       */
         template<class Archive>
         void save(Archive &ar) const {
+            const auto rotMat = rotation.matrix();
             const std::vector<std::vector<ScaleType>> mat = {
-                    {rotation(0, 0), rotation(0, 1), rotation(0, 2)},
-                    {rotation(1, 0), rotation(1, 1), rotation(1, 2)},
-                    {rotation(2, 0), rotation(2, 1), rotation(2, 2)}
+                    {rotMat(0, 0), rotMat(0, 1), rotMat(0, 2)},
+                    {rotMat(1, 0), rotMat(1, 1), rotMat(1, 2)},
+                    {rotMat(2, 0), rotMat(2, 1), rotMat(2, 2)}
             };
 
             ar(cereal::make_nvp("rotation", mat));
@@ -138,13 +151,20 @@ namespace ns_veta {
             std::vector<std::vector<ScaleType>> mat(3, std::vector<ScaleType>(3));
             ar(cereal::make_nvp("rotation", mat));
             // copy back to the Rotation
-            rotation.row(0) = Eigen::Map<const Vec3d>(&(mat[0][0]));
-            rotation.row(1) = Eigen::Map<const Vec3d>(&(mat[1][0]));
-            rotation.row(2) = Eigen::Map<const Vec3d>(&(mat[2][0]));
+            Mat3<ScaleType> rotMat;
+            rotMat.row(0) = Eigen::Map <
+            const Vec3d>(&(mat[0][0]));
+            rotMat.row(1) = Eigen::Map <
+            const Vec3d>(&(mat[1][0]));
+            rotMat.row(2) = Eigen::Map <
+            const Vec3d>(&(mat[2][0]));
+            rotation = AdjustRotationMatrix(rotMat);
 
             std::vector<ScaleType> vec(3);
             ar(cereal::make_nvp("translation", vec));
-            translation = Eigen::Map<const Vec3<ScaleType>>(&vec[0]);
+            translation = Eigen::Map <
+            const Vec3<ScaleType>>
+            (&vec[0]);
         }
     };
 
