@@ -15,9 +15,7 @@ add_library(
 target_include_directories(
         ${LIBRARY_NAME} PUBLIC
         ${EIGEN_INCLUDE_DIRS}
-        # for interface
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/include>
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_link_libraries(
