@@ -172,7 +172,7 @@ namespace ns_veta {
         * @param r2 square distance (relative to Center)
         * @return distance
         */
-        static inline double DistoFunctor(const std::vector<double> &params, double r2);
+        static double DistoFunctor(const std::vector<double> &params, double r2);
     };
 
     /**
@@ -310,7 +310,7 @@ namespace ns_veta {
         * @param r2 square distance (relative to Center)
         * @return distance
         */
-        static inline double DistoFunctor(const std::vector<double> &params, double r2);
+        static double DistoFunctor(const std::vector<double> &params, double r2);
     };
 
 }

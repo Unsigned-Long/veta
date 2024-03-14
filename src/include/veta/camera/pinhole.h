@@ -85,19 +85,19 @@ namespace ns_veta {
         * @brief Return the value of the Focal in pixels
         * @return Focal of the camera (in pixel)
         */
-        [[nodiscard]] inline double Focal() const;
+        [[nodiscard]] double Focal() const;
 
-        [[nodiscard]] inline double FocalX() const;
+        [[nodiscard]] double FocalX() const;
 
-        [[nodiscard]] inline double FocalY() const;
+        [[nodiscard]] double FocalY() const;
 
-        [[nodiscard]] inline Vec2d FocalXY() const;
+        [[nodiscard]] Vec2d FocalXY() const;
 
         /**
         * @brief Get principal point of the camera
         * @return Principal point of the camera
         */
-        [[nodiscard]] inline Vec2d PrincipalPoint() const;
+        [[nodiscard]] Vec2d PrincipalPoint() const;
 
         /**
         * @brief Get bearing vectors from image coordinates
