@@ -43,7 +43,7 @@ namespace ns_veta {
         */
         explicit Pose(const Sophus::SO3<ScaleType> &r = Sophus::SO3<ScaleType>(),
                       const Vec3<ScaleType> &t = Vec3<ScaleType>::Zero())
-                : rotation(), translation(t) {}
+                : rotation(r), translation(t) {}
 
         /**
         * @brief Get Rotation matrix
