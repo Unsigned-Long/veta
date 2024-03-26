@@ -44,11 +44,15 @@ namespace ns_veta {
     }
 
     Vec2d PinholeIntrinsic::CamToImg(const Vec2d &p) const {
-        return FocalXY().asDiagonal() * p + PrincipalPoint();
+        double x = p(0) * FocalX() + K(0, 2);
+        double y = p(1) * FocalY() + K(1, 2);
+        return {x, y};
     }
 
     Vec2d PinholeIntrinsic::ImgToCam(const Vec2d &p) const {
-        return Vec2d(1.0 / FocalX(), 1.0 / FocalY()).asDiagonal() * (p - PrincipalPoint());
+        double x = (p(0) - K(0, 2)) / FocalX();
+        double y = (p(1) - K(1, 2)) / FocalY();
+        return {x, y};
     }
 
     bool PinholeIntrinsic::HaveDisto() const {
