@@ -106,7 +106,7 @@ namespace ns_veta {
         * @return Inverse of the pose
         */
         [[nodiscard]] Pose Inverse() const {
-            return Pose{rotation.transpose(), -(rotation.transpose() * translation)};
+            return Pose{rotation.matrix().transpose(), -(rotation.matrix().transpose() * translation)};
         }
 
         /**
