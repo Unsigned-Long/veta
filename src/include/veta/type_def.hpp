@@ -50,7 +50,7 @@
 
 namespace ns_veta {
     // Portable type used to store an index
-    using IndexT = uint32_t;
+    using IndexT = uint64_t;
 
     // Portable value used to save an undefined index value
     static const IndexT UndefinedIndexT = std::numeric_limits<IndexT>::max();
