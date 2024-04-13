@@ -74,6 +74,14 @@ namespace ns_veta {
         */
         [[nodiscard]] const Mat3d &KMat() const;
 
+        double *FXAddress();
+
+        double *FYAddress();
+
+        double *CXAddress();
+
+        double *CYAddress();
+
         /**
         * @brief Get the Inverse of the intrinsic matrix
         * @return Inverse of intrinsic matrix

@@ -137,4 +137,20 @@ namespace ns_veta {
     Vec2d PinholeIntrinsic::FocalXY() const {
         return {K(0, 0), K(1, 1)};
     }
+
+    double *PinholeIntrinsic::FXAddress() {
+        return &K(0, 0);
+    }
+
+    double *PinholeIntrinsic::FYAddress() {
+        return &K(1, 1);
+    }
+
+    double *PinholeIntrinsic::CXAddress() {
+        return &K(0, 2);
+    }
+
+    double *PinholeIntrinsic::CYAddress() {
+        return &K(1, 2);
+    }
 }
