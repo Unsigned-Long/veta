@@ -2,5 +2,7 @@
 /cmake-build-release/
 /cmake-build-debug/
 /output/
+/build
+/install
 /docs/.$sfm_data_structure.dtmp
 /docs/.$sfm_data_structure.bkp

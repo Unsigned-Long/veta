@@ -6,16 +6,24 @@ find_package(Sophus)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SRC_FILES)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src/camera CAMERA_SRC_FILES)
 
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/include/veta HEADER_FILES)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/include/veta/camera CAMERA_HEADER_FILES)
+
 add_library(
         ${LIBRARY_NAME} SHARED
-        ${SRC_FILES}
-        ${CAMERA_SRC_FILES}
+        ${SRC_FILES} ${CAMERA_SRC_FILES}
+        ${HEADER_FILES} ${CAMERA_HEADER_FILES}
 )
+
+set(ADDITIONAL_INCLUDE_DIRS ${EIGEN_INCLUDE_DIRS})
 
 target_include_directories(
         ${LIBRARY_NAME} PUBLIC
-        ${EIGEN_INCLUDE_DIRS}
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        # only when building from the source tree
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        # only when using the lib from the install path
+        $<INSTALL_INTERFACE:include>
+        ${ADDITIONAL_INCLUDE_DIRS}
 )
 
 target_link_libraries(
