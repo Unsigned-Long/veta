@@ -120,7 +120,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("disto_t2", params));
+            ar(cereal::make_nvp("disto_param", params));
         }
 
         /**
@@ -130,7 +130,12 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("disto_t2", params));
+            ar(cereal::make_nvp("disto_param", params));
+            if (params.size() != 5) {
+                throw std::runtime_error(
+                        "camera model 'pinhole_brown_t2' should maintain five distortion parameters (k1, k2, k3, t1, t2)"
+                );
+            }
         }
 
         /**
@@ -155,6 +160,6 @@ namespace ns_veta {
 
 CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicBrownT2, "pinhole_brown_t2")
 CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicBrownT2)
-
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::PinholeIntrinsic, ns_veta::PinholeIntrinsicBrownT2)
 
 #endif //VETA_PINHOLE_BROWN_H

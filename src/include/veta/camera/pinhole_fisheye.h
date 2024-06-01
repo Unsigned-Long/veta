@@ -115,7 +115,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("fisheye", params));
+            ar(cereal::make_nvp("disto_param", params));
         }
 
         /**
@@ -125,7 +125,12 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("fisheye", params));
+            ar(cereal::make_nvp("disto_param", params));
+            if (params.size() != 4) {
+                throw std::runtime_error(
+                        "camera model 'pinhole_fisheye' should maintain four distortion parameters (k1, k2, k3, k4)"
+                );
+            }
         }
 
         /**
@@ -136,8 +141,9 @@ namespace ns_veta {
     };
 }
 
-CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicFisheye, "fisheye")
+CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicFisheye, "pinhole_fisheye")
 CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicFisheye)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::PinholeIntrinsic, ns_veta::PinholeIntrinsicFisheye)
 
 
 #endif //VETA_PINHOLE_FISHEYE_H

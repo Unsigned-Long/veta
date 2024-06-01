@@ -145,7 +145,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("disto_k1", params));
+            ar(cereal::make_nvp("disto_param", params));
         }
 
         /**
@@ -155,7 +155,12 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("disto_k1", params));
+            ar(cereal::make_nvp("disto_param", params));
+            if (params.size() != 1) {
+                throw std::runtime_error(
+                        "camera model 'pinhole_radial_k1' should maintain one distortion parameter (k1)"
+                );
+            }
         }
 
         /**
@@ -282,7 +287,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
-            ar(cereal::make_nvp("disto_k3", params));
+            ar(cereal::make_nvp("disto_param", params));
         }
 
         /**
@@ -292,7 +297,12 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
-            ar(cereal::make_nvp("disto_k3", params));
+            ar(cereal::make_nvp("disto_param", params));
+            if (params.size() != 3) {
+                throw std::runtime_error(
+                        "camera model 'pinhole_radial_k3' should maintain three distortion parameters (k1, k2, k3)"
+                );
+            }
         }
 
         /**
@@ -317,8 +327,10 @@ namespace ns_veta {
 
 CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicRadialK1, "pinhole_radial_k1")
 CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicRadialK1)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::PinholeIntrinsic, ns_veta::PinholeIntrinsicRadialK1)
 CEREAL_REGISTER_TYPE_WITH_NAME(ns_veta::PinholeIntrinsicRadialK3, "pinhole_radial_k3")
 CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::IntrinsicBase, ns_veta::PinholeIntrinsicRadialK3)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(ns_veta::PinholeIntrinsic, ns_veta::PinholeIntrinsicRadialK3)
 
 
 #endif //VETA_PINHOLE_RADIAL_H
