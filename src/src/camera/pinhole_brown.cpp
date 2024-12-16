@@ -42,6 +42,10 @@ namespace ns_veta {
         return paramsVec;
     }
 
+    double *PinholeIntrinsicBrownT2::DistCoeffAddress() {
+        return this->params.data();
+    }
+
     bool PinholeIntrinsicBrownT2::UpdateFromParams(const std::vector<double> &paramsVec) {
         if (paramsVec.size() == 9) {
             *this = PinholeIntrinsicBrownT2(

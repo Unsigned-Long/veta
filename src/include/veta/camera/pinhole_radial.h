@@ -109,6 +109,8 @@ namespace ns_veta {
         */
         [[nodiscard]] std::vector<double> GetParams() const override;
 
+        double *DistCoeffAddress() override;
+
         /**
         * @brief Data wrapper for non linear optimization (update from data)
         * @param paramsVec List of paramsVec used to update this intrinsic

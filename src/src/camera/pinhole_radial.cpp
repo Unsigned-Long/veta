@@ -42,6 +42,10 @@ namespace ns_veta {
         return paramsVec;
     }
 
+    double *PinholeIntrinsicRadialK1::DistCoeffAddress() {
+        return this->params.data();
+    }
+
     bool PinholeIntrinsicRadialK1::UpdateFromParams(const std::vector<double> &paramsVec) {
         if (paramsVec.size() == 5) {
             *this = PinholeIntrinsicRadialK1(

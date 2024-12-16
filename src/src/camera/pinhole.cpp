@@ -150,7 +150,9 @@ namespace ns_veta {
         return &K(0, 2);
     }
 
-    double *PinholeIntrinsic::CYAddress() {
-        return &K(1, 2);
+    double *PinholeIntrinsic::CYAddress() { return &K(1, 2); }
+
+    double *PinholeIntrinsic::DistCoeffAddress() {
+        return nullptr;
     }
-}
+    } // namespace ns_veta

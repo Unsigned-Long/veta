@@ -82,6 +82,8 @@ namespace ns_veta {
 
         double *CYAddress();
 
+        virtual double *DistCoeffAddress();
+
         /**
         * @brief Get the Inverse of the intrinsic matrix
         * @return Inverse of intrinsic matrix

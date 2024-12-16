@@ -63,6 +63,10 @@ namespace ns_veta {
         return paramsVec;
     }
 
+    double *PinholeIntrinsicFisheye::DistCoeffAddress() {
+        return this->params.data();
+    }
+
     bool PinholeIntrinsicFisheye::UpdateFromParams(const std::vector<double> &paramsVec) {
         if (paramsVec.size() == 8) {
             *this = PinholeIntrinsicFisheye(
