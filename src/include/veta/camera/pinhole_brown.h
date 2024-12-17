@@ -122,6 +122,7 @@ namespace ns_veta {
         template<class Archive>
         inline void save(Archive &ar) const {
             PinholeIntrinsic::save(ar);
+            ar(cereal::make_nvp("disto_param_note", std::string("k1, k2, k3, t1, t2")));
             ar(cereal::make_nvp("disto_param", params));
         }
 
@@ -132,6 +133,7 @@ namespace ns_veta {
         template<class Archive>
         inline void load(Archive &ar) {
             PinholeIntrinsic::load(ar);
+            ar(cereal::make_nvp("disto_param_note", std::string("k1, k2, k3, t1, t2"))); //useless
             ar(cereal::make_nvp("disto_param", params));
             if (params.size() != 5) {
                 throw std::runtime_error(
